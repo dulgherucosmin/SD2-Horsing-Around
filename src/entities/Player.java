@@ -9,8 +9,8 @@ import static utilz.Constants.Directions.RIGHT;
 import static utilz.Constants.PlayerConstants.GetSpriteAmount;
 import static utilz.Constants.PlayerConstants.IDLE_LEFT;
 import static utilz.Constants.PlayerConstants.IDLE_RIGHT;
-import static utilz.Constants.PlayerConstants.RUN_LEFT;
-import static utilz.Constants.PlayerConstants.RUN_RIGHT;
+import static utilz.Constants.PlayerConstants.WALK_LEFT;
+import static utilz.Constants.PlayerConstants.WALK_RIGHT;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -83,9 +83,9 @@ public class Player extends Entity {
 
         if (moving) {
             if (playerDir == LEFT) {
-                playerAction = RUN_LEFT;
+                playerAction = WALK_LEFT;
             } else {
-                playerAction = RUN_RIGHT;
+                playerAction = WALK_RIGHT;
             }
         } else {
             if (playerDir == LEFT) {
