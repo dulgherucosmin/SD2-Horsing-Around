@@ -45,7 +45,10 @@ public class Player extends Entity {
         super(x, y);
         this.spritePath = spritePath;
         this.playerDir = startDir;
-        loadAnimations();
+
+        if (spritePath != null) {
+            loadAnimations();
+        }
     }
 
     // this updates player logic every frame
