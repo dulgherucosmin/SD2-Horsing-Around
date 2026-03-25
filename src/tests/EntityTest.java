@@ -9,9 +9,18 @@ import entities.Player;
 import static utilz.Constants.Directions.RIGHT;
 
 public class EntityTest {
+
+    // tests if the entity spaws at the correct x value
     @Test
-    public void testEntityInitialPosition() {
+    public void testEntityInitialXPosition() {
         Player p = new Player(100, 200, null, RIGHT);
-        assertNotNull(p);
+        assertEquals(100, p.getX());
+    }
+
+    // tests if the entity spawns at the correct y value
+    @Test
+    public void testEntityIntialYPosition() {
+        Player p = new Player(100, 200, null, RIGHT);
+        assertEquals(200, p.getY());
     }
 }
