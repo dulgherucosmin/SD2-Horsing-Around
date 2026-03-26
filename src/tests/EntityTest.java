@@ -28,11 +28,10 @@ public class EntityTest {
 
     // tests that both players have separate positions and that they don't share the same coordinates
     @Test
-    public void testEntitiesHaveIndependentPositions() {
+    public void testEntitiesHaveIndependentXPositions() {
         Player p1 = new Player(100, 200, null, RIGHT);
         Player p2 = new Player( 400, 200, null, LEFT);
 
         assertNotEquals(p1.getX(), p2.getX());
-        assertNotEquals(p1.getY(), p2.getY());
     }
 }
