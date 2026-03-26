@@ -192,6 +192,9 @@ public class Player extends Entity {
     public void jump(){
         
     }
+    public float getAirSpeed(){
+        return -1;
+    }
 
 
 }
