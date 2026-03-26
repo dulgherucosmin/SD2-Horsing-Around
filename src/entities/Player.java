@@ -47,6 +47,7 @@ public class Player extends Entity {
     private float groundLevel =100;
     private float jumpSpeed =-5f;
     private boolean inAir = false;
+    private boolean autoJump = false;
 
 
     public Player(float x, float y, String spritePath, int startDir) {
@@ -136,6 +137,11 @@ public class Player extends Entity {
             y=groundLevel;
             airSpeed =0;
             inAir =false;
+            
+              //adding function as long and player is holding w it still jumps
+              if(autoJump){
+                jump();
+            }
         }
     }
 
@@ -157,12 +163,12 @@ public class Player extends Entity {
 
     }
 
-    public void setGroundLevel(float ground){
-        this.groundLevel=ground;
-    }
 
+    // makes the  players jump
     public void jump(){
+        //checks if palyer is in air
         if(!inAir){
+            //then sets the vertical speed to jump speed
             airSpeed = jumpSpeed;
             inAir=true;
         }
@@ -188,10 +194,20 @@ public class Player extends Entity {
     public boolean isInAir(){
         return inAir;
     }
-   
+    
+
     public float getAirSpeed(){
         return airSpeed;
     }
+
+    public void setAutoJump(boolean autoJump){
+        this.autoJump = autoJump;
+    }
+
+    public void setGroundLevel(float ground){
+        this.groundLevel=ground;
+    }
+
    
 
 }
