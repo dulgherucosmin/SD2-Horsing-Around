@@ -34,14 +34,20 @@ public class Player extends Entity {
     private int playerDir = RIGHT;
 
     private boolean moving = false;
-    private boolean left, up, right, down;
+    private boolean left, right;
 
     // how many pixels the player (horse) moves per update
-    private float playerSpeed = 2.0f;
+    private float playerSpeed = 2.5f;
 
     private String spritePath;
     
-  
+    //Jumping and gravity
+    private float airSpeed =0f;
+    private float gravity =0.2f;
+    private float groundLevel =100;
+    private float jumpSpeed =-5f;
+    private boolean inAir = false;
+
 
     public Player(float x, float y, String spritePath, int startDir) {
         super(x, y);
@@ -112,7 +118,6 @@ public class Player extends Entity {
 
     // this updates the player's position based on input
     private void updatePos() {
-
         moving = false;
 
         if (left && !right) {
@@ -125,12 +130,12 @@ public class Player extends Entity {
             playerDir = RIGHT;
         }
 
-        if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
-        } else if (!up && down) {
-            y += playerSpeed;
-            moving = true;
+        airSpeed += gravity;
+        y+= airSpeed;
+        if(y>=groundLevel){
+            y=groundLevel;
+            airSpeed =0;
+            inAir =false;
         }
     }
 
@@ -149,10 +154,20 @@ public class Player extends Entity {
     public void resetDirBooleans() {
         left = false;
         right = false;
-        up = false;
-        down = false;
+
     }
 
+    public void setGroundLevel(float ground){
+        this.groundLevel=ground;
+    }
+
+    public void jump(){
+        if(!inAir){
+            airSpeed = jumpSpeed;
+            inAir=true;
+        }
+    }
+  
     // getters and setters for the movement input
     
     public boolean isLeft() {
@@ -163,14 +178,6 @@ public class Player extends Entity {
         this.left = left;
     }
 
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
     public boolean isRight() {
         return right;
     }
@@ -178,23 +185,13 @@ public class Player extends Entity {
     public void setRight(boolean right) {
         this.right = right;
     }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
-    }
     public boolean isInAir(){
-        return false;
+        return inAir;
     }
-    public void jump(){
-        
-    }
+   
     public float getAirSpeed(){
-        return -1;
+        return airSpeed;
     }
-
+   
 
 }

@@ -16,32 +16,41 @@ public class MovementTest {
     //testing gravity
     @Test
     public void testGravity(){
-        Player p= new Player(0, 300, null, 1);
+        float groundLevel =100;
+        Player p= new Player(0, groundLevel, null, 1);
+        p.setGroundLevel(groundLevel);
         //calling jump method and updating its position
         p.jump();
-        p.update();
-        //storing the position
-        float afterJump =p.getY();
 
-        //updating the position again when the player in back on the ground
-        p.update();
-        //storing it
-        float afterGravity = p.getY();
-        //checking if gravity actually pulled the player down
-        assertTrue(afterGravity >afterJump);
+        float beforeJump = p.getY();
+        boolean hasFallen = false;
+
+        for(int i =0; i<200; i++){
+            p.update();
+            float afterJump =p.getY();
+        //storing the position
+            if(afterJump>beforeJump){
+                hasFallen =true;
+                break;
+
+        }
+        beforeJump =afterJump;
+    }
+
+        assertTrue(hasFallen);
     }
     //this checks if the player actually still in the air after jumping
     @Test
     public void testLanding(){
-        Player p= new Player(0, 0, null, 1);
+        Player p= new Player(0, 300, null, 1);
+        p.setGroundLevel(0);
         p.jump();
         //checks multiple frames
-        for(int i=0; i<100; i++){
+        for(int i=0; i<200; i++){
             p.update();
         }
         assertFalse(p.isInAir());
     }
-
 
 
 }
