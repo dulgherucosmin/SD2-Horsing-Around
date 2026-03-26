@@ -40,6 +40,8 @@ public class Player extends Entity {
     private float playerSpeed = 2.0f;
 
     private String spritePath;
+    
+  
 
     public Player(float x, float y, String spritePath, int startDir) {
         super(x, y);
@@ -184,6 +186,7 @@ public class Player extends Entity {
     public void setDown(boolean down) {
         this.down = down;
     }
+   
 
 
 }
