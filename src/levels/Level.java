@@ -4,7 +4,7 @@ public class Level {
 
     private int[][] levelData;
 
-    public Level(int[][] levelData) {
+    public Level(int[][] levelData, int level) {
         this.levelData = levelData;
     }
 

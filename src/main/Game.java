@@ -30,8 +30,8 @@ public class Game implements Runnable {
     public final static float SCALE = 1.0f; // scaling factor
 
     // the number of tiles visible on screen
-    public final static int TILES_IN_WIDTH = 26;
-    public final static int TILES_IN_HEIGHT = 14;
+    public final static int TILES_IN_WIDTH = 20;
+    public final static int TILES_IN_HEIGHT = 16;
 
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
@@ -56,6 +56,7 @@ public class Game implements Runnable {
     private void initClasses() {
         player1 = new Player(200,200,LoadSave.PLAYER1_ATLAS, RIGHT);
         player2 = new Player(400, 200, LoadSave.PLAYER2_ATLAS, LEFT);
+        // initialize level manager
         levelManager = new LevelManager(this);
     }
 
@@ -67,12 +68,12 @@ public class Game implements Runnable {
     public void update() {
         player1.update();
         player2.update();
-        levelManager.update();
+        //levelManager.update();
     }
 
     public void render(Graphics g) {
-        // render level before players
-        levelManager.draw(g);
+        // render level 1
+        levelManager.loadLevel(g, 1);
         player1.render(g);
         player2.render(g);
     }
