@@ -6,6 +6,8 @@ package tests;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import entities.Player;
+
+import static utilz.Constants.Directions.LEFT;
 import static utilz.Constants.Directions.RIGHT;
 
 public class EntityTest {
@@ -22,5 +24,14 @@ public class EntityTest {
     public void testEntityIntialYPosition() {
         Player p = new Player(100, 200, null, RIGHT);
         assertEquals(200, p.getY());
+    }
+
+    // tests that both players have separate positions and that they don't share the same coordinates
+    @Test
+    public void testEntitiesHaveIndependentXPositions() {
+        Player p1 = new Player(100, 200, null, RIGHT);
+        Player p2 = new Player( 400, 200, null, LEFT);
+
+        assertNotEquals(p1.getX(), p2.getX());
     }
 }

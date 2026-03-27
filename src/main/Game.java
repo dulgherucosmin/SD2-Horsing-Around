@@ -39,6 +39,7 @@ public class Game implements Runnable {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+
     public Game() {
 
         // creates the players
@@ -52,6 +53,7 @@ public class Game implements Runnable {
         // starts a separate game thread
         startGameLoop();
     }
+
 
     private void initClasses() {
         player1 = new Player(200,200,LoadSave.PLAYER1_ATLAS, RIGHT);
@@ -78,6 +80,7 @@ public class Game implements Runnable {
         player2.render(g);
     }
 
+ 
     @Override
     public void run() {
 
