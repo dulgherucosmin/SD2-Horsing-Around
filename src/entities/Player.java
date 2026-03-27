@@ -51,7 +51,8 @@ public class Player extends Entity {
 
 
     public Player(float x, float y, String spritePath, int startDir) {
-        super(x, y);
+        // width: 128, height: 96
+        super(x, y, 128, 96);
         this.spritePath = spritePath;
         this.playerDir = startDir;
 
@@ -63,6 +64,8 @@ public class Player extends Entity {
     // this updates player logic every frame
     public void update() {
         updatePos();
+        // update hitbox upon player moving
+        updateHitBox();
         updateAnimationTick();
         setAnimation();
     }
@@ -70,6 +73,7 @@ public class Player extends Entity {
     // this draws the current animation frame at the player's position
     public void render(Graphics g) {
         g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 128, 96, null);
+        drawHitBox(g);
     }
 
     // this controls the animation frame switching

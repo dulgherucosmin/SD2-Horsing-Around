@@ -56,7 +56,7 @@ public class Game implements Runnable {
 
 
     private void initClasses() {
-        player1 = new Player(200,200,LoadSave.PLAYER1_ATLAS, RIGHT);
+        player1 = new Player(200, 200,LoadSave.PLAYER1_ATLAS, RIGHT);
         player2 = new Player(400, 200, LoadSave.PLAYER2_ATLAS, LEFT);
         // initialize level manager
         levelManager = new LevelManager(this);
