@@ -2,7 +2,7 @@ package levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
+import java.util.Arrays;
 
 import main.Game;
 import utilz.LoadSave;
@@ -11,7 +11,8 @@ public class LevelManager {
 
     private Game game;
     private BufferedImage[] levelSprite;
-    private Level levelToLoad;
+    // default to loading on level 1
+    private Level currentLevel = new Level(LoadSave.getLevelData(1), 1);
 
     public LevelManager(Game game) {
         this.game = game;
@@ -19,7 +20,7 @@ public class LevelManager {
 
     private void importLevelSpriteSheet(int level) {
 
-        BufferedImage img = LoadSave.GetSpriteAtlas("level_one_tileset.png");
+        BufferedImage img = LoadSave.GetSpriteAtlas("level_one_tilesheet2.png");
 
         if (img == null) {
             throw new RuntimeException("Failed to load level_one_tileset.png — check it exists in /res/");
@@ -43,14 +44,14 @@ public class LevelManager {
         // load level spritesheet
         importLevelSpriteSheet(level);
         // load level data into a level object
-        levelToLoad = new Level(LoadSave.getLevelData(level), level);
+        currentLevel = new Level(LoadSave.getLevelData(level), level);
 
 
         // load sprites
         for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
             for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
                 // get the sprite index according to position
-                int index = levelToLoad.getSpriteIndex(i, j); // levelData[j][i]
+                int index = currentLevel.getSpriteIndex(i, j); // levelData[j][i]
 
                 // draw sprite
                 g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
@@ -60,6 +61,11 @@ public class LevelManager {
 
     public void update() {
 
+    }
+
+    // later on this will use an array with multiple levels
+    public Level getCurrentLevel() {
+        return currentLevel;
     }
 
 }

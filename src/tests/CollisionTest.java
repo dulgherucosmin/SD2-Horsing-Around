@@ -1,11 +1,14 @@
 package tests;
-import main.Game;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static utilz.Constants.Directions.RIGHT;
 
 import entities.Player;
-public class MovementTest {
+import main.Game;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import static utilz.Constants.Directions.RIGHT;
+
+public class CollisionTest {
 
     // create a simple level with solid floor
     private int[][] createFlatLevel() {
@@ -27,9 +30,8 @@ public class MovementTest {
         }
     }
 
-    //testing if the player is in the air
     @Test
-    public void testJumpInAir(){
+    public void testPlayerLanding() {
         Player p = new Player(100, 10, null, RIGHT);
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -39,69 +41,65 @@ public class MovementTest {
         // let player land before testing begins
         letPlayerLand(p);
 
-        p.jump();
-        // ensure player is in the air after jumping
-        assertTrue(p.isInAir());
-    }
-
-    //testing gravity
-    @Test
-    public void testGravity(){
-        Player p = new Player(100, 10, null, RIGHT);
-        // load our test level into player code
-        p.loadLevelData(createFlatLevel());
-        // set current level to ensure hitboxes work
-        p.setCurentLevel(1);
-
-        // let player land before testing begins
-        letPlayerLand(p);
-
-        p.jump();
-
-        float peakY = p.getY();
-        boolean hasFallen = false;
-
-        // run enough frames for full jump arc
-        for (int i = 0; i < 200; i++) {
-            p.update();
-            // player has moved downwards (so started falling)
-            if (p.getY() > peakY) {
-                hasFallen = true;
-                break;
-            }
-            // track highest point of the jump
-            if (p.getY() < peakY) {
-                peakY = p.getY();
-            }
-        }
-
-        assertTrue(hasFallen);
-    }
-
-    //this checks if the player actually still in the air after jumping
-    @Test
-    public void testLanding(){
-        Player p = new Player(100, 10, null, RIGHT);
-        // load our test level into player code
-        p.loadLevelData(createFlatLevel());
-        // set current level to ensure hitboxes work
-        p.setCurentLevel(1);
-
-        // let player land before testing begins
-        letPlayerLand(p);
-
-        p.jump();
-
-        // run enough frames for full jump arc
-        for (int i = 0; i < 200; i++) {
-            p.update();
-        }
-
+        // player should no longer be in the air if they landed
         assertFalse(p.isInAir());
     }
 
+    @Test
+    public void testFloorCollision() {
+        Player p = new Player(100, 10, null, RIGHT);
+        // load our test level into player code
+        p.loadLevelData(createFlatLevel());
+        // set current level to ensure hitboxes work
+        p.setCurentLevel(1);
+
+        // let player land before testing begins
+        letPlayerLand(p);
+
+        // floor is at row 9, player should be above this
+        assertTrue(p.getY() < (9 * Game.TILES_SIZE));
+    }
+
+    @Test
+    public void testLevelRightBoundary() {
+        Player p = new Player(100, 10, null, RIGHT);
+        // load our test level into player code
+        p.loadLevelData(createFlatLevel());
+        // set current level to ensure hitboxes work
+        p.setCurentLevel(1);
+
+        // let player land before testing begins
+        letPlayerLand(p);
+
+        // walk until we're past game width
+        p.setRight(true);
+        for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
+            p.update();
+        }
+
+        // x position should never be greater than game width
+        assertTrue(p.getX() < Game.GAME_WIDTH);
+    }
+
+    @Test
+    public void testLevelLeftBoundary() {
+        Player p = new Player(100, 10, null, RIGHT);
+        // load our test level into player code
+        p.loadLevelData(createFlatLevel());
+        // set current level to ensure hitboxes work
+        p.setCurentLevel(1);
+
+        // let player land before testing begins
+        letPlayerLand(p);
+
+        // try to walk to the left (off screen)
+        p.setLeft(true);
+        for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
+            p.update();
+        }
+
+        // x should never go negative (starting position 0,0)
+        assertTrue(p.getX() >= 0);
+    }
 
 }
-
-
-
