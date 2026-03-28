@@ -19,18 +19,25 @@ public abstract class Entity {
         initialiseHitBox();
     }
 
-    protected void drawHitBox(Graphics g) {
-        g.setColor(Color.PINK);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
-    }
+    // sprite dimensions
+    public static final int SPRITE_WIDTH = 128;
+    public static final int SPRITE_HEIGHT = 96;
 
     private void initialiseHitBox() {
-        hitBox = new Rectangle((int) x, (int) y, width, height);
+        // center hitbox horizontally on sprite, align to bottom of sprite
+        int hbX = (int)(x + (SPRITE_WIDTH - width) / 2f);
+        int hbY = (int)(y + (SPRITE_HEIGHT - height));
+        hitBox = new Rectangle(hbX, hbY, width, height);
     }
 
     protected void updateHitBox() {
-        hitBox.x = (int) x;
-        hitBox.y = (int) y;
+        hitBox.x = (int)(x + (SPRITE_WIDTH - width) / 2f);
+        hitBox.y = (int)(y + (SPRITE_HEIGHT - height));
+    }
+
+    protected void drawHitBox(Graphics g) {
+        g.setColor(Color.PINK);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
     }
 
     public float getX() {
