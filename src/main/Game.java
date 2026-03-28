@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import levels.LevelManager;
 import entities.Player;
+import entities.Button;
 import utilz.LoadSave;
 
 // handles the game loop, updating, rendering and the game setup
@@ -25,6 +26,7 @@ public class Game implements Runnable {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
+    private Button button;
 
     public final static int TILE_DEFAULT_SIZE = 32; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -68,6 +70,8 @@ public class Game implements Runnable {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
+        button = new Button(208,35);
+
     }
 
     private void startGameLoop() {
@@ -79,6 +83,7 @@ public class Game implements Runnable {
         player1.update();
         player2.update();
         //levelManager.update();
+        button.update(player1, player2);
     }
 
     public void render(Graphics g) {
@@ -86,6 +91,7 @@ public class Game implements Runnable {
         levelManager.loadLevel(g, 1);
         player1.render(g);
         player2.render(g);
+        button.render(g);
     }
 
  

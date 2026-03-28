@@ -35,6 +35,11 @@ public abstract class Entity {
         hitBox.y = (int)(y + (SPRITE_HEIGHT - height));
     }
 
+    // gets hitboxes to allow for intersects between player and button.
+    public Rectangle getHitbox(){
+        return hitBox;
+    }
+
     protected void drawHitBox(Graphics g) {
         g.setColor(Color.PINK);
         g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
