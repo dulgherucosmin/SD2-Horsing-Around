@@ -28,7 +28,7 @@ public class KeyboardInputs implements KeyListener {
 
             // horse 1 controls (wad)
             case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer1().setAutoJump(true);
+                gamePanel.getGame().getPlayer1().jump();
                 break;
             case KeyEvent.VK_A:
                 gamePanel.getGame().getPlayer1().setLeft(true);
@@ -39,7 +39,7 @@ public class KeyboardInputs implements KeyListener {
 
             // horse 2 controls (up, down, left, right)
             case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer2().setAutoJump(true);
+                gamePanel.getGame().getPlayer2().jump();
                 break;
             case KeyEvent.VK_LEFT:
                 gamePanel.getGame().getPlayer2().setLeft(true);
@@ -56,7 +56,7 @@ public class KeyboardInputs implements KeyListener {
         // stops the movement when the key is released
         switch(e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer1().setAutoJump(false);
+                //gamePanel.getGame().getPlayer1().setAutoJump(false);
                 break;
             case KeyEvent.VK_A:
                 gamePanel.getGame().getPlayer1().setLeft(false);
@@ -66,7 +66,7 @@ public class KeyboardInputs implements KeyListener {
                 break;
 
             case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer2().setAutoJump(false);
+                //gamePanel.getGame().getPlayer2().setAutoJump(false);
                 break;
 
             case KeyEvent.VK_LEFT:

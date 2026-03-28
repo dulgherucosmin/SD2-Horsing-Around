@@ -11,10 +11,12 @@ import static utilz.Constants.PlayerConstants.IDLE_LEFT;
 import static utilz.Constants.PlayerConstants.IDLE_RIGHT;
 import static utilz.Constants.PlayerConstants.WALK_LEFT;
 import static utilz.Constants.PlayerConstants.WALK_RIGHT;
+import static utilz.Utils.canMove;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import main.Game;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -44,15 +46,17 @@ public class Player extends Entity {
     //Jumping and gravity
     private float airSpeed =0f;
     private float gravity =0.2f;
-    private float groundLevel =100;
+    //private float groundLevel = 400;
     private float jumpSpeed =-5f;
     private boolean inAir = false;
     private boolean autoJump = false;
 
+    private int[][] currentLevelData;
+    private int currentLevel;
 
     public Player(float x, float y, String spritePath, int startDir) {
-        // width: 128, height: 96
-        super(x, y, 128, 96);
+        // width and height here are hitbox sizes
+        super(x, y, 40, 40);
         this.spritePath = spritePath;
         this.playerDir = startDir;
 
@@ -125,26 +129,54 @@ public class Player extends Entity {
     private void updatePos() {
         moving = false;
 
+        // store horizontal speed
+        float xSpeed = 0;
+
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            // left is negative x direction
+            xSpeed = -playerSpeed;
             playerDir = LEFT;
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            // right is positive x direction
+            xSpeed = playerSpeed;
             playerDir = RIGHT;
         }
 
-        airSpeed += gravity;
-        y+= airSpeed;
-        if(y>=groundLevel){
-            y=groundLevel;
-            airSpeed =0;
-            inAir =false;
-            
-              //adding function as long and player is holding w it still jumps
-              if(autoJump){
-                jump();
+        if (inAir) {
+            // airSpeed starts negative (jumping up) and increases until positive (falling down)
+            airSpeed += gravity;
+
+            // check if player can move to the next vertical position
+            if (canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel)) {
+                // nothing blocking vertically, continue moving up or falling down
+                y += airSpeed;
+            } else {
+                if (airSpeed > 0) {
+                    // player fell and hit a solid tile, fall down 1px until they touch the ground/ a tile
+                    // canMove will be false once they touch the ground/a tile
+                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
+                        y += 1;
+                    }
+                }
+                // stop all vertical movement whether we hit the floor or a ceiling
+                inAir = false;
+                airSpeed = 0;
+            }
+            // player is on the ground (inAir = false)
+        } else {
+            // check if theres a solid tile beneath
+            if (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
+                // no solid tile, player has fallen off
+                inAir = true;
+            }
+        }
+
+        // only attempt horizontal movement if a key is being held
+        if (xSpeed != 0) {
+            // check if there is not a wall blocking player (prevents walking into walls)
+            if (canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel)) {
+                x += xSpeed;
+                moving = true;
             }
         }
     }
@@ -160,14 +192,22 @@ public class Player extends Entity {
                     animations[j][i] = img.getSubimage(i * 64, j * 48, 64, 48);
     }
 
+    // helper class to get current level int 2d array
+    public void loadLevelData(int[][] currentLevelData) {
+        this.currentLevelData = currentLevelData;
+    }
+
+    // helper class to set current level in the player directly
+    public void setCurentLevel(int level) {
+        this.currentLevel = level;
+    }
+
     // this resets all the movement inputs when game is out of focus
     public void resetDirBooleans() {
         left = false;
         right = false;
 
     }
-
-
     // makes the  players jump
     public void jump(){
         //checks if palyer is in air
@@ -195,10 +235,14 @@ public class Player extends Entity {
     public void setRight(boolean right) {
         this.right = right;
     }
+
+    public float getPlayerSpeed() {
+        return playerSpeed;
+    }
+
     public boolean isInAir(){
         return inAir;
     }
-    
 
     public float getAirSpeed(){
         return airSpeed;
@@ -208,10 +252,11 @@ public class Player extends Entity {
         this.autoJump = autoJump;
     }
 
+    /*
     public void setGroundLevel(float ground){
         this.groundLevel=ground;
     }
-
+    */
    
 
 }
