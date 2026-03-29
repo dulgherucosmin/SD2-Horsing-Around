@@ -13,7 +13,6 @@ import entities.Player;
 import entities.Win;
 import levels.LevelManager;
 import main.Game;
-import main.GamePanel;
 import utilz.LoadSave;
 
 public class Playing extends State implements StateMethods {
@@ -21,7 +20,7 @@ public class Playing extends State implements StateMethods {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
-    
+
     private Button button1;
     private Button button2;
     private Door door;
@@ -40,57 +39,53 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
-    
     public Playing(Game game) {
         super(game);
         initClasses();
     }
 
+    private void initClasses() {
+        // initialize level manager
+        levelManager = new LevelManager(game);
+        player1 = new Player(200, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
+        // load level data (in this case level 1)
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        // set players internal storage of level to the current loaded level (in this case level 1)
+        player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        private void initClasses() {
-            // initialize level manager
-            levelManager = new LevelManager(game);
-            player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
-            // load level data (in this case level 1)
-            player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-            // set players internal storage of level to the current loaded level (in this case level 1)
-            player1.setCurentLevel(levelManager.getCurrentLevel().level);
+        player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
+        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-            player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
-            player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-            player2.setCurentLevel(levelManager.getCurrentLevel().level);
-
-            button1 = new Button(295,95);
-            button2 = new Button(393,190);
-            door = new Door(355, 195, button1, button2);
-            win = new Win (455,190);
-        }
-
+        button1 = new Button(295, 95);
+        button2 = new Button(393, 190);
+        door = new Door(355, 195, button1, button2);
+        win = new Win(455, 190);
+    }
 
     @Override
     public void update() {
         player1.update();
         player2.update();
 
-        //levelManager.update();
+        // levelManager.update();
         button1.update(player1, player2);
         button2.update(player1, player2);
         door.update();
 
-        //door collision checks.
-        if(door.isBlocking(player1)){
+        // door collision checks.
+        if (door.isBlocking(player1)) {
             player1.undoMove();
         }
-        
-        if(door.isBlocking(player2)){
+
+        if (door.isBlocking(player2)) {
             player2.undoMove();
         }
 
-        if(win.completed(player1, player2)){
+        if (win.completed(player1, player2)) {
             levelComplete = true;
         }
     }
-
 
     @Override
     public void draw(Graphics g) {
@@ -103,44 +98,39 @@ public class Playing extends State implements StateMethods {
         door.render(g);
         win.render(g, levelComplete);
 
-        if(levelComplete){
-            g.setColor(new java.awt.Color(0,0,0,150));
+        if (levelComplete) {
+            g.setColor(new java.awt.Color(0, 0, 0, 150));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH/2 -50, GAME_HEIGHT/2);
+            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
         }
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
 
-
     @Override
     public void mousePressed(MouseEvent e) {
- 
-    }
 
+    }
 
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
 
-
     @Override
     public void mouseMoved(MouseEvent e) {
 
     }
 
-
     @Override
     public void keyPressed(KeyEvent e) {
-        
-        switch(e.getKeyCode()) {
+
+        switch (e.getKeyCode()) {
 
             // horse 1 controls (wad)
             case KeyEvent.VK_W:
@@ -164,20 +154,19 @@ public class Playing extends State implements StateMethods {
                 player2.setRight(true);
                 break;
             case KeyEvent.VK_ESCAPE:
-                Gamestate.state =Gamestate.MENU;
+                Gamestate.state = Gamestate.MENU;
                 break;
-    
+
         }
     }
 
-
     @Override
     public void keyReleased(KeyEvent e) {
-        
+
         // stops the movement when the key is released
-        switch(e.getKeyCode()) {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                //gamePanel.getGame().getPlayer1().setAutoJump(false);
+                // gamePanel.getGame().getPlayer1().setAutoJump(false);
                 break;
             case KeyEvent.VK_A:
                 player1.setLeft(false);
@@ -187,7 +176,7 @@ public class Playing extends State implements StateMethods {
                 break;
 
             case KeyEvent.VK_UP:
-                //gamePanel.getGame().getPlayer2().setAutoJump(false);
+                // gamePanel.getGame().getPlayer2().setAutoJump(false);
                 break;
 
             case KeyEvent.VK_LEFT:
@@ -206,7 +195,7 @@ public class Playing extends State implements StateMethods {
         player2.resetDirBooleans();
 
     }
-    
+
     // getters for each player (hort)
     public Player getPlayer1() {
         return player1;

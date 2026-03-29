@@ -22,7 +22,7 @@ public class Game implements Runnable {
     private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
-    public final static float SCALE = 1.0f; // scaling factor
+    public final static float SCALE = 1.f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen
@@ -69,8 +69,10 @@ public class Game implements Runnable {
             case PLAYING:
             playing.update();
                 break;
-        
+            case OPTIONS:
+            case QUIT:
             default:
+                System.exit(0);
                 break;
         }
         
@@ -164,6 +166,9 @@ public class Game implements Runnable {
     }
     public Playing getPlaying(){
         return playing;
+    }
+    public GamePanel getGamePanel(){
+        return gamePanel;
     }
 
     
