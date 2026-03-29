@@ -50,6 +50,9 @@ public class Player extends Entity {
     private float jumpSpeed =-5f;
     private boolean inAir = false;
     private boolean autoJump = false;
+    //Door collision
+    private float originX;
+    private float originY;
 
     private int[][] currentLevelData;
     private int currentLevel;
@@ -67,11 +70,19 @@ public class Player extends Entity {
 
     // this updates player logic every frame
     public void update() {
+        originX = x;
+        originY = y;
         updatePos();
         // update hitbox upon player moving
         updateHitBox();
         updateAnimationTick();
         setAnimation();
+    }
+
+    public void undoMove(){
+        x = originX;
+        y = originY;
+        updateHitBox();
     }
 
     // this draws the current animation frame at the player's position

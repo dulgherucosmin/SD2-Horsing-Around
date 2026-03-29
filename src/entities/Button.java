@@ -30,6 +30,6 @@ public class Button extends Entity {
 
     public void render (Graphics g){
         g.setColor(Color.green);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.width);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
     }
 }
