@@ -163,6 +163,10 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_RIGHT:
                 player2.setRight(true);
                 break;
+            case KeyEvent.VK_ESCAPE:
+                Gamestate.state =Gamestate.MENU;
+                break;
+    
         }
     }
 
