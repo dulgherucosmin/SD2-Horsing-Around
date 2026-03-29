@@ -20,8 +20,8 @@ public abstract class Entity {
     }
 
     // sprite dimensions
-    public static final int SPRITE_WIDTH = 128;
-    public static final int SPRITE_HEIGHT = 96;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 48;
 
     private void initialiseHitBox() {
         // center hitbox horizontally on sprite, align to bottom of sprite

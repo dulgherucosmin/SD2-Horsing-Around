@@ -26,7 +26,7 @@ public class LevelManager {
             throw new RuntimeException("Failed to load level_one_tileset.png — check it exists in /res/");
         }
 
-        int tileSize = 32;
+        int tileSize = 16;
         int spriteSheetWidth = img.getWidth() / tileSize;   // auto-calculate
         int spriteSheetHeight = img.getHeight() / tileSize; // auto-calculate
 
