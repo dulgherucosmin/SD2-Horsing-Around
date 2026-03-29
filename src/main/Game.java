@@ -7,9 +7,6 @@ import java.awt.Graphics;
 
 import levels.LevelManager;
 import entities.Player;
-import entities.Button;
-import entities.Door;
-import entities.Win;
 import utilz.LoadSave;
 
 // handles the game loop, updating, rendering and the game setup
@@ -28,10 +25,6 @@ public class Game implements Runnable {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
-    private Button button1;
-    private Button button2;
-    private Door door;
-    private Win win;
 
     private boolean levelComplete = false;
 
@@ -75,11 +68,6 @@ public class Game implements Runnable {
         player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
-
-        button1 = new Button(295,95);
-        button2 = new Button(393,190);
-        door = new Door(355, 195, button1, button2);
-        win = new Win (455,190);
     }
 
     private void startGameLoop() {
@@ -90,23 +78,7 @@ public class Game implements Runnable {
     public void update() {
         player1.update();
         player2.update();
-        //levelManager.update();
-        button1.update(player1, player2);
-        button2.update(player1, player2);
-        door.update();
-        //door collision checks.
-        if(door.isBlocking(player1)){
-            player1.undoMove();
-        }
-        
-        if(door.isBlocking(player2)){
-            player2.undoMove();
-        }
-
-        if(win.completed(player1, player2)){
-            levelComplete = true;
-        }
-        
+        levelManager.update(player1, player2);
     }
 
     public void render(Graphics g) {
@@ -114,19 +86,8 @@ public class Game implements Runnable {
         levelManager.loadLevel(g, 1);
         player1.render(g);
         player2.render(g);
-        button1.render(g);
-        button2.render(g);
-        door.render(g);
-        win.render(g, levelComplete);
 
-        if(levelComplete){
-            g.setColor(new java.awt.Color(0,0,0,150));
-            g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH/2 -50, GAME_HEIGHT/2);
         }
-    }
 
  
     @Override
