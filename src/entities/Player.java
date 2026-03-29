@@ -56,7 +56,7 @@ public class Player extends Entity {
 
     public Player(float x, float y, String spritePath, int startDir) {
         // width and height here are hitbox sizes
-        super(x, y, 40, 40);
+        super(x, y, 16, 16);
         this.spritePath = spritePath;
         this.playerDir = startDir;
 
@@ -76,7 +76,7 @@ public class Player extends Entity {
 
     // this draws the current animation frame at the player's position
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 128, 96, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 64, 48, null);
         drawHitBox(g);
     }
 

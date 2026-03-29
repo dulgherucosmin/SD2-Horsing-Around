@@ -17,9 +17,8 @@ public class Utils {
         // these ints correspond to positions in the spritesheet
         // anything not in this list is either air (0) or a background tile (passable)
         solidTilesByLevel.put(1, new HashSet<>(Arrays.asList(
-                14, 15, 16, 1, 2, 7, 3, 4
-        )));
-        // add level 2, 3 etc here later
+            2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+        )));    
     }
 
     // checks whether the player can move to a given position

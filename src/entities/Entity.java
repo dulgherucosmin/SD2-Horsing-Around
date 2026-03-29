@@ -20,8 +20,8 @@ public abstract class Entity {
     }
 
     // sprite dimensions
-    public static final int SPRITE_WIDTH = 128;
-    public static final int SPRITE_HEIGHT = 96;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 48;
 
     private void initialiseHitBox() {
         // center hitbox horizontally on sprite, align to bottom of sprite
@@ -30,9 +30,14 @@ public abstract class Entity {
         hitBox = new Rectangle(hbX, hbY, width, height);
     }
 
-    protected void updateHitBox() {
+    public void updateHitBox() {
         hitBox.x = (int)(x + (SPRITE_WIDTH - width) / 2f);
         hitBox.y = (int)(y + (SPRITE_HEIGHT - height));
+    }
+
+    // gets hitboxes to allow for intersects between player and button.
+    public Rectangle getHitbox(){
+        return hitBox;
     }
 
     protected void drawHitBox(Graphics g) {
