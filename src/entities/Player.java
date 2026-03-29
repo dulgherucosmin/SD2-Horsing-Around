@@ -54,6 +54,9 @@ public class Player extends Entity {
     private float originX;
     private float originY;
 
+    private boolean jumpHeld = false;
+    private float jumpCutSpeed = -1.5f; 
+
     private int[][] currentLevelData;
     private int currentLevel;
 
@@ -157,6 +160,9 @@ public class Player extends Entity {
             // airSpeed starts negative (jumping up) and increases until positive (falling down)
             airSpeed += gravity;
 
+            if(!jumpHeld && airSpeed < jumpCutSpeed){
+                airSpeed = jumpCutSpeed;
+            }
             // check if player can move to the next vertical position
             if (canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel)) {
                 // nothing blocking vertically, continue moving up or falling down
@@ -226,6 +232,7 @@ public class Player extends Entity {
             //then sets the vertical speed to jump speed
             airSpeed = jumpSpeed;
             inAir=true;
+            jumpHeld = true;
         }
     }
   
@@ -261,6 +268,9 @@ public class Player extends Entity {
 
     public void setAutoJump(boolean autoJump){
         this.autoJump = autoJump;
+    }
+    public void setJumpHeld(boolean held){
+        this.jumpHeld = held;
     }
 
     /*
