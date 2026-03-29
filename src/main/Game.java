@@ -26,7 +26,8 @@ public class Game implements Runnable {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
-    private Button button;
+    private Button button1;
+    private Button button2;
 
     public final static int TILE_DEFAULT_SIZE = 32; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -70,7 +71,8 @@ public class Game implements Runnable {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        button = new Button(208,35);
+        button1 = new Button(208,30);
+        button2 = new Button(400,160);
 
     }
 
@@ -83,7 +85,8 @@ public class Game implements Runnable {
         player1.update();
         player2.update();
         //levelManager.update();
-        button.update(player1, player2);
+        button1.update(player1, player2);
+        button2.update(player2, player1);
     }
 
     public void render(Graphics g) {
@@ -91,7 +94,8 @@ public class Game implements Runnable {
         levelManager.loadLevel(g, 1);
         player1.render(g);
         player2.render(g);
-        button.render(g);
+        button1.render(g);
+        button2.render(g);
     }
 
  
