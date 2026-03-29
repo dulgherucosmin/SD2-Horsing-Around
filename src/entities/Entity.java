@@ -19,6 +19,24 @@ public abstract class Entity {
         initialiseHitBox();
     }
 
+    public Entity(float x, float y, int width, int height, boolean rawPosition) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        if (rawPosition) {
+            hitBox = new Rectangle((int) x, (int) y, width, height);
+        } else {
+            initialiseHitBox();
+        }
+    }
+
+    public void updateHitBoxRaw() {
+        hitBox.x = (int) x;
+        hitBox.y = (int) y;
+    }
+
     // sprite dimensions
     public static final int SPRITE_WIDTH = 64;
     public static final int SPRITE_HEIGHT = 48;
