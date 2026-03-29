@@ -30,7 +30,7 @@ public abstract class Entity {
         hitBox = new Rectangle(hbX, hbY, width, height);
     }
 
-    protected void updateHitBox() {
+    public void updateHitBox() {
         hitBox.x = (int)(x + (SPRITE_WIDTH - width) / 2f);
         hitBox.y = (int)(y + (SPRITE_HEIGHT - height));
     }
