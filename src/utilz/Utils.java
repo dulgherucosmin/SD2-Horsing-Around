@@ -17,7 +17,7 @@ public class Utils {
         // these ints correspond to positions in the spritesheet
         // anything not in this list is either air (0) or a background tile (passable)
         solidTilesByLevel.put(1, new HashSet<>(Arrays.asList(
-            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13,22,23
         )));    
     }
 

@@ -27,7 +27,7 @@ public class Player extends Entity {
     private int aniTick, aniIndex;
 
     // controls how fast each frame changes (lower value = faster)
-    private int aniSpeed = 15;
+    private int aniSpeed = 10;
 
     // tracks the current animation of the horse
     private int playerAction = IDLE_RIGHT;
@@ -39,15 +39,15 @@ public class Player extends Entity {
     private boolean left, right;
 
     // how many pixels the player (horse) moves per update
-    private float playerSpeed = 2.5f;
+    private float playerSpeed = 1.5f;
 
     private String spritePath;
     
     //Jumping and gravity
     private float airSpeed =0f;
-    private float gravity =0.2f;
+    private float gravity =0.15f;
     //private float groundLevel = 400;
-    private float jumpSpeed =-5f;
+    private float jumpSpeed =-4.5f;
     private boolean inAir = false;
     private boolean autoJump = false;
     //Door collision

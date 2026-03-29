@@ -21,7 +21,7 @@ public class Game implements Runnable {
     private Thread gameThread;
 
     // target frames per second and updates per second
-    private final int FPS_SET = 60; // controls how often the screen is redrawn
+    private final int FPS_SET = 120; // controls how often the screen is redrawn
     private final int UPS_SET = 100; // controls how often the game logic runs
 
     // player objects
