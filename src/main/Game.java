@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import levels.LevelManager;
 import entities.Player;
 import entities.Button;
+import entities.Door;
 import utilz.LoadSave;
 
 // handles the game loop, updating, rendering and the game setup
@@ -26,7 +27,9 @@ public class Game implements Runnable {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
-    private Button button;
+    private Button button1;
+    private Button button2;
+    private Door door;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -69,7 +72,9 @@ public class Game implements Runnable {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        button = new Button(208,35);
+        button1 = new Button(208,30);
+        button2 = new Button(400,160);
+        door = new Door(348, 160, button1, button2);
 
     }
 
@@ -82,7 +87,18 @@ public class Game implements Runnable {
         player1.update();
         player2.update();
         //levelManager.update();
-        button.update(player1, player2);
+        button1.update(player1, player2);
+        button2.update(player1, player2);
+        door.update();
+        //door collision checks.
+        if(door.isBlocking(player1)){
+            player1.undoMove();
+        }
+        
+        if(door.isBlocking(player2)){
+            player2.undoMove();
+        }
+        
     }
 
     public void render(Graphics g) {
@@ -90,7 +106,9 @@ public class Game implements Runnable {
         levelManager.loadLevel(g, 1);
         player1.render(g);
         player2.render(g);
-        button.render(g);
+        button1.render(g);
+        button2.render(g);
+        door.render(g);
     }
 
  
@@ -169,4 +187,5 @@ public class Game implements Runnable {
     public Player getPlayer2() {
         return player2;
     }
+    
 }
