@@ -23,6 +23,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
     }
 
+    //links mouse movement to current game state for hover effects
     @Override
     public void mouseMoved(MouseEvent e) {
         switch (Gamestate.state) {
@@ -38,6 +39,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
     }
 
+    //links mouse click to current gamestate
     @Override
     public void mouseClicked(MouseEvent e) {
         switch (Gamestate.state) {
@@ -50,6 +52,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
     }
 
+    //links mouse press to current gamestate
     @Override
     public void mousePressed(MouseEvent e) {
         switch (Gamestate.state) {
@@ -65,6 +68,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
     }
 
+    //links mouse released to current gamestate
     @Override
     public void mouseReleased(MouseEvent e) {
         switch (Gamestate.state) {

@@ -26,10 +26,12 @@ public class MenuButton {
         initBounds();
     }
 
+    //sets a clickable region of the button
     private void initBounds() {
         bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
     }
 
+    //it cuts our individual buttons from the sprite sheet
     private void loadImgs() {
         imgs = new BufferedImage[3];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
@@ -38,20 +40,24 @@ public class MenuButton {
         }
     }
 
+    //draws the button at its position
     public void draw(Graphics g) {
         g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
     }
 
+    //sets the correct image index of the button
     public void update() {
-        index = 0;
-        if (mouseOver) {
-            index = 1;
+        index = 0;//normal
+        if (mouseOver) { 
+            //hovered
+            index = 1; 
         }
         if (mousePressed) {
-            index = 2;
+            //pressed
+            index = 2;  
         }
     }
-
+    //getters and setters
     public boolean isMouseOver() {
         return mouseOver;
     }

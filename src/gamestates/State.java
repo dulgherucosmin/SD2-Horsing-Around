@@ -15,8 +15,15 @@ public class State {
     public Game getGame(){
         return game;
     }
+    //helps fix scaling of the buttons hover by converting mouse coordinates into out game dimensions and checks if the mouse hovers over the button
     public boolean isIn(MouseEvent e, MenuButton mb){
         
-        return mb.getBounds().contains(e.getX(),e.getY());
+        float scaleX =(float) game.getGamePanel().getWidth()/Game.GAME_WIDTH;
+        float scaleY =(float) game.getGamePanel().getHeight()/Game.GAME_HEIGHT;
+        
+        int mx = (int)(e.getX()/scaleX);
+        int my = (int)(e.getY()/scaleY);
+
+        return mb.getBounds().contains(mx,my);
     }
 }
