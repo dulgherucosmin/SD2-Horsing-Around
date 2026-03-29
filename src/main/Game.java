@@ -9,6 +9,7 @@ import levels.LevelManager;
 import entities.Player;
 import entities.Button;
 import entities.Door;
+import entities.Win;
 import utilz.LoadSave;
 
 // handles the game loop, updating, rendering and the game setup
@@ -30,6 +31,9 @@ public class Game implements Runnable {
     private Button button1;
     private Button button2;
     private Door door;
+    private Win win;
+
+    private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -72,10 +76,10 @@ public class Game implements Runnable {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        button1 = new Button(208,30);
-        button2 = new Button(400,160);
-        door = new Door(348, 160, button1, button2);
-
+        button1 = new Button(295,95);
+        button2 = new Button(393,190);
+        door = new Door(355, 195, button1, button2);
+        win = new Win (455,190);
     }
 
     private void startGameLoop() {
@@ -98,6 +102,10 @@ public class Game implements Runnable {
         if(door.isBlocking(player2)){
             player2.undoMove();
         }
+
+        if(win.completed(player1, player2)){
+            levelComplete = true;
+        }
         
     }
 
@@ -109,6 +117,15 @@ public class Game implements Runnable {
         button1.render(g);
         button2.render(g);
         door.render(g);
+        win.render(g, levelComplete);
+
+        if(levelComplete){
+            g.setColor(new java.awt.Color(0,0,0,150));
+            g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            g.setColor(java.awt.Color.WHITE);
+            g.drawString("LEVEL COMPLETE!", GAME_WIDTH/2 -50, GAME_HEIGHT/2);
+        }
     }
 
  

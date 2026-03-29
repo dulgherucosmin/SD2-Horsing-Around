@@ -14,7 +14,7 @@ public class Door extends Entity {
     private float speed = 2f;
 
     public Door(float x, float y, Button button1, Button button2){
-        super(x, y, 8, 80);
+        super(x, y, 6, 70);
 
         this.button1 = button1;
         this.button2 = button2;
