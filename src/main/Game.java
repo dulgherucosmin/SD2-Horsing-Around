@@ -76,9 +76,10 @@ public class Game implements Runnable {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        button1 = new Button(295,95);
-        button2 = new Button(393,190);
-        door = new Door(355, 195, button1, button2);
+        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+
+        door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
         win = new Win (455,190);
     }
 

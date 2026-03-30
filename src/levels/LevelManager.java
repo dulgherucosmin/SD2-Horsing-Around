@@ -11,6 +11,7 @@ public class LevelManager {
 
     private Game game;
     private BufferedImage[] levelSprite;
+    
     // default to loading on level 1
     private Level currentLevel = new Level(LoadSave.getLevelData(1), 1);
 
