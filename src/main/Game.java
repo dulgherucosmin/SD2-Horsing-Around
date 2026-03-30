@@ -1,9 +1,12 @@
+// Horsing Around
+// Group 9
+
 package main;
+
 import java.awt.Graphics;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
-
 
 // handles the game loop, updating, rendering and the game setup
 public class Game implements Runnable {
@@ -16,13 +19,12 @@ public class Game implements Runnable {
     private Menu menu;
 
     // target frames per second and updates per second
-    private final int FPS_SET = 60; // controls how often the screen is redrawn
+    private final int FPS_SET = 120; // controls how often the screen is redrawn
     private final int UPS_SET = 100; // controls how often the game logic runs
 
-    private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
-    public final static float SCALE = 1.f; // scaling factor
+    public final static float SCALE = 1.0f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen

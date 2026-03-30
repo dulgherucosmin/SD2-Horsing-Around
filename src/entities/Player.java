@@ -27,7 +27,7 @@ public class Player extends Entity {
     private int aniTick, aniIndex;
 
     // controls how fast each frame changes (lower value = faster)
-    private int aniSpeed = 15;
+    private int aniSpeed = 10;
 
     // tracks the current animation of the horse
     private int playerAction = IDLE_RIGHT;
@@ -39,17 +39,21 @@ public class Player extends Entity {
     private boolean left, right;
 
     // how many pixels the player (horse) moves per update
-    private float playerSpeed = 2.5f;
+    private float playerSpeed = 1.5f;
 
     private String spritePath;
     
     //Jumping and gravity
-    private float airSpeed =0f;
-    private float gravity =0.2f;
+    private float airSpeed = 0f;
+    private float gravity = 0.15f;
     //private float groundLevel = 400;
-    private float jumpSpeed =-5f;
+    private float jumpSpeed = -4.0f;
     private boolean inAir = false;
     private boolean autoJump = false;
+
+    private boolean jumpHeld = false;
+    private float jumpCutSpeed = -1.5f;
+
     //Door collision
     private float originX;
     private float originY;
@@ -147,6 +151,7 @@ public class Player extends Entity {
             // left is negative x direction
             xSpeed = -playerSpeed;
             playerDir = LEFT;
+
         } else if (right && !left) {
             // right is positive x direction
             xSpeed = playerSpeed;
@@ -156,6 +161,10 @@ public class Player extends Entity {
         if (inAir) {
             // airSpeed starts negative (jumping up) and increases until positive (falling down)
             airSpeed += gravity;
+
+            if (!jumpHeld && airSpeed < jumpCutSpeed) {
+                airSpeed = jumpCutSpeed;
+            }
 
             // check if player can move to the next vertical position
             if (canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel)) {
@@ -226,7 +235,12 @@ public class Player extends Entity {
             //then sets the vertical speed to jump speed
             airSpeed = jumpSpeed;
             inAir=true;
+            jumpHeld = true;
         }
+    }
+
+    public void setJumpHeld(boolean held) {
+        this.jumpHeld = held;
     }
   
     // getters and setters for the movement input

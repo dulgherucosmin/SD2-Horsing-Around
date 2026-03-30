@@ -166,7 +166,7 @@ public class Playing extends State implements StateMethods {
         // stops the movement when the key is released
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                // gamePanel.getGame().getPlayer1().setAutoJump(false);
+                player1.setJumpHeld(false);
                 break;
             case KeyEvent.VK_A:
                 player1.setLeft(false);
@@ -176,7 +176,7 @@ public class Playing extends State implements StateMethods {
                 break;
 
             case KeyEvent.VK_UP:
-                // gamePanel.getGame().getPlayer2().setAutoJump(false);
+                player2.setJumpHeld(false);
                 break;
 
             case KeyEvent.VK_LEFT:
