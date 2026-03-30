@@ -16,7 +16,6 @@ import static utilz.Utils.canMove;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import main.Game;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -43,18 +42,16 @@ public class Player extends Entity {
 
     private String spritePath;
     
-    //Jumping and gravity
+    // Jumping and gravity
     private float airSpeed = 0f;
     private float gravity = 0.15f;
-    //private float groundLevel = 400;
     private float jumpSpeed = -4.0f;
     private boolean inAir = false;
-    private boolean autoJump = false;
 
     private boolean jumpHeld = false;
     private float jumpCutSpeed = -1.5f;
 
-    //Door collision
+    // Door collision
     private float originX;
     private float originY;
 
@@ -272,16 +269,4 @@ public class Player extends Entity {
     public float getAirSpeed(){
         return airSpeed;
     }
-
-    public void setAutoJump(boolean autoJump){
-        this.autoJump = autoJump;
-    }
-
-    /*
-    public void setGroundLevel(float ground){
-        this.groundLevel=ground;
-    }
-    */
-   
-
 }

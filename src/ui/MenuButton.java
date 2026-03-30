@@ -1,3 +1,6 @@
+// Horsing Around
+// Group 9
+
 package ui;
 
 import java.awt.Graphics;
@@ -9,6 +12,7 @@ import utilz.LoadSave;
 import static utilz.Constants.UI.Buttons.*;
 
 public class MenuButton {
+
     // variables for the menu buttons
     private int xPos, yPos, rowIndex, index;
     private int xOffsetCenter = B_WIDTH / 2;
@@ -26,12 +30,12 @@ public class MenuButton {
         initBounds();
     }
 
-    //sets a clickable region of the button
+    // sets a clickable region of the button
     private void initBounds() {
         bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
     }
 
-    //it cuts our individual buttons from the sprite sheet
+    // it cuts our individual buttons from the sprite sheet
     private void loadImgs() {
         imgs = new BufferedImage[3];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
@@ -40,24 +44,25 @@ public class MenuButton {
         }
     }
 
-    //draws the button at its position
+    // draws the button at its position
     public void draw(Graphics g) {
         g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
     }
 
-    //sets the correct image index of the button
+    // sets the correct image index of the button
     public void update() {
-        index = 0;//normal
+        index = 0; //normal
         if (mouseOver) { 
-            //hovered
+            // hovered
             index = 1; 
         }
         if (mousePressed) {
-            //pressed
+            // pressed
             index = 2;  
         }
     }
-    //getters and setters
+
+    // getters and setters
     public boolean isMouseOver() {
         return mouseOver;
     }
@@ -88,5 +93,4 @@ public class MenuButton {
         mouseOver = false;
         mousePressed = false;
     }
-
 }

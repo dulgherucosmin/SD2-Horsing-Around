@@ -1,3 +1,6 @@
+// Horsing Around
+// Group 9
+
 package gamestates;
 
 import java.awt.event.MouseEvent;
@@ -15,6 +18,7 @@ public class State {
     public Game getGame(){
         return game;
     }
+
     //helps fix scaling of the buttons hover by converting mouse coordinates into out game dimensions and checks if the mouse hovers over the button
     public boolean isIn(MouseEvent e, MenuButton mb){
         

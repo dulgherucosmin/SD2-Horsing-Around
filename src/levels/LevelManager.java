@@ -1,8 +1,10 @@
+// Horsing Around
+// Group 9
+
 package levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import main.Game;
 import utilz.LoadSave;
@@ -68,5 +70,4 @@ public class LevelManager {
     public Level getCurrentLevel() {
         return currentLevel;
     }
-
 }

@@ -2,19 +2,10 @@
 // Group 9
 package utilz;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
-import java.util.HashMap;
-import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-
-import main.Game;
 
 // this is basically to load up all the sprite images (levels/horses/the apple)
 public class LoadSave {

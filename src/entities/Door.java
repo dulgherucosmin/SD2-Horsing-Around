@@ -1,5 +1,5 @@
-//Horsing around
-//Group 9
+// Horsing around
+// Group 9
 
 package entities;
 
@@ -26,22 +26,17 @@ public class Door extends Entity {
         doorSprite = sheet.getSubimage(0 * 16, 3 * 16, 16, 16);
     }
 
-    public void update(){
+    public void update() {
       
-            }
-        
-        
-    
+    }
 
-    public boolean isBlocking(Player player){
-       /* boolean notOpen = y > openY + 2;
-        return notOpen && hitBox.intersects(player.getHitbox());*/
+    public boolean isBlocking(Player player) {
         return !isOpen() && hitBox.intersects(player.getHitbox());
     }
 
     public boolean isOpen(){
-        //return y <= openY;
-         return button1.isPressed() || button2.isPressed();
+
+        return button1.isPressed() || button2.isPressed();
     }
 
     public void render (Graphics g){
@@ -51,7 +46,5 @@ public class Door extends Entity {
             }
            // drawHitBox(g);
         }
-    }
-
-    
+    } 
 }

@@ -1,7 +1,9 @@
+// Horsing Around
+// Group 9
+
 package gamestates;
 
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
+import static utilz.Constants.Directions.*;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -16,6 +18,7 @@ import main.Game;
 import utilz.LoadSave;
 
 public class Playing extends State implements StateMethods {
+
     // player objects
     private Player player1;
     private Player player2;
@@ -28,7 +31,7 @@ public class Playing extends State implements StateMethods {
     private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
-    public final static float SCALE = 1.f; // scaling factor
+    public final static float SCALE = 1.0f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen
@@ -38,37 +41,43 @@ public class Playing extends State implements StateMethods {
     // the final game resolution
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+
     public Playing(Game game) {
         super(game);
         initClasses();
     }
 
     private void initClasses() {
-         // initialize level manager
-         levelManager = new LevelManager(game);
-         player1 = new Player(5, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
-         // load level data (in this case level 1)
-         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-         // set players internal storage of level to the current loaded level (in this case level 1)
-         player1.setCurentLevel(levelManager.getCurrentLevel().level);
- 
-         player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
-         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-         player2.setCurentLevel(levelManager.getCurrentLevel().level);
- 
-         button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
-         button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
- 
-         door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
-         win = new Win (455,190);
+
+        // initialize level manager
+        levelManager = new LevelManager(game);
+
+        player1 = new Player(5, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
+
+        // load level data (in this case level 1)
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+
+        // set players internal storage of level to the current loaded level (in this case level 1)
+        player1.setCurentLevel(levelManager.getCurrentLevel().level);
+
+        player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
+
+        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player2.setCurentLevel(levelManager.getCurrentLevel().level);
+
+        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+
+        door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
+        win = new Win(455, 190);
     }
 
     @Override
     public void update() {
+
         player1.update();
         player2.update();
 
-        // levelManager.update();
         button1.update(player1, player2);
         button2.update(player1, player2);
         door.update();
@@ -204,5 +213,4 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer2() {
         return player2;
     }
-
 }

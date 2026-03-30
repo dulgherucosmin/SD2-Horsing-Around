@@ -61,8 +61,10 @@ public class PlayerMovementTest {
     @Test
     public void testMoveLeft() {
         Player p = new Player(100, 10, null, RIGHT);
+
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
+
         // set current level to ensure hitboxes work
         p.setCurentLevel(1);
 
@@ -82,8 +84,10 @@ public class PlayerMovementTest {
     @Test
     public void testLeftAndRightCancelsOut() {
         Player p = new Player(100, 10, null, RIGHT);
+
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
+
         // set current level to ensure hitboxes work
         p.setCurentLevel(1);
 
@@ -104,8 +108,10 @@ public class PlayerMovementTest {
     @Test
     public void testNoMovementWhenNoInput() {
         Player p = new Player(100, 10, null, RIGHT);
+
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
+
         // set current level to ensure hitboxes work
         p.setCurentLevel(1);
 
@@ -121,8 +127,10 @@ public class PlayerMovementTest {
     @Test
     public void testMovementAccumulatesOverUpdates() {
         Player p = new Player(100, 10, null, RIGHT);
+
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
+
         // set current level to ensure hitboxes work
         p.setCurentLevel(1);
 
@@ -149,9 +157,11 @@ public class PlayerMovementTest {
 
         Player p = new Player(pSpawn, 10, null, RIGHT);
         Player p2 = new Player(p2Spawn, 10, null, LEFT);
+
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         p2.loadLevelData(createFlatLevel());
+
         // set current level to ensure hitboxes work
         p.setCurentLevel(1);
         p2.setCurentLevel(1);
@@ -165,6 +175,7 @@ public class PlayerMovementTest {
 
         // player 1 has moved
         assertTrue(p.getX() > pSpawn);
+
         // player 2 has remained still
         assertEquals(p2Spawn, p2.getX());
 
@@ -175,6 +186,7 @@ public class PlayerMovementTest {
 
         // player 2 has moved
         assertTrue(p2.getX() > p2Spawn);
+        
         // player 1 has remained still
         assertEquals(p1Position, p.getX());
     }
