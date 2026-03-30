@@ -52,7 +52,7 @@ public class Button extends Entity {
         } else {
             g.drawImage(unpressedButton, (int) x, (int) y, 16, 16, null);
         }
-        g.setColor(Color.green);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+       /*  g.setColor(Color.green);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);*/
     }
 }

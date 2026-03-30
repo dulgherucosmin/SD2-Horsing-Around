@@ -49,7 +49,7 @@ public class Door extends Entity {
             for (int i = 0; i < 4; i++) {
                 g.drawImage(doorSprite, (int) x, (int) y + (i * 16), 16, 16,null);
             }
-            drawHitBox(g);
+           // drawHitBox(g);
         }
     }
 
