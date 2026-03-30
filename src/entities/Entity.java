@@ -59,8 +59,8 @@ public abstract class Entity {
     }
 
     protected void drawHitBox(Graphics g) {
-        g.setColor(Color.PINK);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+        /*g.setColor(Color.PINK);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); */
     }
 
     public float getX() {
