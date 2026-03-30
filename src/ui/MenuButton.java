@@ -77,7 +77,9 @@ public class MenuButton {
     public Rectangle getBounds() {
         return bounds;
     }
-
+    public Gamestate getGamestate(){
+        return state;
+    }
     public void setGameState() {
         Gamestate.state = state;
     }
@@ -86,4 +88,5 @@ public class MenuButton {
         mouseOver = false;
         mousePressed = false;
     }
+
 }

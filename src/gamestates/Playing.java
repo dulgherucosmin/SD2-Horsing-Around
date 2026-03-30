@@ -45,22 +45,23 @@ public class Playing extends State implements StateMethods {
     }
 
     private void initClasses() {
-        // initialize level manager
-        levelManager = new LevelManager(game);
-        player1 = new Player(200, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
-        // load level data (in this case level 1)
-        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        // set players internal storage of level to the current loaded level (in this case level 1)
-        player1.setCurentLevel(levelManager.getCurrentLevel().level);
+       // initialize level manager
+       levelManager = new LevelManager(game);
+       player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
+       // load level data (in this case level 1)
+       player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+       // set players internal storage of level to the current loaded level (in this case level 1)
+       player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
-        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player2.setCurentLevel(levelManager.getCurrentLevel().level);
+       player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
+       player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+       player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        button1 = new Button(295, 95);
-        button2 = new Button(393, 190);
-        door = new Door(355, 195, button1, button2);
-        win = new Win(455, 190);
+       button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+       button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+
+       door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
+       win = new Win (455,190);
     }
 
     @Override
