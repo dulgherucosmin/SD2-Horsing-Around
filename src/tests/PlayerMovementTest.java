@@ -20,8 +20,9 @@ public class PlayerMovementTest {
         int[][] levelData = new int[Game.TILES_IN_WIDTH][Game.TILES_IN_HEIGHT];
 
         // in our collision system, row 9 for level 1 is always solid
-        for (int row = 9; row < Game.TILES_IN_HEIGHT; row++) {
-            for (int col = 0; col < Game.TILES_IN_WIDTH; col++) {
+        // use 15 as maximum for tilesheet
+        for (int row = 9; row < 15; row++) {
+            for (int col = 0; col < 15; col++) {
                 levelData[row][col] = 1;
             }
         }
