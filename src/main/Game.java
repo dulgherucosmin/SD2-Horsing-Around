@@ -1,16 +1,9 @@
 package main;
-
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
-
 import java.awt.Graphics;
+import gamestates.Gamestate;
+import gamestates.Menu;
+import gamestates.Playing;
 
-import levels.LevelManager;
-import entities.Player;
-import entities.Button;
-import entities.Door;
-import entities.Win;
-import utilz.LoadSave;
 
 // handles the game loop, updating, rendering and the game setup
 public class Game implements Runnable {
@@ -19,24 +12,17 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
 
     private Thread gameThread;
+    private Playing playing;
+    private Menu menu;
 
     // target frames per second and updates per second
     private final int FPS_SET = 60; // controls how often the screen is redrawn
     private final int UPS_SET = 100; // controls how often the game logic runs
 
-    // player objects
-    private Player player1;
-    private Player player2;
-    private LevelManager levelManager;
-    private Button button1;
-    private Button button2;
-    private Door door;
-    private Win win;
-
     private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
-    public final static float SCALE = 1.0f; // scaling factor
+    public final static float SCALE = 1.f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen
@@ -89,44 +75,37 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        player1.update();
-        player2.update();
-        //levelManager.update();
-        button1.update(player1, player2);
-        button2.update(player1, player2);
-        door.update();
-        //door collision checks.
-        if(door.isBlocking(player1)){
-            player1.undoMove();
-        }
-        
-        if(door.isBlocking(player2)){
-            player2.undoMove();
-        }
-
-        if(win.completed(player1, player2)){
-            levelComplete = true;
+       // a check to see if the game is in a particular state
+        switch (Gamestate.state) {
+            case MENU:
+            menu.update();
+                break;
+            //if its in playing state
+            case PLAYING:
+            playing.update();
+                break;
+            case OPTIONS:
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
         }
         
     }
 
     public void render(Graphics g) {
-        // render level 1
-        levelManager.loadLevel(g, 1);
-        player1.render(g);
-        player2.render(g);
-        button1.render(g);
-        button2.render(g);
-        door.render(g);
-        win.render(g, levelComplete);
-
-        if(levelComplete){
-            g.setColor(new java.awt.Color(0,0,0,150));
-            g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH/2 -50, GAME_HEIGHT/2);
+        switch (Gamestate.state) {
+            case MENU:
+            menu.draw(g);
+                break;
+            case PLAYING:
+             playing.draw(g);
+                break;
+        
+            default:
+                break;
         }
+       
     }
 
  
@@ -192,18 +171,20 @@ public class Game implements Runnable {
 
     // resets the player movements when the game window is out of focus
     public void windowFocusLost() {
-        player1.resetDirBooleans();
-        player2.resetDirBooleans();
+     if(Gamestate.state ==Gamestate.PLAYING){
+        playing.getPlayer1().resetDirBooleans();
+        playing.getPlayer2().resetDirBooleans();
+     }
+    }
+    public Menu getMenu(){
+        return menu;
+    }
+    public Playing getPlaying(){
+        return playing;
+    }
+    public GamePanel getGamePanel(){
+        return gamePanel;
+    }
 
-    }
-    
-    // getters for each player (hort)
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
     
 }
