@@ -46,13 +46,13 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
          // initialize level manager
          levelManager = new LevelManager(game);
-         player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
+         player1 = new Player(5, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
          // load level data (in this case level 1)
          player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
          // set players internal storage of level to the current loaded level (in this case level 1)
          player1.setCurentLevel(levelManager.getCurrentLevel().level);
  
-         player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
+         player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
          player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
          player2.setCurentLevel(levelManager.getCurrentLevel().level);
  
