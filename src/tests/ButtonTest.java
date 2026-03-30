@@ -21,8 +21,8 @@ public class ButtonTest {
       Player p1 = new Player(0, 0, null, 0);
       Player p2 = new Player(100, 100, null, 0);
 
-      p1.updateHitBox();
-      p2.updateHitBox();
+      p1.updateHitBoxRaw();
+      p2.updateHitBoxRaw();
 
       button.update(p1, p2);
 
@@ -36,8 +36,8 @@ public class ButtonTest {
       Player p1 = new Player(100, 100, null, 0);
       Player p2 = new Player(200, 200, null, 0);
 
-      p1.updateHitBox();
-      p2.updateHitBox();
+      p1.updateHitBoxRaw();
+      p2.updateHitBoxRaw();
 
       button.update(p1, p2);
 
@@ -51,8 +51,8 @@ public class ButtonTest {
       Player p1 = new Player(100, 100, null, 0);
       Player p2 = new Player(0, 0, null, 0);
 
-      p1.updateHitBox();
-      p2.updateHitBox();
+      p1.updateHitBoxRaw();
+      p2.updateHitBoxRaw();
 
       button.update(p1, p2);
 
