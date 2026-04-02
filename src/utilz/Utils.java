@@ -3,6 +3,7 @@ package utilz;
 import entities.Entity;
 import main.Game;
 
+import java.awt.*;
 import java.util.*;
 
 public class Utils {
@@ -75,5 +76,15 @@ public class Utils {
 
         // check if this tile is in the solid set for this level
         return solidTiles.contains(tile);
+    }
+
+    // checks if moving to a new position would overlap the other player's hitbox
+    public static boolean collidesWithOtherPlayer(float x, float y, int width, int height, Rectangle otherHitBox) {
+        float hbX = x + (Entity.SPRITE_WIDTH - width) / 2f;
+        float hbY = y + (Entity.SPRITE_HEIGHT - height);
+        // create a hitbox for the position we want to move to
+        Rectangle nextPos = new Rectangle((int)hbX, (int)hbY, width, height);
+        // check if this new hitbox will collide with the player2 hitbox
+        return nextPos.intersects(otherHitBox);
     }
 }

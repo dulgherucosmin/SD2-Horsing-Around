@@ -65,6 +65,10 @@ public class Playing extends State implements StateMethods {
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
 
+        // set hitboxes for collision detection
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+
         button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
         button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
 
