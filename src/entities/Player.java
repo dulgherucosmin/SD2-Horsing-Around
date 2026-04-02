@@ -12,8 +12,9 @@ import static utilz.Constants.PlayerConstants.IDLE_RIGHT;
 import static utilz.Constants.PlayerConstants.WALK_LEFT;
 import static utilz.Constants.PlayerConstants.WALK_RIGHT;
 import static utilz.Utils.canMove;
+import static utilz.Utils.collidesWithOtherPlayer;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import utilz.LoadSave;
@@ -57,6 +58,9 @@ public class Player extends Entity {
 
     private int[][] currentLevelData;
     private int currentLevel;
+
+    //
+    private Rectangle otherPlayerHitBox;
 
     public Player(float x, float y, String spritePath, int startDir) {
         // width and height here are hitbox sizes
@@ -159,19 +163,25 @@ public class Player extends Entity {
             // airSpeed starts negative (jumping up) and increases until positive (falling down)
             airSpeed += gravity;
 
+            // run a check to see if player is blocked by a tile or collides with another player
+            boolean tileCollision = !canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, otherPlayerHitBox);
+
             if (!jumpHeld && airSpeed < jumpCutSpeed) {
                 airSpeed = jumpCutSpeed;
             }
 
             // check if player can move to the next vertical position
-            if (canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel)) {
+            if (!tileCollision && !playerCollision) {
                 // nothing blocking vertically, continue moving up or falling down
                 y += airSpeed;
+
             } else {
                 if (airSpeed > 0) {
                     // player fell and hit a solid tile, fall down 1px until they touch the ground/ a tile
                     // canMove will be false once they touch the ground/a tile
-                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
+                    // also run a check to see if player is blocked by a tile or collides with another player
+                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) && !collidesWithOtherPlayer(x, y + 1, width, height, otherPlayerHitBox)) {
                         y += 1;
                     }
                 }
@@ -188,10 +198,13 @@ public class Player extends Entity {
             }
         }
 
-        // only attempt horizontal movement if a key is being held
+        // horizontal movement
         if (xSpeed != 0) {
-            // check if there is not a wall blocking player (prevents walking into walls)
-            if (canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel)) {
+            // run a check to see if player is blocked by a tile or collides with another player
+            boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, otherPlayerHitBox);
+
+            if (!tileCollision && !playerCollision) {
                 x += xSpeed;
                 moving = true;
             }
@@ -217,6 +230,11 @@ public class Player extends Entity {
     // helper class to set current level in the player directly
     public void setCurentLevel(int level) {
         this.currentLevel = level;
+    }
+
+    // helper method to set other players hitbox
+    public void setOtherPlayerHitBox(Rectangle otherPlayerHitBox) {
+        this.otherPlayerHitBox = otherPlayerHitBox;
     }
 
     // this resets all the movement inputs when game is out of focus
