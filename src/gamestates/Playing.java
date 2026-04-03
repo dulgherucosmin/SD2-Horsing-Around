@@ -103,7 +103,7 @@ public class Playing extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
         // render level 1
-        levelManager.loadLevel(g, 1);
+        levelManager.drawLevel(g, 1);
         player1.render(g);
         player2.render(g);
         button1.render(g);
