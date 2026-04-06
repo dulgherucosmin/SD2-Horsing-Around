@@ -2,29 +2,33 @@ package ui;
 
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
-import static utilz.Constants.UI.PauseButtons.SOUND_SIZE;
+import static utilz.Constants.UI.PauseButtons.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import org.w3c.dom.events.MouseEvent;
+import java.util.Scanner;
+import java.awt.event.MouseEvent;
 import gamestates.Gamestate;
 import main.Game;
+
 import utilz.LoadSave;
 
 public class PauseOverlay {
     private BufferedImage backgroundImg;
     private int bgX,bgY,bgW,bgH;
+    private Game game;
     private SoundButton musicButton,sfxButton;
 
-    public PauseOverlay(){
+    public PauseOverlay(Game game){
+        this.game = game;
         loadBackground();
         createSoundButtons();
     }
 
     private void createSoundButtons() {
-        int soundX=bgX + (int)(130*Game.SCALE);
-        int musicY=bgY + (int)(80*Game.SCALE);
-        int sfxY=bgY + (int)(115*Game.SCALE);
+        int soundX=bgX + 130;
+        int musicY=bgY + 80;
+        int sfxY=bgY + 115;
         musicButton = new SoundButton( soundX,musicY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
         sfxButton =new SoundButton( soundX,sfxY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
     }
@@ -38,11 +42,13 @@ public class PauseOverlay {
     }
         
     public void update(){
-
+        musicButton.update();
+        sfxButton.update();
     }
+
     public void draw(Graphics g){
         bgW=Math.min(bgW,GAME_WIDTH);
-        bgW=Math.min(bgW,GAME_HEIGHT);
+        bgH=Math.min(bgH,GAME_HEIGHT);
         //pause background 
         g.drawImage(backgroundImg, bgX, bgY, bgW,bgH,null);
 
@@ -52,21 +58,52 @@ public class PauseOverlay {
     }
 
     public void mousePressed(MouseEvent e) {
+        
+        if(isIn(e, musicButton))
+            musicButton.setMousePressed(true);
+        else if(isIn(e, sfxButton))
+            sfxButton.setMousePressed(true);
 
     }
 
-
     public void mouseReleased(MouseEvent e) {
+
+        if(isIn(e, musicButton)){
+            if(musicButton.isMousePressed()){
+                musicButton.setMuted(!musicButton.isMuted());
+            }
+
+        }
+        else if(isIn(e, sfxButton))
+            if(sfxButton.isMousePressed()){
+                sfxButton.setMuted(!sfxButton.isMuted());
+            }
 
     }
 
     public void mouseMoved(MouseEvent e) {
+        musicButton.setMouseOver(false);
+        sfxButton.setMouseOver(false);
+ 
+        if(isIn(e, musicButton))
+            musicButton.setMouseOver(true);
+        else if(isIn(e, sfxButton))
+            sfxButton.setMouseOver(true);
 
     }
-    
+
     public void mouseDragged(MouseEvent e){
 
     }
 
+    private boolean isIn(MouseEvent e, PauseButton b){
+        float scaleX =(float) game.getGamePanel().getWidth()/GAME_WIDTH;
+        float scaleY =(float) game.getGamePanel().getHeight()/GAME_HEIGHT;
+
+        int mouseX = (int)(e.getX()/scaleX);
+        int mouseY = (int)(e.getY()/scaleY);
+
+        return b.getBounds().contains(mouseX,mouseY);
+    }
 
 }

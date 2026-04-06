@@ -41,7 +41,7 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
-    private boolean paused;
+    private boolean paused =true;
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -51,7 +51,7 @@ public class Playing extends State implements StateMethods {
          // initialize level manager
          levelManager = new LevelManager(game);
          //initializing pauseOverlay class
-         pauseOverlay = new PauseOverlay();
+         pauseOverlay = new PauseOverlay(game);
          player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
          // load level data (in this case level 1)
          player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -91,6 +91,7 @@ public class Playing extends State implements StateMethods {
         if (win.completed(player1, player2)) {
             levelComplete = true;
         }
+        pauseOverlay.update();
     }
 
     @Override
@@ -122,17 +123,20 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseMoved(e);
     }
 
     @Override
