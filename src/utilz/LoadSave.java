@@ -23,6 +23,7 @@ public class LoadSave {
     public static final String PLAYER1_ATLAS = "horse1_sprites.png";
     public static final String PLAYER2_ATLAS = "horse2_sprites.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
+    public static final String PAUSE_MENU = "pause_menu.png";
 
     // this loads up the sprite sheet from the res folder
     public static BufferedImage GetSpriteAtlas(String fileName) {

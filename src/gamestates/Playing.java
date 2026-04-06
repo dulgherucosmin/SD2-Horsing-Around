@@ -13,6 +13,7 @@ import entities.Player;
 import entities.Win;
 import levels.LevelManager;
 import main.Game;
+import ui.PauseOverlay;
 import utilz.LoadSave;
 
 public class Playing extends State implements StateMethods {
@@ -20,6 +21,7 @@ public class Playing extends State implements StateMethods {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
+    private PauseOverlay pauseOverlay;
 
     private Button button1;
     private Button button2;
@@ -38,6 +40,8 @@ public class Playing extends State implements StateMethods {
     // the final game resolution
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+
+    private boolean paused;
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -46,6 +50,8 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
          // initialize level manager
          levelManager = new LevelManager(game);
+         //initializing pauseOverlay class
+         pauseOverlay = new PauseOverlay();
          player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
          // load level data (in this case level 1)
          player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -97,6 +103,7 @@ public class Playing extends State implements StateMethods {
         button2.render(g);
         door.render(g);
         win.render(g, levelComplete);
+        pauseOverlay.draw(g);
 
         if (levelComplete) {
             g.setColor(new java.awt.Color(0, 0, 0, 150));
@@ -105,6 +112,7 @@ public class Playing extends State implements StateMethods {
             g.setColor(java.awt.Color.WHITE);
             g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
         }
+       
     }
 
     @Override
