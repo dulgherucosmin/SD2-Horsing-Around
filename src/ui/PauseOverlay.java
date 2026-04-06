@@ -22,16 +22,16 @@ public class PauseOverlay {
     }
 
     private void createSoundButtons() {
-        int soundX=(int)(450*Game.SCALE);
-        int musicY=(int)(140*Game.SCALE);
-        int sfxY=(int)(186*Game.SCALE);
-        musicButton = new SoundButton( soundX,musicY,SOUND_SIZE,SOUND_SIZE );
-        sfxButton =new SoundButton( soundX,sfxY,SOUND_SIZE,SOUND_SIZE );
+        int soundX=bgX + (int)(130*Game.SCALE);
+        int musicY=bgY + (int)(80*Game.SCALE);
+        int sfxY=bgY + (int)(115*Game.SCALE);
+        musicButton = new SoundButton( soundX,musicY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
+        sfxButton =new SoundButton( soundX,sfxY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
     }
       
      private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_MENU);
-        bgW=(int)(backgroundImg.getWidth()*Game.SCALE);
+        bgW=(int)(backgroundImg.getWidth()*Game.SCALE*0.8f);
         bgH=(int)(backgroundImg.getHeight()*Game.SCALE*0.7);
         bgX=Game.GAME_WIDTH/2  - bgW/2;
         bgY =Game.GAME_HEIGHT/2  - bgH/2;
@@ -60,10 +60,10 @@ public class PauseOverlay {
 
     }
 
-
     public void mouseMoved(MouseEvent e) {
 
     }
+    
     public void mouseDragged(MouseEvent e){
 
     }
