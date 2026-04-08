@@ -20,6 +20,10 @@ public class Constants {
             public static final int SOUND_SIZE=(int)(SOUND_SIZE_DEFAULT*Game.SCALE);
 
         }
+        public static class UrmButtons{
+            public static final int URM_DEFAULT_SIZE =56;
+            public static final int URM_SIZE = (int) (URM_DEFAULT_SIZE* Game.SCALE);
+        }
         
     }
 

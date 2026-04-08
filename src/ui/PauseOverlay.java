@@ -6,12 +6,11 @@ import static utilz.Constants.UI.PauseButtons.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Scanner;
 import java.awt.event.MouseEvent;
-import gamestates.Gamestate;
 import main.Game;
 
 import utilz.LoadSave;
+
 
 public class PauseOverlay {
     private BufferedImage backgroundImg;
@@ -19,10 +18,12 @@ public class PauseOverlay {
     private Game game;
     private SoundButton musicButton,sfxButton;
 
+
     public PauseOverlay(Game game){
         this.game = game;
         loadBackground();
         createSoundButtons();
+
     }
 
     private void createSoundButtons() {
@@ -32,7 +33,7 @@ public class PauseOverlay {
         musicButton = new SoundButton( soundX,musicY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
         sfxButton =new SoundButton( soundX,sfxY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
     }
-      
+     
      private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_MENU);
         bgW=(int)(backgroundImg.getWidth()*Game.SCALE*0.8f);
@@ -79,6 +80,8 @@ public class PauseOverlay {
                 sfxButton.setMuted(!sfxButton.isMuted());
             }
 
+        musicButton.resetBooleans();
+        sfxButton.resetBooleans();
     }
 
     public void mouseMoved(MouseEvent e) {

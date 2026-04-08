@@ -60,5 +60,9 @@ public class SoundButton extends PauseButton {
     public void setMuted(boolean muted) {
         this.muted = muted;
     }
+    public void resetBooleans(){
+        mouseOver  = false;
+        mousePressed = false;
+    }
     
 }
