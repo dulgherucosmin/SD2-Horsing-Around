@@ -41,7 +41,7 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
-    private boolean paused =true;
+    private boolean paused =false;
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -51,7 +51,7 @@ public class Playing extends State implements StateMethods {
          // initialize level manager
          levelManager = new LevelManager(game);
          //initializing pauseOverlay class
-         pauseOverlay = new PauseOverlay(game);
+         pauseOverlay = new PauseOverlay(game,this);
          player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
          // load level data (in this case level 1)
          player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -71,6 +71,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
+        if(!paused){
         player1.update();
         player2.update();
 
@@ -91,7 +92,11 @@ public class Playing extends State implements StateMethods {
         if (win.completed(player1, player2)) {
             levelComplete = true;
         }
+    }
+    else{
         pauseOverlay.update();
+    }
+       
     }
 
     @Override
@@ -104,7 +109,10 @@ public class Playing extends State implements StateMethods {
         button2.render(g);
         door.render(g);
         win.render(g, levelComplete);
+
+        if(paused){
         pauseOverlay.draw(g);
+        }
 
         if (levelComplete) {
             g.setColor(new java.awt.Color(0, 0, 0, 150));
@@ -166,7 +174,7 @@ public class Playing extends State implements StateMethods {
                 player2.setRight(true);
                 break;
             case KeyEvent.VK_ESCAPE:
-                Gamestate.state = Gamestate.MENU;
+                paused = !paused;
                 break;
 
         }
@@ -201,12 +209,17 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    public void unpauseGame(){
+        paused = false;
+    }
+
     // resets the player movements when the game window is out of focus
     public void windowFocusLost() {
         player1.resetDirBooleans();
         player2.resetDirBooleans();
 
     }
+
 
     // getters for each player (hort)
     public Player getPlayer1() {
