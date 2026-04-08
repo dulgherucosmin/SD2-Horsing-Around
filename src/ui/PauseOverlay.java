@@ -3,6 +3,7 @@ package ui;
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
 import static utilz.Constants.UI.PauseButtons.*;
+import static utilz.Constants.UI.UrmButtons.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -17,13 +18,13 @@ public class PauseOverlay {
     private int bgX,bgY,bgW,bgH;
     private Game game;
     private SoundButton musicButton,sfxButton;
-
+    private UrmButton menuB,replayB, unpauseB;
 
     public PauseOverlay(Game game){
         this.game = game;
         loadBackground();
         createSoundButtons();
-
+        createUrmButtons();
     }
 
     private void createSoundButtons() {
@@ -33,11 +34,22 @@ public class PauseOverlay {
         musicButton = new SoundButton( soundX,musicY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
         sfxButton =new SoundButton( soundX,sfxY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
     }
-     
+
+    private void createUrmButtons(){
+        int menuX=(int) (180*Game.SCALE);
+        int replayX =(int) (235*Game.SCALE);
+        int unpauseX =(int) (290*Game.SCALE);
+        int bY = (int)(200*Game.SCALE);
+
+        menuB =new UrmButton(menuX, bY,URM_SIZE, URM_SIZE,2);
+        replayB =new UrmButton(replayX, bY,URM_SIZE, URM_SIZE,1);
+        unpauseB =new UrmButton(unpauseX, bY,URM_SIZE, URM_SIZE,0);
+    }
+      
      private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_MENU);
         bgW=(int)(backgroundImg.getWidth()*Game.SCALE*0.8f);
-        bgH=(int)(backgroundImg.getHeight()*Game.SCALE*0.7);
+        bgH=(int)(backgroundImg.getHeight()*Game.SCALE*0.7f);
         bgX=Game.GAME_WIDTH/2  - bgW/2;
         bgY =Game.GAME_HEIGHT/2  - bgH/2;
     }
@@ -45,6 +57,10 @@ public class PauseOverlay {
     public void update(){
         musicButton.update();
         sfxButton.update();
+
+        menuB.update();
+        replayB.update();
+        unpauseB.update();
     }
 
     public void draw(Graphics g){
@@ -56,6 +72,10 @@ public class PauseOverlay {
         //Sound buttons
         musicButton.draw(g);
         sfxButton.draw(g);
+
+        menuB.draw(g);
+        replayB.draw(g);
+        unpauseB.draw(g);
     }
 
     public void mousePressed(MouseEvent e) {
