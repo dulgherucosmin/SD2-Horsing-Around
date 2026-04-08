@@ -170,6 +170,5 @@ public class Game implements Runnable {
     public GamePanel getGamePanel(){
         return gamePanel;
     }
-
-    
+  
 }

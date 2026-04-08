@@ -147,6 +147,7 @@ public class Playing extends State implements StateMethods {
             pauseOverlay.mouseMoved(e);
     }
 
+
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -208,10 +209,15 @@ public class Playing extends State implements StateMethods {
                 break;
         }
     }
+    public void mouseDragged (MouseEvent e){
+        if(paused)
+            pauseOverlay.mouseDragged(e);
+    }
 
     public void unpauseGame(){
         paused = false;
     }
+  
 
     // resets the player movements when the game window is out of focus
     public void windowFocusLost() {

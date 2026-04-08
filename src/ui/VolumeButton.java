@@ -15,11 +15,12 @@ public class VolumeButton extends PauseButton{
     public VolumeButton(int x, int y, int width, int height ) {
         //starting the position of the slider button at the middle
         super(x+width/2, y, VOL_WIDTH, height);
+        bounds.x-= VOL_WIDTH/2;
         buttonX = x+width/2;
         this.x = x;
         this.width =width;
-        minX = x;
-        maxX = x+width;
+        minX = x+VOL_WIDTH/2;
+        maxX = x+width-VOL_WIDTH/2;
         loadImgs();
     }
 
@@ -44,10 +45,10 @@ public class VolumeButton extends PauseButton{
       
     public void draw (Graphics g){
         g.drawImage(slider, x, y,width, height, null);
-        g.drawImage(imgs[index], buttonX, y, VOL_WIDTH, height, null);
+        g.drawImage(imgs[index], buttonX-VOL_WIDTH/2, y, VOL_WIDTH, height, null);
     }
 
-    public void changeX(){
+    public void changeX(int x){
         if(x<minX){
             buttonX = minX;
         }
@@ -56,7 +57,10 @@ public class VolumeButton extends PauseButton{
         }
         else
             buttonX = x;
+
+        bounds.x = buttonX-VOL_WIDTH/2;
     }
+
     public void resetBooleans(){
         mouseOver =false;
         mousePressed =false;
