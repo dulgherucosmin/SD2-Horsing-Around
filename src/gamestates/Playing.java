@@ -1,7 +1,9 @@
+// Horsing Around
+// Group 9
+
 package gamestates;
 
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
+import static utilz.Constants.Directions.*;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,7 @@ import ui.PauseOverlay;
 import utilz.LoadSave;
 
 public class Playing extends State implements StateMethods {
+
     // player objects
     private Player player1;
     private Player player2;
@@ -30,7 +33,7 @@ public class Playing extends State implements StateMethods {
     private boolean levelComplete = false;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
-    public final static float SCALE = 1.f; // scaling factor
+    public final static float SCALE = 1.0f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen
@@ -49,25 +52,34 @@ public class Playing extends State implements StateMethods {
     }
 
     private void initClasses() {
-         // initialize level manager
-         levelManager = new LevelManager(game);
-         //initializing pauseOverlay class
-         pauseOverlay = new PauseOverlay(game,this);
-         player1 = new Player(200, 1,LoadSave.PLAYER1_ATLAS, RIGHT);
-         // load level data (in this case level 1)
-         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-         // set players internal storage of level to the current loaded level (in this case level 1)
-         player1.setCurentLevel(levelManager.getCurrentLevel().level);
- 
-         player2 = new Player(275, 1, LoadSave.PLAYER2_ATLAS, LEFT);
-         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-         player2.setCurentLevel(levelManager.getCurrentLevel().level);
- 
-         button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
-         button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
- 
-         door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
-         win = new Win (455,190);
+
+        // initialize level manager
+        levelManager = new LevelManager(game);
+       //initializing pauseOverlay class
+        pauseOverlay = new PauseOverlay(game,this);
+      
+        player1 = new Player(5, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
+
+        // load level data (in this case level 1)
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+
+        // set players internal storage of level to the current loaded level (in this case level 1)
+        player1.setCurentLevel(levelManager.getCurrentLevel().level);
+
+        player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
+
+        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player2.setCurentLevel(levelManager.getCurrentLevel().level);
+
+        // set hitboxes for collision detection
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+
+        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+
+        door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
+        win = new Win(455, 190);
     }
 
     @Override
@@ -77,7 +89,6 @@ public class Playing extends State implements StateMethods {
         player1.update();
         player2.update();
 
-        // levelManager.update();
         button1.update(player1, player2);
         button2.update(player1, player2);
         door.update();
@@ -105,7 +116,7 @@ public class Playing extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
         // render level 1
-        levelManager.loadLevel(g, 1);
+        levelManager.drawLevel(g, 1);
         player1.render(g);
         player2.render(g);
         button1.render(g);
@@ -192,7 +203,7 @@ public class Playing extends State implements StateMethods {
         // stops the movement when the key is released
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                // gamePanel.getGame().getPlayer1().setAutoJump(false);
+                player1.setJumpHeld(false);
                 break;
             case KeyEvent.VK_A:
                 player1.setLeft(false);
@@ -202,7 +213,7 @@ public class Playing extends State implements StateMethods {
                 break;
 
             case KeyEvent.VK_UP:
-                // gamePanel.getGame().getPlayer2().setAutoJump(false);
+                player2.setJumpHeld(false);
                 break;
 
             case KeyEvent.VK_LEFT:
@@ -250,5 +261,4 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer2() {
         return player2;
     }
-
 }

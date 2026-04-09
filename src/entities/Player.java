@@ -12,11 +12,11 @@ import static utilz.Constants.PlayerConstants.IDLE_RIGHT;
 import static utilz.Constants.PlayerConstants.WALK_LEFT;
 import static utilz.Constants.PlayerConstants.WALK_RIGHT;
 import static utilz.Utils.canMove;
+import static utilz.Utils.collidesWithOtherPlayer;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import main.Game;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -27,7 +27,7 @@ public class Player extends Entity {
     private int aniTick, aniIndex;
 
     // controls how fast each frame changes (lower value = faster)
-    private int aniSpeed = 15;
+    private int aniSpeed = 10;
 
     // tracks the current animation of the horse
     private int playerAction = IDLE_RIGHT;
@@ -39,23 +39,28 @@ public class Player extends Entity {
     private boolean left, right;
 
     // how many pixels the player (horse) moves per update
-    private float playerSpeed = 2.5f;
+    private float playerSpeed = 1.5f;
 
     private String spritePath;
     
-    //Jumping and gravity
-    private float airSpeed =0f;
-    private float gravity =0.2f;
-    //private float groundLevel = 400;
-    private float jumpSpeed =-5f;
+    // Jumping and gravity
+    private float airSpeed = 0f;
+    private float gravity = 0.15f;
+    private float jumpSpeed = -4.0f;
     private boolean inAir = false;
-    private boolean autoJump = false;
-    //Door collision
+
+    private boolean jumpHeld = false;
+    private float jumpCutSpeed = -1.5f;
+
+    // Door collision
     private float originX;
     private float originY;
 
     private int[][] currentLevelData;
     private int currentLevel;
+
+    //
+    private Rectangle otherPlayerHitBox;
 
     public Player(float x, float y, String spritePath, int startDir) {
         // width and height here are hitbox sizes
@@ -147,6 +152,7 @@ public class Player extends Entity {
             // left is negative x direction
             xSpeed = -playerSpeed;
             playerDir = LEFT;
+
         } else if (right && !left) {
             // right is positive x direction
             xSpeed = playerSpeed;
@@ -157,15 +163,25 @@ public class Player extends Entity {
             // airSpeed starts negative (jumping up) and increases until positive (falling down)
             airSpeed += gravity;
 
+            // run a check to see if player is blocked by a tile or collides with another player
+            boolean tileCollision = !canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, otherPlayerHitBox);
+
+            if (!jumpHeld && airSpeed < jumpCutSpeed) {
+                airSpeed = jumpCutSpeed;
+            }
+
             // check if player can move to the next vertical position
-            if (canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel)) {
+            if (!tileCollision && !playerCollision) {
                 // nothing blocking vertically, continue moving up or falling down
                 y += airSpeed;
+
             } else {
                 if (airSpeed > 0) {
                     // player fell and hit a solid tile, fall down 1px until they touch the ground/ a tile
                     // canMove will be false once they touch the ground/a tile
-                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
+                    // also run a check to see if player is blocked by a tile or collides with another player
+                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) && !collidesWithOtherPlayer(x, y + 1, width, height, otherPlayerHitBox)) {
                         y += 1;
                     }
                 }
@@ -182,10 +198,13 @@ public class Player extends Entity {
             }
         }
 
-        // only attempt horizontal movement if a key is being held
+        // horizontal movement
         if (xSpeed != 0) {
-            // check if there is not a wall blocking player (prevents walking into walls)
-            if (canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel)) {
+            // run a check to see if player is blocked by a tile or collides with another player
+            boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, otherPlayerHitBox);
+
+            if (!tileCollision && !playerCollision) {
                 x += xSpeed;
                 moving = true;
             }
@@ -213,6 +232,11 @@ public class Player extends Entity {
         this.currentLevel = level;
     }
 
+    // helper method to set other players hitbox
+    public void setOtherPlayerHitBox(Rectangle otherPlayerHitBox) {
+        this.otherPlayerHitBox = otherPlayerHitBox;
+    }
+
     // this resets all the movement inputs when game is out of focus
     public void resetDirBooleans() {
         left = false;
@@ -226,7 +250,12 @@ public class Player extends Entity {
             //then sets the vertical speed to jump speed
             airSpeed = jumpSpeed;
             inAir=true;
+            jumpHeld = true;
         }
+    }
+
+    public void setJumpHeld(boolean held) {
+        this.jumpHeld = held;
     }
   
     // getters and setters for the movement input
@@ -258,16 +287,4 @@ public class Player extends Entity {
     public float getAirSpeed(){
         return airSpeed;
     }
-
-    public void setAutoJump(boolean autoJump){
-        this.autoJump = autoJump;
-    }
-
-    /*
-    public void setGroundLevel(float ground){
-        this.groundLevel=ground;
-    }
-    */
-   
-
 }

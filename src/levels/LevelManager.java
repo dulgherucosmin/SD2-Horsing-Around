@@ -1,8 +1,10 @@
+// Horsing Around
+// Group 9
+
 package levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import main.Game;
 import utilz.LoadSave;
@@ -17,6 +19,7 @@ public class LevelManager {
 
     public LevelManager(Game game) {
         this.game = game;
+        initLevel(1);
     }
 
     private void importLevelSpriteSheet(int level) {
@@ -40,13 +43,12 @@ public class LevelManager {
         }
     }
 
-    public void loadLevel(Graphics g, int level) {
-
-        // load level spritesheet
+    public void initLevel(int level) {
         importLevelSpriteSheet(level);
-        // load level data into a level object
         currentLevel = new Level(LoadSave.getLevelData(level), level);
+    }
 
+    public void drawLevel(Graphics g, int level) {
 
         // load sprites
         for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
@@ -68,5 +70,4 @@ public class LevelManager {
     public Level getCurrentLevel() {
         return currentLevel;
     }
-
 }

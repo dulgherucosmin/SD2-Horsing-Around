@@ -1,3 +1,6 @@
+// Horsing Around
+// Group 9 
+
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;

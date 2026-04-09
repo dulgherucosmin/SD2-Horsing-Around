@@ -1,4 +1,4 @@
-// Horting Around
+// Horsing Around
 // Group 9
 
 package main;
@@ -41,7 +41,6 @@ public class GamePanel extends JPanel {
         System.out.println("size : " + GAME_WIDTH + "x" + GAME_HEIGHT);
     }
 
-    // pretty sure this was needed for the actual game stuff but i'm lazy to check 
     public void updateGame() {
 
     }
