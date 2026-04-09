@@ -17,9 +17,9 @@ public class LevelManager {
     // default to loading on level 1
     private Level currentLevel = new Level(LoadSave.getLevelData(1), 1);
 
-    public LevelManager(Game game) {
+    public LevelManager(Game game, int level) {
         this.game = game;
-        initLevel(1);
+        initLevel(level);
     }
 
     private void importLevelSpriteSheet(int level) {

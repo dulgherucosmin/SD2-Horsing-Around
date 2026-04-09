@@ -22,6 +22,16 @@ public class Utils {
         )));    
     }
 
+    static {
+        // define solid tile IDs for each level here
+        // these ints correspond to positions in the spritesheet
+        // anything not in this list is either air (0) or a background tile (passable)
+        solidTilesByLevel.put(2, new HashSet<>(Arrays.asList(
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23
+        )));    
+    }
+
+
     // checks whether the player can move to a given position
     public static boolean canMove(float x, float y, int width, int height, int[][] levelData, int currentLevel) {
 

@@ -32,6 +32,8 @@ public class Playing extends State implements StateMethods {
     private Win win;
     private boolean levelComplete = false;
 
+    private int currentLevelNum = 2;
+
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
     public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
@@ -54,11 +56,14 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
 
         // initialize level manager
-        levelManager = new LevelManager(game);
+        levelManager = new LevelManager(game, currentLevelNum);
        //initializing pauseOverlay class
         pauseOverlay = new PauseOverlay(game,this);
+
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
       
-        player1 = new Player(5, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
+        player1 = new Player(p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT);
 
         // load level data (in this case level 1)
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -66,7 +71,7 @@ public class Playing extends State implements StateMethods {
         // set players internal storage of level to the current loaded level (in this case level 1)
         player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
+        player2 = new Player(p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT);
 
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
@@ -80,6 +85,25 @@ public class Playing extends State implements StateMethods {
 
         door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
         win = new Win(455, 190);
+    }
+
+    private float[] getSpawnPoint(int player, int level) {
+        switch (level) {
+            case 1: // level 1 spawns
+                if (player == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            case 2: // level 2 spawns
+                if (player == 1) {
+                    return new float[]{2 * 16, 3 * 16};
+                } else {
+                    return new float[]{4 * 16, 3 * 16};
+                }
+            default:
+                return new float[]{0, 0};
+        }
     }
 
     @Override
@@ -116,7 +140,7 @@ public class Playing extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
         // render level 1
-        levelManager.drawLevel(g, 1);
+        levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
         button1.render(g);
