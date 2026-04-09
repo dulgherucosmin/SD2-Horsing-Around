@@ -7,16 +7,19 @@ import utilz.LoadSave;
 import static utilz.Constants.UI.UrmButtons.*;
 
 public class UrmButton extends PauseButton{
+    //attributes for Urm buttons
     private BufferedImage[] imgs;
     private int rowIndex,index;
     private boolean mouseOver, mousePressed;
 
+    //constructor 
     public UrmButton(int x, int y, int width, int height,int rowIndex) {
         super(x, y, width, height);
         this.rowIndex = rowIndex;
         loadImgs();
       
     }
+    // gets urm button from res folder and stores it in an array
     private void loadImgs(){
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.URM_BUTTONS);
         imgs = new BufferedImage[3];
@@ -25,6 +28,7 @@ public class UrmButton extends PauseButton{
         }
 
     }
+    //update the state of button in relation to the mouse input
     public void update(){
         index =0;
         if(mouseOver)
@@ -32,11 +36,15 @@ public class UrmButton extends PauseButton{
         if(mousePressed)
             index =2;
     } 
-      
+
+    //draw the button with its position
     public void draw (Graphics g){
         g.drawImage(imgs[index], x, y, URM_SIZE, URM_SIZE,  null);
     }
 
+        //getters and setters
+        
+    //reset the mouse inputs
     public void resetBooleans(){
         mouseOver =false;
         mousePressed =false;

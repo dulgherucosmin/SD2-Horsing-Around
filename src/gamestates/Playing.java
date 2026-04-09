@@ -41,6 +41,7 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    
     private boolean paused =false;
     public Playing(Game game) {
         super(game);
@@ -71,6 +72,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
+        //if game is not paused then update all features
         if(!paused){
         player1.update();
         player2.update();
@@ -93,6 +95,7 @@ public class Playing extends State implements StateMethods {
             levelComplete = true;
         }
     }
+    //if paused display pause overlay
     else{
         pauseOverlay.update();
     }
@@ -110,6 +113,7 @@ public class Playing extends State implements StateMethods {
         door.render(g);
         win.render(g, levelComplete);
 
+        //if paused then draw pause overlay
         if(paused){
         pauseOverlay.draw(g);
         }
@@ -128,7 +132,7 @@ public class Playing extends State implements StateMethods {
     public void mouseClicked(MouseEvent e) {
 
     }
-
+    //when the game is paused all mouse inputs direct to pause overlay
     @Override
     public void mousePressed(MouseEvent e) {
         if(paused)
@@ -174,6 +178,7 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_RIGHT:
                 player2.setRight(true);
                 break;
+                //when escape is pressed changes the vaue of paused 
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
                 break;
@@ -209,11 +214,13 @@ public class Playing extends State implements StateMethods {
                 break;
         }
     }
+
     public void mouseDragged (MouseEvent e){
         if(paused)
             pauseOverlay.mouseDragged(e);
     }
 
+    //sets paused to unpause when the play buttons is pressed
     public void unpauseGame(){
         paused = false;
     }
@@ -225,7 +232,15 @@ public class Playing extends State implements StateMethods {
         player2.resetDirBooleans();
 
     }
+    
 
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
 
     // getters for each player (hort)
     public Player getPlayer1() {

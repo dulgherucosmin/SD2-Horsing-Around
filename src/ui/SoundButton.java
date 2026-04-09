@@ -6,14 +6,18 @@ import static utilz.Constants.UI.PauseButtons.*;
 import utilz.LoadSave;
 
 public class SoundButton extends PauseButton {
+    //attributes for sound button
     private BufferedImage[][] soundImgs;
     private boolean mouseOver,mousePressed;
     private boolean muted;
     private int rowIndex, colIndex;
+    
+    //constructor
     public SoundButton(int x, int y, int width, int height){
         super(x, y, width, height);
         loadSoundImgs();
     }
+    //this gets cound button from res folder  and groups into array
     private void loadSoundImgs() {
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SOUND_BUTTONS);
         //two rows 3 columns
@@ -25,6 +29,7 @@ public class SoundButton extends PauseButton {
 
     }
 
+      //update the state of button using index in relation to the mouse input 
     public void update(){
         if(muted)
             rowIndex =1;
@@ -38,10 +43,12 @@ public class SoundButton extends PauseButton {
         if(mousePressed)
             colIndex = 2;
     }
+    //draw the sound buttons
     public void draw(Graphics g){
         g.drawImage(soundImgs[rowIndex][colIndex], x, y, width, height, null);
     }
 
+    //getters and setters
     public boolean isMouseOver() {
         return mouseOver;
     }

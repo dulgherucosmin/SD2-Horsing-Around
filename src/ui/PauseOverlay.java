@@ -19,6 +19,7 @@ import utilz.LoadSave;
 
 
 public class PauseOverlay {
+    //attributes for the pause menu
     private BufferedImage backgroundImg;
     private int bgX,bgY,bgW,bgH;
     private Game game;
@@ -27,6 +28,7 @@ public class PauseOverlay {
     private Playing playing;
     private VolumeButton volumeButton;
 
+    //constructor
     public PauseOverlay(Game game,Playing playing){
         this.playing = playing;
         this.game = game;
@@ -36,6 +38,7 @@ public class PauseOverlay {
         createVolumeButton();
     }
 
+    //this creates the sound and sfxbutton and positions it
     private void createSoundButtons() {
         int soundX=bgX + 130;
         int musicY=bgY + 85;
@@ -44,6 +47,7 @@ public class PauseOverlay {
         sfxButton =new SoundButton( soundX,sfxY,(int)(SOUND_SIZE*0.7f),(int)(SOUND_SIZE*0.7f));
     }
 
+    //creates and positions the unpause replay and menu buttons
     private void createUrmButtons(){
         int menuX=(int) (180*Game.SCALE);
         int replayX =(int) (235*Game.SCALE);
@@ -55,20 +59,24 @@ public class PauseOverlay {
         unpauseB =new UrmButton(unpauseX, bY,URM_SIZE, URM_SIZE,0);
     }
 
+    //this creates and positions  the slider button
     private void createVolumeButton(){
         int vX = (int)(170*Game.SCALE);
         int vY = (int) (187 *Game.SCALE);
         volumeButton = new VolumeButton(vX, vY, SLIDER_WIDTH, VOL_HEIGHT);
     }
 
+    //this loads the pause menu background
      private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_MENU);
+        //this reduces the size of the mennu to make it fit in screen
         bgW=(int)(backgroundImg.getWidth()*Game.SCALE*0.8f);
         bgH=(int)(backgroundImg.getHeight()*Game.SCALE*0.75f);
         bgX=Game.GAME_WIDTH/2  - bgW/2;
         bgY =Game.GAME_HEIGHT/2  - bgH/2;
     }
-        
+    
+    //update buttons
     public void update(){
         musicButton.update();
         sfxButton.update();
@@ -79,6 +87,7 @@ public class PauseOverlay {
         volumeButton.update();
     }
 
+    //draw the buttons
     public void draw(Graphics g){
         bgW=Math.min(bgW,GAME_WIDTH);
         bgH=Math.min(bgH,GAME_HEIGHT);
@@ -95,62 +104,78 @@ public class PauseOverlay {
         volumeButton.draw(g);
     }
 
+    //when mouse is pressed it checks what button was clicked and marks it as pressed
     public void mousePressed(MouseEvent e) {
         
         if(isIn(e, musicButton))
+            //toggle music button on /off
             musicButton.setMousePressed(true);
+            
         else if(isIn(e, sfxButton))
+            //toggle sound effects on /off
             sfxButton.setMousePressed(true);
 
         else if(isIn(e, menuB)){
+            //return to main menu
             menuB.setMousePressed(true);
         }
+
         else if(isIn(e, replayB)){
+            //replay current level
             replayB.setMousePressed(true);
         }
         else if(isIn(e, unpauseB)){
+            //resume game
             unpauseB.setMousePressed(true);
         }
         else if(isIn(e, volumeButton)){
+            //adjust button slider
             volumeButton.setMousePressed(true);
         }
 
     }
 
+    //when the mouse is released checks if it its on the button and then triggers action
     public void mouseReleased(MouseEvent e) {
 
         if(isIn(e, musicButton)){
             if(musicButton.isMousePressed()){
+                //toggle music mute button
                 musicButton.setMuted(!musicButton.isMuted());
             }
 
         }
         else if(isIn(e, sfxButton)){
             if(sfxButton.isMousePressed()){
-                sfxButton.setMuted(!sfxButton.isMuted());
+                //toggle sfxmute button
+                sfxButton.setMuted(!sfxButton.isMuted());//
             }
         }
         else if(isIn(e, menuB)){
             if(menuB.isMousePressed()){
+                //switches button to main menu
                Gamestate.state=Gamestate.MENU;
+                //unpause the game before leaving
                playing.unpauseGame(); 
             }
-        }
+        } 
 
         else if(isIn(e, replayB)){
             if(replayB.isMousePressed()){
+               
             System.out.println("replay level");
             } 
         }
 
         else if(isIn(e, unpauseB)){
             if(unpauseB.isMousePressed()){
+                //resume game
                playing.unpauseGame();
             }     
         }    
 
 
-
+        //resets all buttons 
         musicButton.resetBooleans();
         sfxButton.resetBooleans();
 
@@ -161,14 +186,18 @@ public class PauseOverlay {
 
     }
 
+    //when mouse is moved fro mbutton trigger action
     public void mouseMoved(MouseEvent e) {
+
+        // reset the button to not hovered
         musicButton.setMouseOver(false);
         sfxButton.setMouseOver(false);
         menuB.setMouseOver(false);
         replayB.setMouseOver(false);
         unpauseB.setMouseOver(false);
         volumeButton.setMouseOver(false);
- 
+        
+        //then maek only the button the mouse is currently over
         if(isIn(e, musicButton))
             musicButton.setMouseOver(true);
         else if(isIn(e, sfxButton))
@@ -184,14 +213,19 @@ public class PauseOverlay {
 
     }
 
+    //what happens when mouse is dragged
     public void mouseDragged(MouseEvent e){
+        //scale the mouse button to game resolution
         float scaleX =(float) game.getGamePanel().getWidth()/GAME_WIDTH;
         int mouseX = (int)(e.getX()/scaleX);
+        //only move slider if the button is clicked and held
         if(volumeButton.isMousePressed()){
+            //move the slider knob to follow the mouse
             volumeButton.changeX(mouseX);
         }
     }
 
+ //helps fix scaling of the buttons hover by converting mouse coordinates into out game dimensions and checks if the mouse hovers over the buttons bound
     private boolean isIn(MouseEvent e, PauseButton b){
         float scaleX =(float) game.getGamePanel().getWidth()/GAME_WIDTH;
         float scaleY =(float) game.getGamePanel().getHeight()/GAME_HEIGHT;
