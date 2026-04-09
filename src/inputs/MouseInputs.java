@@ -18,9 +18,16 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         this.gamePanel = gamePanel;
         
     }
-
+    //activates when the user clicks and holds while moving the mouse
     @Override
     public void mouseDragged(MouseEvent e) {
+        switch (Gamestate.state) {
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mouseDragged(e);
+                break;
+            default:
+                break;
+        }
     }
 
     // links mouse movement to current game state for hover effects

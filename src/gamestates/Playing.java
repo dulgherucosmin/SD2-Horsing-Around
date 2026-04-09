@@ -15,6 +15,7 @@ import entities.Player;
 import entities.Win;
 import levels.LevelManager;
 import main.Game;
+import ui.PauseOverlay;
 import utilz.LoadSave;
 
 public class Playing extends State implements StateMethods {
@@ -23,6 +24,7 @@ public class Playing extends State implements StateMethods {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
+    private PauseOverlay pauseOverlay;
 
     private Button button1;
     private Button button2;
@@ -42,6 +44,8 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    
+    private boolean paused =false;
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -51,7 +55,9 @@ public class Playing extends State implements StateMethods {
 
         // initialize level manager
         levelManager = new LevelManager(game);
-
+       //initializing pauseOverlay class
+        pauseOverlay = new PauseOverlay(game,this);
+      
         player1 = new Player(5, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
 
         // load level data (in this case level 1)
@@ -78,7 +84,8 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
-
+        //if game is not paused then update all features
+        if(!paused){
         player1.update();
         player2.update();
 
@@ -99,6 +106,12 @@ public class Playing extends State implements StateMethods {
             levelComplete = true;
         }
     }
+    //if paused display pause overlay
+    else{
+        pauseOverlay.update();
+    }
+       
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -111,6 +124,11 @@ public class Playing extends State implements StateMethods {
         door.render(g);
         win.render(g, levelComplete);
 
+        //if paused then draw pause overlay
+        if(paused){
+        pauseOverlay.draw(g);
+        }
+
         if (levelComplete) {
             g.setColor(new java.awt.Color(0, 0, 0, 150));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -118,27 +136,32 @@ public class Playing extends State implements StateMethods {
             g.setColor(java.awt.Color.WHITE);
             g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
         }
+       
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
-
+    //when the game is paused all mouse inputs direct to pause overlay
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseMoved(e);
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -166,8 +189,9 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_RIGHT:
                 player2.setRight(true);
                 break;
+                //when escape is pressed changes the vaue of paused 
             case KeyEvent.VK_ESCAPE:
-                Gamestate.state = Gamestate.MENU;
+                paused = !paused;
                 break;
 
         }
@@ -202,11 +226,31 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    public void mouseDragged (MouseEvent e){
+        if(paused)
+            pauseOverlay.mouseDragged(e);
+    }
+
+    //sets paused to unpause when the play buttons is pressed
+    public void unpauseGame(){
+        paused = false;
+    }
+  
+
     // resets the player movements when the game window is out of focus
     public void windowFocusLost() {
         player1.resetDirBooleans();
         player2.resetDirBooleans();
 
+    }
+    
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 
     // getters for each player (hort)
