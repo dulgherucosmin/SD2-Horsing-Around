@@ -35,7 +35,7 @@ public class Playing extends State implements StateMethods {
 
     private boolean levelComplete = false;
 
-    private int currentLevelNum = 2;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -66,7 +66,7 @@ public class Playing extends State implements StateMethods {
         float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
         float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
       
-        player1 = new Player(p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT);
+        player1 = new Player(p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT, "Horse");
 
         // load level data (in this case level 1)
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -74,7 +74,7 @@ public class Playing extends State implements StateMethods {
         // set players internal storage of level to the current loaded level (in this case level 1)
         player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT);
+        player2 = new Player(p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT, "Horse 2");
 
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
