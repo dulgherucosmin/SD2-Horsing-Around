@@ -1,12 +1,12 @@
+// Horsing Around
+// Group 9
+
 package main;
 
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
-
 import java.awt.Graphics;
-
-import entities.Player;
-import utilz.LoadSave;
+import gamestates.Gamestate;
+import gamestates.Menu;
+import gamestates.Playing;
 
 // handles the game loop, updating, rendering and the game setup
 public class Game implements Runnable {
@@ -15,23 +15,20 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
 
     private Thread gameThread;
+    private Playing playing;
+    private Menu menu;
 
     // target frames per second and updates per second
-    private final int FPS_SET = 60; // controls how often the screen is redrawn
+    private final int FPS_SET = 120; // controls how often the screen is redrawn
     private final int UPS_SET = 100; // controls how often the game logic runs
 
-    // player objects
-    private Player player1;
-    private Player player2;
-
-    public final static int TILE_DEFAULT_SIZE = 32; // base tile size before resizing
+    public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
+    public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
 
     // the number of tiles visible on screen
-    public final static int TILES_IN_WIDTH = 26;
-    public final static int TILES_IN_HEIGHT = 14;
-
-    public final static int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE); // the final tile size after scaling
+    public final static int TILES_IN_WIDTH = 32;
+    public final static int TILES_IN_HEIGHT = 18;
 
     // the final game resolution
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
@@ -52,8 +49,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player1 = new Player(200,200,LoadSave.PLAYER1_ATLAS, RIGHT);
-        player2 = new Player(400, 200, LoadSave.PLAYER2_ATLAS, LEFT);
+        playing = new Playing(this);
+        menu = new Menu(this);
     }
 
     private void startGameLoop() {
@@ -62,13 +59,36 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        player1.update();
-        player2.update();
+        // a check to see if the game is in a particular state
+        switch (Gamestate.state) {
+            case MENU:
+                menu.update();
+                break;
+            // if its in playing state
+            case PLAYING:
+                playing.update();
+                break;
+            case OPTIONS:
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
+        }
+
     }
 
     public void render(Graphics g) {
-        player1.render(g);
-        player2.render(g);
+        switch (Gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -76,32 +96,33 @@ public class Game implements Runnable {
 
         // calculates how long each frame should take
         double timePerFrame = 1000000000.0 / FPS_SET;
-        
+
         // calculates how long each update should take
         double timePerUpdate = 1000000000.0 / UPS_SET;
 
         // this stores the time of the previous loop iteration
         long previousTime = System.nanoTime();
-        
+
         // counts how many frames and updates happen per second
         int frames = 0;
         int updates = 0;
 
         long lastCheck = System.currentTimeMillis();
 
-        // these store how much "update time" and "frame time" has passed. note: these are accumulated values
-        double deltaU = 0; 
+        // these store how much "update time" and "frame time" has passed. note: these
+        // are accumulated values
+        double deltaU = 0;
         double deltaF = 0;
 
         // the main game loop
-        while(true) {
+        while (true) {
 
             // gets the current time at the start of this loop iteration
             long currentTime = System.nanoTime();
 
             deltaU += (currentTime - previousTime) / timePerUpdate; // how many updates should have happened
-            deltaF += (currentTime - previousTime) / timePerFrame;  // how many frames should have been rendered
-            
+            deltaF += (currentTime - previousTime) / timePerFrame; // how many frames should have been rendered
+
             // updates the previous time for the next loop iteration
             previousTime = currentTime;
 
@@ -122,7 +143,7 @@ public class Game implements Runnable {
             }
 
             // fps/ups counter
-            if(System.currentTimeMillis() - lastCheck >= 1000) {
+            if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;
@@ -133,17 +154,21 @@ public class Game implements Runnable {
 
     // resets the player movements when the game window is out of focus
     public void windowFocusLost() {
-        player1.resetDirBooleans();
-        player2.resetDirBooleans();
-
-    }
-    
-    // getters for each player (hort)
-    public Player getPlayer1() {
-        return player1;
+        if (Gamestate.state == Gamestate.PLAYING) {
+            playing.getPlayer1().resetDirBooleans();
+            playing.getPlayer2().resetDirBooleans();
+        }
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

@@ -1,0 +1,105 @@
+// Horsing Around
+// Group 9
+
+package tests;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import entities.Button;
+import entities.Door;
+import entities.Player;
+
+public class DoorTest {
+
+    @Test
+    public void doorClosedInit() { // door starts closed
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(0, 0);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        assertFalse(door.isOpen());
+    }
+
+    @Test
+    public void doorOpensWithButton() {
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(100, 100);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        Player player = new Player(0, 0, null, 0);
+        player.updateHitBoxRaw();
+
+        button1.update(player, player);
+
+        assertTrue(door.isOpen());
+    }
+
+    @Test
+    public void doorClosesWhenButtonsReleased() {
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(100, 100);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        Player player = new Player(0, 0, null, 0);
+        player.updateHitBoxRaw();
+
+        // press
+        button1.update(player, player);
+        assertTrue(door.isOpen());
+
+        // release (move player away)
+        Player moved = new Player(300, 300, null, 0);
+        moved.updateHitBoxRaw();
+
+        button1.update(moved, moved);
+
+        assertFalse(door.isOpen());
+    }
+
+    @Test
+    public void doorBlocksPlayer() {
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(0, 0);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        Player player = new Player(100, 100, null, 0);
+        player.updateHitBoxRaw();
+
+        assertTrue(door.isBlocking(player));
+    }
+
+    @Test
+    public void doorDoesNotBlockWhenOpen() {
+        Button button1 = new Button(100, 100);
+        Button button2 = new Button(0, 0);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        Player player = new Player(100, 100, null, 0);
+        player.updateHitBoxRaw();
+
+        button1.update(player, player);
+
+        assertFalse(door.isBlocking(player));
+    }
+
+    @Test
+    public void doorOpensIfEitherButtonPressed() {
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(200, 200);
+
+        Door door = new Door(100, 100, button1, button2);
+
+        Player player = new Player(200, 200, null, 0);
+        player.updateHitBoxRaw();
+
+        button2.update(player, player);
+
+        assertTrue(door.isOpen());
+    }
+}

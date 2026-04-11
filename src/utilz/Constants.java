@@ -3,7 +3,39 @@
 
 package utilz;
 
+import main.Game;
+
 public class Constants {
+
+    public static class UI {
+
+        public static class Buttons{
+            public static final int B_WIDTH_DEFAULT =140;
+            public static final int B_HEIGHT_DEFAULT =56;
+            public static final int B_WIDTH = (int)(B_WIDTH_DEFAULT*Game.SCALE);
+            public static final int B_HEIGHT = (int)(B_HEIGHT_DEFAULT*Game.SCALE);
+        }
+        public static class PauseButtons {
+            public static final int SOUND_SIZE_DEFAULT=42;
+            public static final int SOUND_SIZE=(int)(SOUND_SIZE_DEFAULT*Game.SCALE);
+
+        }
+        public static class UrmButtons{
+            public static final int URM_DEFAULT_SIZE =56;
+            public static final int URM_SIZE = (int) (URM_DEFAULT_SIZE* Game.SCALE*0.8);
+        }
+        public static class VolumeButtons{
+            public static final int VOL_DEFAULT_WIDTH = 28;
+            public static final int VOL_DEFAULT_HEIGHT = 44;
+            public static final int SLIDER_DEFAULT_WIDTH = 215;
+
+            public static final int VOL_WIDTH = (int)(VOL_DEFAULT_WIDTH*Game.SCALE);
+            public static final int VOL_HEIGHT = (int)(VOL_DEFAULT_HEIGHT*Game.SCALE*0.65f);
+            public static final int SLIDER_WIDTH = (int)(SLIDER_DEFAULT_WIDTH*Game.SCALE*0.8f);
+        }
+
+        
+    }
 
     public static class Directions {
         public static final int LEFT = 0;

@@ -1,7 +1,6 @@
 // Horsing Around
 // Group 9
 
-// do i really have to comment all this 0-0, im lazy
 package main;
 
 import java.awt.event.WindowEvent;
@@ -19,12 +18,12 @@ public class GameWindow {
 
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.add(gamePanel);
-        jframe.setLocationRelativeTo(null); // centers the window
         jframe.setTitle("Horsing Around"); // game name
         jframe.pack();
+        jframe.setLocationRelativeTo(null); // centers the window
         jframe.setVisible(true);
 
-        // this handles the focus lost (basically if u alt tab or something)
+        // this handles the focus lost (basically if u alt + tab or something)
         jframe.addWindowFocusListener(new WindowFocusListener() {
 
             @Override

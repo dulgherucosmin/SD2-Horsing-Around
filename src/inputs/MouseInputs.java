@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import gamestates.Gamestate;
 import main.GamePanel;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
@@ -17,27 +18,77 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         this.gamePanel = gamePanel;
         
     }
-
+    //activates when the user clicks and holds while moving the mouse
     @Override
     public void mouseDragged(MouseEvent e) {
+        switch (Gamestate.state) {
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mouseDragged(e);
+                break;
+            default:
+                break;
+        }
     }
 
+    // links mouse movement to current game state for hover effects
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getGame().getMenu().mouseMoved(e);
+                break;
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mouseMoved(e);
+                break;
+            
+            default:
+                break; 
+        }
     }
 
+    // links mouse click to current gamestate
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse Clicked");
+        switch (Gamestate.state) {
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mouseClicked(e);
+                break;
+            
+            default:
+                break; 
+        }
     }
 
+    // links mouse press to current gamestate
     @Override
     public void mousePressed(MouseEvent e) {
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getGame().getMenu().mousePressed(e);
+                break;
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mousePressed(e);
+                break;
+            
+            default:
+                break; 
+        }
     }
 
+    // links mouse released to current gamestate
     @Override
     public void mouseReleased(MouseEvent e) {
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getGame().getMenu().mouseReleased(e);
+                break;
+            case PLAYING:
+                gamePanel.getGame().getPlaying().mouseReleased(e);
+                break;
+            
+            default:
+                break; 
+        }
     }
 
     @Override
