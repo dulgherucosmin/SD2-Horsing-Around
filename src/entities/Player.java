@@ -12,7 +12,7 @@ import static utilz.Constants.PlayerConstants.IDLE_RIGHT;
 import static utilz.Constants.PlayerConstants.WALK_LEFT;
 import static utilz.Constants.PlayerConstants.WALK_RIGHT;
 import static utilz.Utils.canMove;
-import static utilz.Utils.collidesWithOtherPlayer;
+import static utilz.Utils.collidesWithHitBox;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -166,8 +166,8 @@ public class Player extends Entity {
 
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel);
-            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, otherPlayerHitBox);
-            boolean boxCollisionVertical = boxHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, boxHitBox);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithHitBox(x, y + airSpeed, width, height, otherPlayerHitBox);
+            boolean boxCollisionVertical = boxHitBox != null && collidesWithHitBox(x, y + airSpeed, width, height, boxHitBox);
 
             if (!jumpHeld && airSpeed < jumpCutSpeed) {
                 airSpeed = jumpCutSpeed;
@@ -184,8 +184,8 @@ public class Player extends Entity {
                     // canMove will be false once they touch the ground/a tile
                     // also run a check to see if player is blocked by a tile or collides with another player
                     while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) 
-                            && !collidesWithOtherPlayer(x, y + 1, width, height, otherPlayerHitBox)
-                            && !collidesWithOtherPlayer(x, y + 1, width, height, boxHitBox))
+                            && !collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox)
+                            && !collidesWithHitBox(x, y + 1, width, height, boxHitBox))
                         {
                         y += 1;
                     }
@@ -207,8 +207,8 @@ public class Player extends Entity {
         if (xSpeed != 0) {
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
-            boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, otherPlayerHitBox);
-            boolean boxCollisionHorizontal = boxHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, boxHitBox);
+            boolean playerCollision = otherPlayerHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, otherPlayerHitBox);
+            boolean boxCollisionHorizontal = boxHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, boxHitBox);
 
             if (!tileCollision && !playerCollision && !boxCollisionHorizontal) {
                 x += xSpeed;

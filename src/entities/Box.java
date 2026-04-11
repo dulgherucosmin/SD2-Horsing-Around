@@ -18,7 +18,7 @@ public class Box extends Entity {
     private boolean inAir = true;
 
     // how fast the box moves when it's pushed
-    private final float pushSpeed = 1f;
+    private final float pushSpeed = 0.7f;
 
     private int[][] currentLevelData;
     private int currentLevel;
