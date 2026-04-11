@@ -46,7 +46,7 @@ public class Player extends Entity {
     // Jumping and gravity
     private float airSpeed = 0f;
     private float gravity = 0.15f;
-    private float jumpSpeed = -4.0f;
+    private float jumpSpeed = -3.8f;
     private boolean inAir = false;
 
     private boolean jumpHeld = false;
@@ -61,6 +61,7 @@ public class Player extends Entity {
 
     //
     private Rectangle otherPlayerHitBox;
+    private Rectangle boxHitBox;
 
     public Player(float x, float y, String spritePath, int startDir) {
         // width and height here are hitbox sizes
@@ -166,13 +167,14 @@ public class Player extends Entity {
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel);
             boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, otherPlayerHitBox);
+            boolean boxCollisionVertical = boxHitBox != null && collidesWithOtherPlayer(x, y + airSpeed, width, height, boxHitBox);
 
             if (!jumpHeld && airSpeed < jumpCutSpeed) {
                 airSpeed = jumpCutSpeed;
             }
 
             // check if player can move to the next vertical position
-            if (!tileCollision && !playerCollision) {
+            if (!tileCollision && !playerCollision && !boxCollisionVertical) {
                 // nothing blocking vertically, continue moving up or falling down
                 y += airSpeed;
 
@@ -181,7 +183,10 @@ public class Player extends Entity {
                     // player fell and hit a solid tile, fall down 1px until they touch the ground/ a tile
                     // canMove will be false once they touch the ground/a tile
                     // also run a check to see if player is blocked by a tile or collides with another player
-                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) && !collidesWithOtherPlayer(x, y + 1, width, height, otherPlayerHitBox)) {
+                    while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) 
+                            && !collidesWithOtherPlayer(x, y + 1, width, height, otherPlayerHitBox)
+                            && !collidesWithOtherPlayer(x, y + 1, width, height, boxHitBox))
+                        {
                         y += 1;
                     }
                 }
@@ -203,8 +208,9 @@ public class Player extends Entity {
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
             boolean playerCollision = otherPlayerHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, otherPlayerHitBox);
+            boolean boxCollisionHorizontal = boxHitBox != null && collidesWithOtherPlayer(x + xSpeed, y, width, height, boxHitBox);
 
-            if (!tileCollision && !playerCollision) {
+            if (!tileCollision && !playerCollision && !boxCollisionHorizontal) {
                 x += xSpeed;
                 moving = true;
             }
@@ -235,6 +241,10 @@ public class Player extends Entity {
     // helper method to set other players hitbox
     public void setOtherPlayerHitBox(Rectangle otherPlayerHitBox) {
         this.otherPlayerHitBox = otherPlayerHitBox;
+    }
+
+    public void setBoxHitBox(Rectangle boxHitBox) {
+        this.boxHitBox = boxHitBox;
     }
 
     // this resets all the movement inputs when game is out of focus
@@ -286,5 +296,10 @@ public class Player extends Entity {
 
     public float getAirSpeed(){
         return airSpeed;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+        updateHitBox(); 
     }
 }

@@ -19,6 +19,10 @@ public class Utils {
         // anything not in this list is either air (0) or a background tile (passable)
         solidTilesByLevel.put(1, new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23
+        )));  
+        
+        solidTilesByLevel.put(2, new HashSet<>(Arrays.asList(
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23
         )));    
     }
 
@@ -86,5 +90,13 @@ public class Utils {
         Rectangle nextPos = new Rectangle((int)hbX, (int)hbY, width, height);
         // check if this new hitbox will collide with the player2 hitbox
         return nextPos.intersects(otherHitBox);
+    }
+
+    // for entities that don't use the sprite offset system (e.g. Box)
+    public static boolean canMoveRaw(float x, float y, int width, int height, int[][] levelData, int currentLevel) {
+        return !isSolid(x, y, levelData, currentLevel)
+                && !isSolid(x + width - 1, y, levelData, currentLevel)
+                && !isSolid(x, y + height - 1, levelData, currentLevel)
+                && !isSolid(x + width - 1, y + height - 1, levelData, currentLevel);
     }
 }

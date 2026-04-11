@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import entities.Box;
 import entities.Button;
 import entities.Door;
 import entities.Player;
@@ -30,7 +31,11 @@ public class Playing extends State implements StateMethods {
     private Button button2;
     private Door door;
     private Win win;
+    private Box box;
+
     private boolean levelComplete = false;
+
+    private int currentLevelNum = 2;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -54,11 +59,14 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
 
         // initialize level manager
-        levelManager = new LevelManager(game);
+        levelManager = new LevelManager(game, currentLevelNum);
        //initializing pauseOverlay class
         pauseOverlay = new PauseOverlay(game,this);
+
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
       
-        player1 = new Player(5, 1, LoadSave.PLAYER1_ATLAS, RIGHT);
+        player1 = new Player(p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT);
 
         // load level data (in this case level 1)
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -66,7 +74,7 @@ public class Playing extends State implements StateMethods {
         // set players internal storage of level to the current loaded level (in this case level 1)
         player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(40, 1, LoadSave.PLAYER2_ATLAS, RIGHT);
+        player2 = new Player(p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT);
 
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
@@ -80,48 +88,82 @@ public class Playing extends State implements StateMethods {
 
         door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
         win = new Win(455, 190);
+
+        box = new Box(16 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
+        box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+
+        player1.setBoxHitBox(box.getHitbox());
+        player2.setBoxHitBox(box.getHitbox());
+    }
+
+    private float[] getSpawnPoint(int player, int level) {
+        switch (level) {
+            case 1: // level 1 spawns
+                if (player == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            case 2: // level 2 spawns
+                if (player == 1) {
+                    return new float[]{2 * 16, 3 * 16};
+                } else {
+                    return new float[]{4 * 16, 3 * 16};
+                }
+            default:
+                return new float[]{0, 0};
+        }
     }
 
     @Override
     public void update() {
         //if game is not paused then update all features
-        if(!paused){
-        player1.update();
-        player2.update();
+        if(!paused) {
+            player1.update();
+            player2.update();
 
-        button1.update(player1, player2);
-        button2.update(player1, player2);
-        door.update();
+            button1.update(player1, player2);
+            button2.update(player1, player2);
+            door.update();
 
-        // door collision checks.
-        if (door.isBlocking(player1)) {
-            player1.undoMove();
+            if (box != null) {
+                box.update(player1, player2);
+            }
+
+            // door collision checks.
+            if (door.isBlocking(player1)) {
+                player1.undoMove();
+            }
+
+            if (door.isBlocking(player2)) {
+                player2.undoMove();
+            }
+
+            if (win.completed(player1, player2)) {
+                levelComplete = true;
+            }
+
+        //if paused display pause overlay
+        } else {
+            pauseOverlay.update();
         }
-
-        if (door.isBlocking(player2)) {
-            player2.undoMove();
-        }
-
-        if (win.completed(player1, player2)) {
-            levelComplete = true;
-        }
-    }
-    //if paused display pause overlay
-    else{
-        pauseOverlay.update();
-    }
        
     }
 
     @Override
     public void draw(Graphics g) {
         // render level 1
-        levelManager.drawLevel(g, 1);
+        levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
         button1.render(g);
         button2.render(g);
         door.render(g);
+
+        if (box != null) {
+            box.render(g);
+        }
+
         win.render(g, levelComplete);
 
         //if paused then draw pause overlay
