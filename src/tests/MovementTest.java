@@ -37,7 +37,7 @@ public class MovementTest {
     @Test
     public void testJumpInAir() {
 
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -57,7 +57,7 @@ public class MovementTest {
     //testing gravity
     @Test
     public void testGravity() {
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -95,7 +95,7 @@ public class MovementTest {
     // this checks if the player actually still in the air after jumping
     @Test
     public void testLanding(){
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());

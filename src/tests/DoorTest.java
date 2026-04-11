@@ -29,7 +29,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, button1, button2);
 
-        Player player = new Player(0, 0, null, 0);
+        Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
 
         button1.update(player, player);
@@ -44,7 +44,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, button1, button2);
 
-        Player player = new Player(0, 0, null, 0);
+        Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
 
         // press
@@ -52,7 +52,7 @@ public class DoorTest {
         assertTrue(door.isOpen());
 
         // release (move player away)
-        Player moved = new Player(300, 300, null, 0);
+        Player moved = new Player(1, 300, 300, null, 0, "Test");
         moved.updateHitBoxRaw();
 
         button1.update(moved, moved);
@@ -67,7 +67,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, button1, button2);
 
-        Player player = new Player(100, 100, null, 0);
+        Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
 
         assertTrue(door.isBlocking(player));
@@ -80,7 +80,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, button1, button2);
 
-        Player player = new Player(100, 100, null, 0);
+        Player player = new Player(1, 100, 100, null, 0, "Test");
         player.updateHitBoxRaw();
 
         button1.update(player, player);
@@ -95,7 +95,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, button1, button2);
 
-        Player player = new Player(200, 200, null, 0);
+        Player player = new Player(1, 200, 200, null, 0, "Test");
         player.updateHitBoxRaw();
 
         button2.update(player, player);

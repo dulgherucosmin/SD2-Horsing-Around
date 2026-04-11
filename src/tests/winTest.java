@@ -13,8 +13,8 @@ public class winTest {
     public void winTrueWhenBothPlayersInside() {
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(100, 100, null, 0);
-        Player player2 = new Player(100, 100, null, 0);
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 100, 100, null, 0, "Test");
 
         assertTrue(win.completed(player1, player2));
     }
@@ -23,8 +23,8 @@ public class winTest {
     public void winFalseWithOnePlayer() {
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(100, 100, null, 0);
-        Player player2 = new Player(300, 300, null, 0);
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 300, 300, null, 0, "Test");
 
         assertFalse(win.completed(player1, player2));
     }
@@ -33,8 +33,8 @@ public class winTest {
     public void winFalseWhenBothPlayersOutside() {
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(100, 100, null, 0);
-        Player player2 = new Player(300, 300, null, 0);
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 300, 300, null, 0, "Test");
 
         assertFalse(win.completed(player1, player2));
     }
