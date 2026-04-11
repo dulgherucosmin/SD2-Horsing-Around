@@ -83,7 +83,13 @@ public class Utils {
     }
 
     // checks if moving to a new position would overlap the other player's hitbox
-    public static boolean collidesWithOtherPlayer(float x, float y, int width, int height, Rectangle otherHitBox) {
+    public static boolean collidesWithHitBox(float x, float y, int width, int height, Rectangle otherHitBox) {
+
+        // return false if there's no other entity to collide with
+        if (otherHitBox == null) {
+            return false;
+        }
+
         float hbX = x + (Entity.SPRITE_WIDTH - width) / 2f;
         float hbY = y + (Entity.SPRITE_HEIGHT - height);
         // create a hitbox for the position we want to move to
