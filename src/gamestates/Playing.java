@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import entities.Box;
 import entities.Button;
 import entities.Door;
 import entities.Player;
@@ -30,6 +31,8 @@ public class Playing extends State implements StateMethods {
     private Button button2;
     private Door door;
     private Win win;
+    private Box box;
+
     private boolean levelComplete = false;
 
     private int currentLevelNum = 2;
@@ -85,6 +88,12 @@ public class Playing extends State implements StateMethods {
 
         door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
         win = new Win(455, 190);
+
+        box = new Box(16 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
+        box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+
+        player1.setBoxHitBox(box.getHitbox());
+        player2.setBoxHitBox(box.getHitbox());
     }
 
     private float[] getSpawnPoint(int player, int level) {
@@ -109,31 +118,35 @@ public class Playing extends State implements StateMethods {
     @Override
     public void update() {
         //if game is not paused then update all features
-        if(!paused){
-        player1.update();
-        player2.update();
+        if(!paused) {
+            player1.update();
+            player2.update();
 
-        button1.update(player1, player2);
-        button2.update(player1, player2);
-        door.update();
+            button1.update(player1, player2);
+            button2.update(player1, player2);
+            door.update();
 
-        // door collision checks.
-        if (door.isBlocking(player1)) {
-            player1.undoMove();
+            if (box != null) {
+                box.update(player1, player2);
+            }
+
+            // door collision checks.
+            if (door.isBlocking(player1)) {
+                player1.undoMove();
+            }
+
+            if (door.isBlocking(player2)) {
+                player2.undoMove();
+            }
+
+            if (win.completed(player1, player2)) {
+                levelComplete = true;
+            }
+
+        //if paused display pause overlay
+        } else {
+            pauseOverlay.update();
         }
-
-        if (door.isBlocking(player2)) {
-            player2.undoMove();
-        }
-
-        if (win.completed(player1, player2)) {
-            levelComplete = true;
-        }
-    }
-    //if paused display pause overlay
-    else{
-        pauseOverlay.update();
-    }
        
     }
 
@@ -146,6 +159,11 @@ public class Playing extends State implements StateMethods {
         button1.render(g);
         button2.render(g);
         door.render(g);
+
+        if (box != null) {
+            box.render(g);
+        }
+
         win.render(g, levelComplete);
 
         //if paused then draw pause overlay
