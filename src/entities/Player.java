@@ -198,8 +198,15 @@ public class Player extends Entity {
         } else {
             // check if theres a solid tile beneath
             if (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
+
+                boolean standingOnOtherPlayer = otherPlayerHitBox != null && collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox);
+                boolean standingOnBox = boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox);
+
                 // no solid tile, player has fallen off
-                inAir = true;
+
+                if (!standingOnOtherPlayer && !standingOnBox) {
+                    inAir = true;
+                }
             }
         }
 
