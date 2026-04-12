@@ -89,9 +89,9 @@ public class Playing extends State implements StateMethods {
         player1.setOtherPlayerHitBox(player2.getHitbox());
         player2.setOtherPlayerHitBox(player1.getHitbox());
         
-        setupLevelObjects();
-        syncPlayersToCurrentLevel();
-        setupBoxForCurrentLevel();
+        setupLevelObjects(); //setup buttons, doors and win condition.
+        syncPlayersToCurrentLevel(); //load level data for players
+        setupBoxForCurrentLevel();//setup box (box only exists in level 2)
     }
 
     private float[] getSpawnPoint(int player, int level) {
@@ -160,7 +160,7 @@ public class Playing extends State implements StateMethods {
         }
     }
 
-    private void loadNextLevel(){
+    private void loadNextLevel(){ //loads next level (level 2)
         currentLevelNum = 2;
         levelManager.initLevel(currentLevelNum);
         setupLevelObjects();
@@ -168,6 +168,7 @@ public class Playing extends State implements StateMethods {
         float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
         float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
 
+        //resets players to spawn.
         player1.setX(p1Spawn[0]);
         player1.setY(p1Spawn[1]);
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -180,14 +181,17 @@ public class Playing extends State implements StateMethods {
         player2.setCurentLevel(Level.level);
         player2.unlockMovement();
 
+        //reconnect player collision
         player1.setOtherPlayerHitBox(player2.getHitbox());
         player2.setOtherPlayerHitBox(player1.getHitbox());
+
+        //setup box for new level
         setupBoxForCurrentLevel();
     
         levelComplete = false;
     }
 
-    private void setupBoxForCurrentLevel() {
+    private void setupBoxForCurrentLevel() { //creates or removes box depending on level
     if (currentLevelNum == 2) {
             box = new Box(18 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
             box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
@@ -206,18 +210,21 @@ public class Playing extends State implements StateMethods {
     public void update() {
         //if game is not paused then update all features
         if(!paused) {
-            if(!levelComplete){
+            if(!levelComplete){ //only update movement if level not complete
                 player1.update();
                 player2.update();
             }
 
+            //update buttons, pressed by players or box.
             if (button1 != null) button1.update(player1, player2, box);
             if (button2 != null) button2.update(player1, player2, box);
             if (button3 != null) button3.update(player1, player2, box);
 
+            //update doors
             if (door1 != null) door1.update();
             if (door2 != null) door2.update();
 
+            //update box movement
             if (box != null) {
                 box.update(player1, player2);
             }
@@ -230,6 +237,7 @@ public class Playing extends State implements StateMethods {
                 player2.undoMove();
             }
 
+            //check win condition
             if (!levelComplete && win != null && win.completed(player1, player2)) {
                 levelComplete = true;
                 levelCompleteTime = System.currentTimeMillis();
@@ -238,7 +246,7 @@ public class Playing extends State implements StateMethods {
                 player2.lockMovement();
         }
 
-            // handle delayed level transition
+            //delayed level transition
             if (levelComplete) {
                 long currentTime = System.currentTimeMillis();
 
@@ -246,7 +254,7 @@ public class Playing extends State implements StateMethods {
                 if(currentLevelNum ==1){
                     loadNextLevel();
                 }
-                    else if(currentLevelNum == 2){
+                    else if(currentLevelNum == 2){  //bring players back to main menu
                         Gamestate.state = Gamestate.MENU;
                     }
                 }

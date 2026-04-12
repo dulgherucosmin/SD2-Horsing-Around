@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import entities.Button;
 import entities.Player;
+import entities.Box;
 
 public class ButtonTest {
 
@@ -27,7 +28,7 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2);
+      button.update(p1, p2, null);
 
       assertTrue(button.isPressed());
    }
@@ -42,7 +43,7 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2);
+      button.update(p1, p2, null);
 
       assertFalse(button.isPressed());
    }
@@ -57,8 +58,27 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2);
+      button.update(p1, p2, null);
 
       assertTrue(button.isPressed());
    }
+
+   @Test
+    public void buttonPressedByBox() {
+        Button button = new Button(0, 0);
+
+        Player p1 = new Player(100, 100, null, 0);
+        Player p2 = new Player(200, 200, null, 0);
+        p1.updateHitBoxRaw();
+        p2.updateHitBoxRaw();
+
+        // Place the box lower so it overlaps the button hitbox,
+        // since Button.update uses y + yOffset for the button hitbox.
+        Box box = new Box(0, 0, "box.png");
+        box.updateHitBoxRaw();
+
+        button.update(p1, p2, box);
+
+        assertTrue(button.isPressed());
+    }
 }
