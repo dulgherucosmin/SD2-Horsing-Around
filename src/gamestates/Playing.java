@@ -40,7 +40,7 @@ public class Playing extends State implements StateMethods {
     private long levelCompleteTime = 0;
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
-    private int currentLevelNum = 1;
+    private int currentLevelNum = 2;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -129,7 +129,7 @@ public class Playing extends State implements StateMethods {
         button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
         button3 = new Button(14 * TILES_SIZE, 15 * TILES_SIZE);
 
-        door1 = new Door(10 * TILES_SIZE, 11 * TILES_SIZE, 3, button3);
+        door1 = new Door(11 * TILES_SIZE, 13 * TILES_SIZE, 3, button3);
         door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, 3, button1, button2);
 
         win = new Win(30 * TILES_SIZE, 12 * TILES_SIZE);
