@@ -37,6 +37,8 @@ public class Playing extends State implements StateMethods {
     private Box box;
 
     private boolean levelComplete = false;
+    private long levelCompleteTime = 0;
+    private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
     private int currentLevelNum = 1;
 
@@ -230,10 +232,24 @@ public class Playing extends State implements StateMethods {
 
             if (!levelComplete && win != null && win.completed(player1, player2)) {
                 levelComplete = true;
+                levelCompleteTime = System.currentTimeMillis();
 
                 player1.lockMovement();
                 player2.lockMovement();
-                loadNextLevel();
+        }
+
+            // handle delayed level transition
+            if (levelComplete) {
+                long currentTime = System.currentTimeMillis();
+
+            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
+                if(currentLevelNum ==1){
+                    loadNextLevel();
+                }
+                    else if(currentLevelNum == 2){
+                        Gamestate.state = Gamestate.MENU;
+                    }
+                }
             }
 
         //if paused display pause overlay
