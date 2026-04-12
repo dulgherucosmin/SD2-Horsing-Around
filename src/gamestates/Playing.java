@@ -29,7 +29,9 @@ public class Playing extends State implements StateMethods {
 
     private Button button1;
     private Button button2;
-    private Door door;
+    private Button button3;
+    private Door door1;
+    private Door door2;
     private Win win;
     private Box box;
 
@@ -83,17 +85,11 @@ public class Playing extends State implements StateMethods {
         player1.setOtherPlayerHitBox(player2.getHitbox());
         player2.setOtherPlayerHitBox(player1.getHitbox());
 
-        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
-        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
-
-        door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
-        win = new Win(455, 190);
-
-        box = new Box(16 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
-        box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
 
         player1.setBoxHitBox(box.getHitbox());
         player2.setBoxHitBox(box.getHitbox());
+        
+        setupLevelObjects();
     }
 
     private float[] getSpawnPoint(int player, int level) {
@@ -115,6 +111,29 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    private void setupLevelObjects(){
+        if (currentLevelNum == 1) {
+        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+        button3 = new Button(-1000, -1000);
+
+        door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
+        door2 = new Door(-1000, -1000, button3);
+
+        win = new Win(455, 190);
+
+      } else if (currentLevelNum == 2) {
+        button1 = new Button(16 * TILES_SIZE, 4 * TILES_SIZE);
+        button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
+        button3 = new Button(14 * TILES_SIZE, 14 * TILES_SIZE);
+
+        door1 = new Door(10 * TILES_SIZE, 11 * TILES_SIZE, button3);
+        door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, button1, button2);
+
+        win = new Win(455, 160);
+     }
+    }
+
     @Override
     public void update() {
         //if game is not paused then update all features
@@ -122,21 +141,15 @@ public class Playing extends State implements StateMethods {
             player1.update();
             player2.update();
 
-            button1.update(player1, player2);
-            button2.update(player1, player2);
-            door.update();
+            if (button1 != null) button1.update(player1, player2, box);
+            if (button2 != null) button2.update(player1, player2, box);
+            if (button3 != null) button3.update(player1, player2, box);
+
+            if (door1 != null) door1.update();
+            if (door2 != null) door2.update();
 
             if (box != null) {
                 box.update(player1, player2);
-            }
-
-            // door collision checks.
-            if (door.isBlocking(player1)) {
-                player1.undoMove();
-            }
-
-            if (door.isBlocking(player2)) {
-                player2.undoMove();
             }
 
             if (win.completed(player1, player2)) {
@@ -156,9 +169,12 @@ public class Playing extends State implements StateMethods {
         levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
-        button1.render(g);
-        button2.render(g);
-        door.render(g);
+        if (button1 != null) button1.render(g);
+        if (button2 != null) button2.render(g);
+        if (button3 != null) button3.render(g);
+
+        if (door1 != null) door1.render(g);
+        if (door2 != null) door2.render(g);
 
         if (box != null) {
             box.render(g);
