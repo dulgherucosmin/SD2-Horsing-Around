@@ -17,7 +17,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         assertFalse(door.isOpen());
     }
@@ -27,7 +27,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(0, 0, null, 0);
         player.updateHitBoxRaw();
@@ -42,7 +42,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(200, 200, null, 0);
         player.updateHitBoxRaw();
@@ -56,7 +56,7 @@ public class DoorTest {
     public void oneButtonDoorOpensWithItsButton() {
         Button button1 = new Button(0, 0);
 
-        Door door = new Door(100, 100, button1);
+        Door door = new Door(100, 100, 4, button1);
 
         Player player = new Player(0, 0, null, 0);
         player.updateHitBoxRaw();
@@ -71,7 +71,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(0, 0, null, 0);
         player.updateHitBoxRaw();
@@ -92,7 +92,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(100, 100, null, 0);
         player.updateHitBoxRaw();
@@ -105,7 +105,7 @@ public class DoorTest {
         Button button1 = new Button(100, 100);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(100, 100, null, 0);
         player.updateHitBoxRaw();
@@ -119,7 +119,7 @@ public class DoorTest {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(200, 200, null, 0);
         player.updateHitBoxRaw();

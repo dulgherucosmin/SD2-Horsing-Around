@@ -20,7 +20,7 @@ public class Game implements Runnable {
 
     // target frames per second and updates per second
     private final int FPS_SET = 120; // controls how often the screen is redrawn
-    private final int UPS_SET = 60; // controls how often the game logic runs
+    private final int UPS_SET = 100; // controls how often the game logic runs
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor

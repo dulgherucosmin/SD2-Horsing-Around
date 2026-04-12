@@ -164,7 +164,7 @@ public class Box extends Entity {
 
     public void render(Graphics g) {
         if (sprite != null) {
-            g.drawImage(sprite, (int) x, (int) y, 32, 32, null);
+            g.drawImage(sprite, (int) x, (int) y + 2, 32, 32, null);
 
         } else {
             g.setColor(Color.GREEN);

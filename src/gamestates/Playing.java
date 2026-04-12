@@ -119,20 +119,20 @@ public class Playing extends State implements StateMethods {
         button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
         button3 = new Button(-1000, -1000);
 
-        door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
-        door2 = new Door(-1000, -1000, button3);
+        door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, 4, button1, button2);
+        door2 = new Door(-1000, -1000, 3,  button3);
 
         win = new Win(455, 190);
 
       } else if (currentLevelNum == 2) {
         button1 = new Button(16 * TILES_SIZE, 4 * TILES_SIZE);
         button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
-        button3 = new Button(14 * TILES_SIZE, 14 * TILES_SIZE);
+        button3 = new Button(14 * TILES_SIZE, 15 * TILES_SIZE);
 
-        door1 = new Door(10 * TILES_SIZE, 11 * TILES_SIZE, button3);
-        door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, button1, button2);
+        door1 = new Door(10 * TILES_SIZE, 11 * TILES_SIZE, 3, button3);
+        door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, 3, button1, button2);
 
-        win = new Win(455, 160);
+        win = new Win(30 * TILES_SIZE, 12 * TILES_SIZE);
      }
     }
 
