@@ -18,6 +18,7 @@ import levels.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 import utilz.LoadSave;
+import levels.Level;
 
 public class Playing extends State implements StateMethods {
 
@@ -29,13 +30,17 @@ public class Playing extends State implements StateMethods {
 
     private Button button1;
     private Button button2;
-    private Door door;
+    private Button button3;
+    private Door door1;
+    private Door door2;
     private Win win;
     private Box box;
 
     private boolean levelComplete = false;
+    private long levelCompleteTime = 0;
+    private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
-    private int currentLevelNum = 2;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -49,6 +54,7 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    private static final int SECOND_LEVEL = 2;
     
     private boolean paused =false;
     public Playing(Game game) {
@@ -82,18 +88,10 @@ public class Playing extends State implements StateMethods {
         // set hitboxes for collision detection
         player1.setOtherPlayerHitBox(player2.getHitbox());
         player2.setOtherPlayerHitBox(player1.getHitbox());
-
-        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
-        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
-
-        door = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
-        win = new Win(455, 190);
-
-        box = new Box(16 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
-        box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
-
-        player1.setBoxHitBox(box.getHitbox());
-        player2.setBoxHitBox(box.getHitbox());
+        
+        setupLevelObjects(); //setup buttons, doors and win condition.
+        syncPlayersToCurrentLevel(); //load level data for players
+        setupBoxForCurrentLevel();//setup box (box only exists in level 2)
     }
 
     private float[] getSpawnPoint(int player, int level) {
@@ -115,32 +113,151 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    private void setupLevelObjects(){
+        if (currentLevelNum == 1) {
+        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+        button3 = new Button(-1000, -1000);
+
+        door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, button1, button2);
+        door2 = new Door(-1000, -1000, button3);
+
+        win = new Win(455, 190);
+
+      } else if (currentLevelNum == 2) {
+        button1 = new Button(16 * TILES_SIZE, 4 * TILES_SIZE);
+        button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
+        button3 = new Button(14 * TILES_SIZE, 14 * TILES_SIZE);
+
+        door1 = new Door(10 * TILES_SIZE, 11 * TILES_SIZE, button3);
+        door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, button1, button2);
+
+        win = new Win(455, 160);
+     }
+    }
+
+    private void syncPlayersToCurrentLevel(){
+        int [][] levelData = levelManager.getCurrentLevel().getLevelData();
+        int currentLevelNum = levelManager.getCurrentLevel().getLevelNumber();
+
+        player1.loadLevelData(levelData);
+        player1.setCurentLevel(currentLevelNum);
+
+        player2.loadLevelData(levelData);
+        player2.setCurentLevel(currentLevelNum);
+    }
+
+    private void completeLevel(){
+        levelComplete = true;
+        paused = false;
+
+        player1.lockMovement();
+        player2.lockMovement();
+
+        if (levelManager.getCurrentLevel().getLevelNumber() != SECOND_LEVEL){
+            levelManager.initLevel(SECOND_LEVEL);
+            syncPlayersToCurrentLevel();
+        }
+    }
+
+    private void loadNextLevel(){ //loads next level (level 2)
+        currentLevelNum = 2;
+        levelManager.initLevel(currentLevelNum);
+        setupLevelObjects();
+
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
+
+        //resets players to spawn.
+        player1.setX(p1Spawn[0]);
+        player1.setY(p1Spawn[1]);
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player1.setCurentLevel(Level.level);
+        player1.unlockMovement();
+
+        player2.setX(p2Spawn[0]);
+        player2.setY(p2Spawn[1]);
+        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player2.setCurentLevel(Level.level);
+        player2.unlockMovement();
+
+        //reconnect player collision
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+
+        //setup box for new level
+        setupBoxForCurrentLevel();
+    
+        levelComplete = false;
+    }
+
+    private void setupBoxForCurrentLevel() { //creates or removes box depending on level
+    if (currentLevelNum == 2) {
+            box = new Box(18 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
+            box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+
+            player1.setBoxHitBox(box.getHitbox());
+            player2.setBoxHitBox(box.getHitbox());
+        } else {
+            box = null;
+
+            player1.setBoxHitBox(null);
+            player2.setBoxHitBox(null);
+        }
+    }
+
     @Override
     public void update() {
         //if game is not paused then update all features
         if(!paused) {
-            player1.update();
-            player2.update();
+            if(!levelComplete){ //only update movement if level not complete
+                player1.update();
+                player2.update();
+            }
 
-            button1.update(player1, player2);
-            button2.update(player1, player2);
-            door.update();
+            //update buttons, pressed by players or box.
+            if (button1 != null) button1.update(player1, player2, box);
+            if (button2 != null) button2.update(player1, player2, box);
+            if (button3 != null) button3.update(player1, player2, box);
 
+            //update doors
+            if (door1 != null) door1.update();
+            if (door2 != null) door2.update();
+
+            //update box movement
             if (box != null) {
                 box.update(player1, player2);
             }
-
-            // door collision checks.
-            if (door.isBlocking(player1)) {
+            // door collision checks
+            if (door1.isBlocking(player1) || door2.isBlocking(player1)) {
                 player1.undoMove();
             }
 
-            if (door.isBlocking(player2)) {
+            if (door1.isBlocking(player2) || door2.isBlocking(player2)) {
                 player2.undoMove();
             }
 
-            if (win.completed(player1, player2)) {
+            //check win condition
+            if (!levelComplete && win != null && win.completed(player1, player2)) {
                 levelComplete = true;
+                levelCompleteTime = System.currentTimeMillis();
+
+                player1.lockMovement();
+                player2.lockMovement();
+        }
+
+            //delayed level transition
+            if (levelComplete) {
+                long currentTime = System.currentTimeMillis();
+
+            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
+                if(currentLevelNum ==1){
+                    loadNextLevel();
+                }
+                    else if(currentLevelNum == 2){  //bring players back to main menu
+                        Gamestate.state = Gamestate.MENU;
+                    }
+                }
             }
 
         //if paused display pause overlay
@@ -156,15 +273,20 @@ public class Playing extends State implements StateMethods {
         levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
-        button1.render(g);
-        button2.render(g);
-        door.render(g);
+        if (button1 != null) button1.render(g);
+        if (button2 != null) button2.render(g);
+        if (button3 != null) button3.render(g);
+
+        if (door1 != null) door1.render(g);
+        if (door2 != null) door2.render(g);
 
         if (box != null) {
             box.render(g);
         }
 
-        win.render(g, levelComplete);
+        if (win != null) {
+            win.render(g, levelComplete);
+        }
 
         //if paused then draw pause overlay
         if(paused){
@@ -207,6 +329,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        
+        if (levelComplete) {
+            return;
+        }
 
         switch (e.getKeyCode()) {
 
@@ -241,6 +367,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        if (levelComplete) {
+            return;
+        }
 
         // stops the movement when the key is released
         switch (e.getKeyCode()) {

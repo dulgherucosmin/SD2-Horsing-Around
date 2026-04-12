@@ -20,4 +20,8 @@ public class Level {
     public int[][] getLevelData() {
         return this.levelData;
     }
+
+    public int getLevelNumber(){
+        return level;
+    }
 }
