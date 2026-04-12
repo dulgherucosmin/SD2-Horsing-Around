@@ -62,6 +62,7 @@ public class Player extends Entity {
     //
     private Rectangle otherPlayerHitBox;
     private Rectangle boxHitBox;
+    private boolean movementLocked;
 
     public Player(float x, float y, String spritePath, int startDir) {
         // width and height here are hitbox sizes
@@ -252,6 +253,19 @@ public class Player extends Entity {
         this.otherPlayerHitBox = otherPlayerHitBox;
     }
 
+    public void lockMovement() {
+        movementLocked = true;
+        left = false;
+        right = false;
+        jumpHeld = false;
+        inAir = false;
+        airSpeed = 0;
+    }
+
+    public void unlockMovement() {
+        movementLocked = false;
+    }
+
     public void setBoxHitBox(Rectangle boxHitBox) {
         this.boxHitBox = boxHitBox;
     }
@@ -309,6 +323,10 @@ public class Player extends Entity {
 
     public void setX(float x) {
         this.x = x;
+        updateHitBox(); 
+    }
+    public void setY(float y) {
+        this.y = y;
         updateHitBox(); 
     }
 }

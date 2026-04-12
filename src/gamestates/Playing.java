@@ -18,6 +18,7 @@ import levels.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 import utilz.LoadSave;
+import levels.Level;
 
 public class Playing extends State implements StateMethods {
 
@@ -37,7 +38,7 @@ public class Playing extends State implements StateMethods {
 
     private boolean levelComplete = false;
 
-    private int currentLevelNum = 2;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -51,6 +52,7 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    private static final int SECOND_LEVEL = 2;
     
     private boolean paused =false;
     public Playing(Game game) {
@@ -84,12 +86,10 @@ public class Playing extends State implements StateMethods {
         // set hitboxes for collision detection
         player1.setOtherPlayerHitBox(player2.getHitbox());
         player2.setOtherPlayerHitBox(player1.getHitbox());
-
-
-        player1.setBoxHitBox(box.getHitbox());
-        player2.setBoxHitBox(box.getHitbox());
         
         setupLevelObjects();
+        syncPlayersToCurrentLevel();
+        setupBoxForCurrentLevel();
     }
 
     private float[] getSpawnPoint(int player, int level) {
@@ -134,12 +134,80 @@ public class Playing extends State implements StateMethods {
      }
     }
 
+    private void syncPlayersToCurrentLevel(){
+        int [][] levelData = levelManager.getCurrentLevel().getLevelData();
+        int currentLevelNum = levelManager.getCurrentLevel().getLevelNumber();
+
+        player1.loadLevelData(levelData);
+        player1.setCurentLevel(currentLevelNum);
+
+        player2.loadLevelData(levelData);
+        player2.setCurentLevel(currentLevelNum);
+    }
+
+    private void completeLevel(){
+        levelComplete = true;
+        paused = false;
+
+        player1.lockMovement();
+        player2.lockMovement();
+
+        if (levelManager.getCurrentLevel().getLevelNumber() != SECOND_LEVEL){
+            levelManager.initLevel(SECOND_LEVEL);
+            syncPlayersToCurrentLevel();
+        }
+    }
+
+    private void loadNextLevel(){
+        currentLevelNum = 2;
+        levelManager.initLevel(currentLevelNum);
+        setupLevelObjects();
+
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
+
+        player1.setX(p1Spawn[0]);
+        player1.setY(p1Spawn[1]);
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player1.setCurentLevel(Level.level);
+        player1.unlockMovement();
+
+        player2.setX(p2Spawn[0]);
+        player2.setY(p2Spawn[1]);
+        player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player2.setCurentLevel(Level.level);
+        player2.unlockMovement();
+
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+        setupBoxForCurrentLevel();
+    
+        levelComplete = false;
+    }
+
+    private void setupBoxForCurrentLevel() {
+    if (currentLevelNum == 2) {
+            box = new Box(18 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
+            box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+
+            player1.setBoxHitBox(box.getHitbox());
+            player2.setBoxHitBox(box.getHitbox());
+        } else {
+            box = null;
+
+            player1.setBoxHitBox(null);
+            player2.setBoxHitBox(null);
+        }
+    }
+
     @Override
     public void update() {
         //if game is not paused then update all features
         if(!paused) {
-            player1.update();
-            player2.update();
+            if(!levelComplete){
+                player1.update();
+                player2.update();
+            }
 
             if (button1 != null) button1.update(player1, player2, box);
             if (button2 != null) button2.update(player1, player2, box);
@@ -151,9 +219,21 @@ public class Playing extends State implements StateMethods {
             if (box != null) {
                 box.update(player1, player2);
             }
+            // door collision checks
+            if (door1.isBlocking(player1) || door2.isBlocking(player1)) {
+                player1.undoMove();
+            }
 
-            if (win.completed(player1, player2)) {
+            if (door1.isBlocking(player2) || door2.isBlocking(player2)) {
+                player2.undoMove();
+            }
+
+            if (!levelComplete && win != null && win.completed(player1, player2)) {
                 levelComplete = true;
+
+                player1.lockMovement();
+                player2.lockMovement();
+                loadNextLevel();
             }
 
         //if paused display pause overlay
@@ -180,7 +260,9 @@ public class Playing extends State implements StateMethods {
             box.render(g);
         }
 
-        win.render(g, levelComplete);
+        if (win != null) {
+            win.render(g, levelComplete);
+        }
 
         //if paused then draw pause overlay
         if(paused){
@@ -223,6 +305,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        
+        if (levelComplete) {
+            return;
+        }
 
         switch (e.getKeyCode()) {
 
@@ -257,6 +343,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        if (levelComplete) {
+            return;
+        }
 
         // stops the movement when the key is released
         switch (e.getKeyCode()) {
