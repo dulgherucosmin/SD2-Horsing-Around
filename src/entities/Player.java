@@ -199,10 +199,9 @@ public class Player extends Entity {
             // check if theres a solid tile beneath
             if (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
 
+                // this checks if the player is standing on another player or box
                 boolean standingOnOtherPlayer = otherPlayerHitBox != null && collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox);
                 boolean standingOnBox = boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox);
-
-                // no solid tile, player has fallen off
 
                 if (!standingOnOtherPlayer && !standingOnBox) {
                     inAir = true;
@@ -215,7 +214,10 @@ public class Player extends Entity {
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
             boolean playerCollision = otherPlayerHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, otherPlayerHitBox);
-            boolean boxCollisionHorizontal = boxHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, boxHitBox);
+
+            boolean boxCollisionHorizontal = boxHitBox != null 
+                                                && collidesWithHitBox(x + xSpeed, y, width, height, boxHitBox)
+                                                && boxHitBox.y + boxHitBox.height > hitBox.y + 2;
 
             if (!tileCollision && !playerCollision && !boxCollisionHorizontal) {
                 x += xSpeed;
