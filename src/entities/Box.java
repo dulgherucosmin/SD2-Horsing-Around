@@ -95,6 +95,7 @@ public class Box extends Entity {
         }
     }
 
+    // this checks if the box would hit the player at a given y position. this stops the box from falling through a horse
     private boolean hitsPlayer(int yPos, Player p) {
         if (p == null) {
             return false;
