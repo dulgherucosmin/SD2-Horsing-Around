@@ -67,8 +67,8 @@ public class ButtonTest {
     public void buttonPressedByBox() {
         Button button = new Button(0, 0);
 
-        Player p1 = new Player(100, 100, null, 0);
-        Player p2 = new Player(200, 200, null, 0);
+        Player p1 = new Player(1, 100, 100, null, 0, "Testing");
+        Player p2 = new Player(2, 200, 200, null, 0, "Testing");
         p1.updateHitBoxRaw();
         p2.updateHitBoxRaw();
 

@@ -130,7 +130,7 @@ public class BoxTest {
         float startX = box.getX();
 
         // this sets up a horse to the left of the box walking right
-        Player p = new Player(2 * Game.TILES_SIZE, 10, null, RIGHT);
+        Player p = new Player(1, 2 * Game.TILES_SIZE, 10, null, RIGHT, "Testing");
 
         p.loadLevelData(createFlatLevel());
         p.setCurentLevel(1);
@@ -155,7 +155,7 @@ public class BoxTest {
         letBoxLand(box);
 
         // this sets up a horse pushing the box toward the right wall
-        Player p = new Player(2 * Game.TILES_SIZE, 10, null, RIGHT);
+        Player p = new Player(1, 2 * Game.TILES_SIZE, 10, null, RIGHT, "Testing");
         p.loadLevelData(level);
         p.setCurentLevel(1);
 
@@ -178,7 +178,7 @@ public class BoxTest {
         Box box = new Box(5 * Game.TILES_SIZE, 10);
         box.loadLevelData(createFlatLevel(), 1);
 
-        Player p = new Player(2 * Game.TILES_SIZE, 10, null, RIGHT);
+        Player p = new Player(1, 2 * Game.TILES_SIZE, 10, null, RIGHT, "Testing");
         p.loadLevelData(createFlatLevel());
         p.setCurentLevel(1);
 
@@ -193,7 +193,7 @@ public class BoxTest {
     public void testBoxStopsOnPlayer() {
         int[][] level = createFlatLevel();
 
-        Player p = new Player(5 * Game.TILES_SIZE, 10, null, RIGHT);
+        Player p = new Player(1, 5 * Game.TILES_SIZE, 10, null, RIGHT, "Testing");
         p.loadLevelData(level);
         p.setCurentLevel(1);
         letPlayerLand(p);
