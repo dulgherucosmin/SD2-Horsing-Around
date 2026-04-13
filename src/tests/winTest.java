@@ -60,8 +60,8 @@ public class winTest {
     public void winTrueWhenBothPlayersInside() { //checks both players  are in win box.
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(100, 100, null, 0);
-        Player player2 = new Player(100, 100, null, 0);
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 100, 100, null, 0, "Test");
 
         player1.updateHitBox();
         player2.updateHitBox();
@@ -73,8 +73,8 @@ public class winTest {
     public void winFalseWithOnePlayerOutside() { //checks if both players are in win box, if not then false.
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(100, 100, null, 0);
-        Player player2 = new Player(300, 300, null, 0);
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 300, 300, null, 0, "Test");
 
         player1.updateHitBoxRaw();
         player2.updateHitBoxRaw();
@@ -86,11 +86,8 @@ public class winTest {
     public void winFalseWhenBothPlayersOutside() { //checks that player hitboxes are outside the win box.
         Win win = new Win(100, 100);
 
-        Player player1 = new Player(300, 300, null, 0);
-        Player player2 = new Player(400, 400, null, 0);
-
-        player1.updateHitBoxRaw();
-        player2.updateHitBoxRaw();
+        Player player1 = new Player(1, 100, 100, null, 0, "Test");
+        Player player2 = new Player(2, 300, 300, null, 0, "Test");
 
         assertFalse(win.completed(player1, player2));
     }

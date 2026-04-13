@@ -21,6 +21,9 @@ import utilz.LoadSave;
 
 public class Player extends Entity {
 
+    private String displayName;
+    private int playerType;
+
     // this stores all the animation frames [action][frame]
     private BufferedImage[][] animations;
 
@@ -64,11 +67,14 @@ public class Player extends Entity {
     private Rectangle boxHitBox;
     private boolean movementLocked;
 
-    public Player(float x, float y, String spritePath, int startDir) {
+    public Player(int playerType, float x, float y, String spritePath, int startDir, String displayName) {
         // width and height here are hitbox sizes
         super(x, y, 16, 16);
         this.spritePath = spritePath;
         this.playerDir = startDir;
+        this.displayName = displayName;
+
+        this.playerType = playerType;
 
         if (spritePath != null) {
             loadAnimations();
@@ -94,8 +100,45 @@ public class Player extends Entity {
 
     // this draws the current animation frame at the player's position
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y + 2, 64, 48, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 64, 48, null);
+        
+        Color displayNameColour = new Color(0, 0, 0, 0);
+
+        if (playerType == 1) {
+            // colour matches player 1
+            displayNameColour = new Color(213, 168, 83, 85);
+        } else {
+            // colour matches player 2
+            displayNameColour = new Color(26, 26, 26, 85);
+        }
+
+        // draw a semi-transparent dark background pill behind the name
+        g.setColor(displayNameColour);
+        // width 32 (half of player sprite), height 16 (half of player sprite)
+        g.fillRoundRect((int)x + 20, (int)y + 12, 24, 8, 5, 5);
+
+        // set a small bold font for the name
+        g.setFont(new Font("Comic Sans", Font.BOLD, 6));
+
+        // measure how wide the text will be in pixels
+        FontMetrics fm = g.getFontMetrics();
+        int displayNameWidth = fm.stringWidth(displayName);
+
+        /*
+        x+20 -> start at the left edge
+        + ((24 - displayNameWidth) / 2)) -> center text in the middle of display name
+        y + 18 -> align y value so that it sits in the middle of the display bubble
+         */
+        int textX = (int)x + 20 + (24 - displayNameWidth) / 2;
+        int textY = (int)y + 18;
+        
+
+        g.setColor(Color.WHITE);
+        g.drawString(displayName, textX, textY);
+        
         drawHitBox(g);
+
+
     }
 
     // this controls the animation frame switching

@@ -36,7 +36,7 @@ public class CollisionTest {
 
     @Test
     public void testPlayerLanding() {
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         // set current level to ensure hitboxes work
@@ -51,7 +51,7 @@ public class CollisionTest {
 
     @Test
     public void testFloorCollision() {
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         // set current level to ensure hitboxes work
@@ -66,7 +66,7 @@ public class CollisionTest {
 
     @Test
     public void testLevelRightBoundary() {
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         // set current level to ensure hitboxes work
@@ -87,7 +87,7 @@ public class CollisionTest {
 
     @Test
     public void testLevelLeftBoundary() {
-        Player p = new Player(100, 10, null, RIGHT);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         // set current level to ensure hitboxes work
