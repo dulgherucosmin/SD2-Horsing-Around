@@ -1,18 +1,36 @@
-## Getting Started
+# 🐎 Horsing Around
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A two-player cooperative platformer where two horses must work together 
+to solve puzzles and complete levels.
 
-## Folder Structure
+## How to Play
 
-The workspace contains two folders by default, where:
+| Player 1 | Player 2 |
+|----------|----------|
+| A / D to move | LEFT / RIGHT to move |
+| W to jump | UP to jump |
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Features
+- Two player local co-op.
+- Tile-based collision system.
+- Co-op puzzle mechanics (buttons, doors, boxes, spikes etc.)
+- Multiple levels.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Running the Project
+1. Clone the repository
+2. Open in your IDE of choice
+3. Run `main/Game.java`
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Project Structure
+- `entities/` — Player and entity classes
+- `levels/` — Level loading and management
+- `gamestates/` — Game state handling (menu, playing)
+- `utilz/` — Utility classes including collision detection and loading assets
+- `inputs/` — Keyboard input handling
+- `res/` — Sprites and level data
 
-## Dependency Management
+## Built With
+- Java
+- Java AWT/Swing
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Built by a team of four students for a Software Development final project.
