@@ -44,7 +44,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(200, 200, null, 0);
+        Player player = new Player(1, 200, 200, null, 0, "Testing");
         player.updateHitBoxRaw();
 
         button2.update(player, player, null);
@@ -58,7 +58,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1);
 
-        Player player = new Player(0, 0, null, 0);
+        Player player = new Player(1, 0, 0, null, 0, "Testing");
         player.updateHitBoxRaw();
 
         button1.update(player, player, null);
