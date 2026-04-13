@@ -18,7 +18,7 @@ public class Box extends Entity {
     private boolean inAir = true;
 
     // how fast the box moves when it's pushed
-    private final float pushSpeed = 1f;
+    private final float pushSpeed = 0.7f;
 
     private int[][] currentLevelData;
     private int currentLevel;
@@ -47,14 +47,14 @@ public class Box extends Entity {
     }
 
     public void update(Player p1, Player p2) {
-        applyGravity();
+        applyGravity(p1, p2);
         tryPush(p1);
         tryPush(p2);
         updateHitBoxRaw();
     }
 
     // this makes the box fall down if there's nothing under it
-    private void applyGravity() {
+    private void applyGravity(Player p1, Player p2) {
 
         if (currentLevelData == null) {
             return;
@@ -62,8 +62,11 @@ public class Box extends Entity {
 
         if (inAir) {
             airSpeed += gravity;
-            
-            if (canMoveRaw(hitBox.x, hitBox.y + airSpeed, width, height, currentLevelData, currentLevel)) {
+
+            boolean tileBlocking = !canMoveRaw(hitBox.x, hitBox.y + airSpeed, width, height, currentLevelData, currentLevel);
+            boolean playerBlocking = hitsPlayer((int)(hitBox.y + airSpeed), p1) || hitsPlayer((int)(hitBox.y + airSpeed), p2);
+
+            if (!tileBlocking && !playerBlocking) {
 
                 // if there's nothing below, it'll keep falling
                 y += airSpeed;
@@ -72,7 +75,10 @@ public class Box extends Entity {
 
                 // if it hits something, it'll move down one pixel
                 int steps = 0;
-                while (canMoveRaw(hitBox.x, hitBox.y + 1, width, height, currentLevelData, currentLevel) && steps < 32) {
+                while (canMoveRaw(hitBox.x, hitBox.y + 1, width, height, currentLevelData, currentLevel) 
+                        && !hitsPlayer(hitBox.y + 1, p1)
+                        && !hitsPlayer(hitBox.y + 1, p2)
+                        && steps < 32) {
                     y += 1;
                     updateHitBoxRaw();
                     steps++;
@@ -89,9 +95,18 @@ public class Box extends Entity {
         }
     }
 
+    // this checks if the box would hit the player at a given y position. this stops the box from falling through a horse
+    private boolean hitsPlayer(int yPos, Player p) {
+        if (p == null) {
+            return false;
+        }
+        
+        return new Rectangle(hitBox.x, yPos, width, height).intersects(p.getHitbox());
+    }
+
     // moves the box left or right when a horse walks into it
     private void tryPush(Player player) {
-        if (currentLevelData == null) {
+        if (currentLevelData == null || player == null) {
             return;
         }
         
@@ -149,7 +164,7 @@ public class Box extends Entity {
 
     public void render(Graphics g) {
         if (sprite != null) {
-            g.drawImage(sprite, (int) x, (int) y, 32, 32, null);
+            g.drawImage(sprite, (int) x, (int) y + 2, 32, 32, null);
 
         } else {
             g.setColor(Color.GREEN);

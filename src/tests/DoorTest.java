@@ -13,26 +13,55 @@ import entities.Player;
 public class DoorTest {
 
     @Test
-    public void doorClosedInit() { // door starts closed
+    public void doorClosedInit() { //door starts closed
         Button button1 = new Button(0, 0);
-        Button button2 = new Button(0, 0);
+        Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         assertFalse(door.isOpen());
     }
 
     @Test
-    public void doorOpensWithButton() {
+    public void twoButtonDoorOpensWithFirstButton() {
         Button button1 = new Button(0, 0);
-        Button button2 = new Button(100, 100);
+        Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
 
-        button1.update(player, player);
+        button1.update(player, player, null);
+
+        assertTrue(door.isOpen());
+    }
+
+    @Test
+    public void twoButtonDoorOpensWithSecondButton() {
+        Button button1 = new Button(0, 0);
+        Button button2 = new Button(200, 200);
+
+        Door door = new Door(100, 100, 4, button1, button2);
+
+        Player player = new Player(200, 200, null, 0);
+        player.updateHitBoxRaw();
+
+        button2.update(player, player, null);
+
+        assertTrue(door.isOpen());
+    }
+
+    @Test
+    public void oneButtonDoorOpensWithItsButton() {
+        Button button1 = new Button(0, 0);
+
+        Door door = new Door(100, 100, 4, button1);
+
+        Player player = new Player(0, 0, null, 0);
+        player.updateHitBoxRaw();
+
+        button1.update(player, player, null);
 
         assertTrue(door.isOpen());
     }
@@ -40,32 +69,31 @@ public class DoorTest {
     @Test
     public void doorClosesWhenButtonsReleased() {
         Button button1 = new Button(0, 0);
-        Button button2 = new Button(100, 100);
+        Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
 
-        // press
-        button1.update(player, player);
+        button1.update(player, player, null);
         assertTrue(door.isOpen());
 
         // release (move player away)
         Player moved = new Player(1, 300, 300, null, 0, "Test");
         moved.updateHitBoxRaw();
 
-        button1.update(moved, moved);
+        button1.update(moved, moved, null);
 
         assertFalse(door.isOpen());
     }
 
     @Test
-    public void doorBlocksPlayer() {
+    public void doorBlocksPlayerWhenClosed() {
         Button button1 = new Button(0, 0);
-        Button button2 = new Button(0, 0);
+        Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(1, 0, 0, null, 0, "Test");
         player.updateHitBoxRaw();
@@ -76,29 +104,28 @@ public class DoorTest {
     @Test
     public void doorDoesNotBlockWhenOpen() {
         Button button1 = new Button(100, 100);
-        Button button2 = new Button(0, 0);
+        Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(1, 100, 100, null, 0, "Test");
         player.updateHitBoxRaw();
 
-        button1.update(player, player);
+        button1.update(player, player, null);
 
         assertFalse(door.isBlocking(player));
     }
-
     @Test
     public void doorOpensIfEitherButtonPressed() {
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
-        Door door = new Door(100, 100, button1, button2);
+        Door door = new Door(100, 100, 4, button1, button2);
 
         Player player = new Player(1, 200, 200, null, 0, "Test");
         player.updateHitBoxRaw();
 
-        button2.update(player, player);
+        button2.update(player, player, null);
 
         assertTrue(door.isOpen());
     }

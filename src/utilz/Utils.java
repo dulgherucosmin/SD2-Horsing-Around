@@ -18,11 +18,11 @@ public class Utils {
         // these ints correspond to positions in the spritesheet
         // anything not in this list is either air (0) or a background tile (passable)
         solidTilesByLevel.put(1, new HashSet<>(Arrays.asList(
-            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38
         )));  
         
         solidTilesByLevel.put(2, new HashSet<>(Arrays.asList(
-            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38
         )));    
     }
 
@@ -83,7 +83,13 @@ public class Utils {
     }
 
     // checks if moving to a new position would overlap the other player's hitbox
-    public static boolean collidesWithOtherPlayer(float x, float y, int width, int height, Rectangle otherHitBox) {
+    public static boolean collidesWithHitBox(float x, float y, int width, int height, Rectangle otherHitBox) {
+
+        // return false if there's no other entity to collide with
+        if (otherHitBox == null) {
+            return false;
+        }
+
         float hbX = x + (Entity.SPRITE_WIDTH - width) / 2f;
         float hbY = y + (Entity.SPRITE_HEIGHT - height);
         // create a hitbox for the position we want to move to
