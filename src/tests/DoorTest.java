@@ -23,7 +23,7 @@ public class DoorTest {
     }
 
     @Test
-    public void twoButtonDoorOpensWithFirstButton() {
+    public void twoButtonDoorOpensWithFirstButton() { //first button check
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
@@ -38,7 +38,7 @@ public class DoorTest {
     }
 
     @Test
-    public void twoButtonDoorOpensWithSecondButton() {
+    public void twoButtonDoorOpensWithSecondButton() { //second button check
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
@@ -53,7 +53,7 @@ public class DoorTest {
     }
 
     @Test
-    public void oneButtonDoorOpensWithItsButton() {
+    public void oneButtonDoorOpensWithButton() { //single button door
         Button button1 = new Button(0, 0);
 
         Door door = new Door(100, 100, 4, button1);
@@ -67,7 +67,7 @@ public class DoorTest {
     }
 
     @Test
-    public void doorClosesWhenButtonsReleased() {
+    public void doorClosesWhenButtonsReleased() { //door close check
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
@@ -89,7 +89,7 @@ public class DoorTest {
     }
 
     @Test
-    public void doorBlocksPlayerWhenClosed() {
+    public void doorBlocksPlayerWhenClosed() { //player block test
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
@@ -102,7 +102,7 @@ public class DoorTest {
     }
 
     @Test
-    public void doorDoesNotBlockWhenOpen() {
+    public void doorDoesNotBlockWhenOpen() { //unblock test
         Button button1 = new Button(100, 100);
         Button button2 = new Button(200, 200);
 
@@ -116,7 +116,7 @@ public class DoorTest {
         assertFalse(door.isBlocking(player));
     }
     @Test
-    public void doorOpensIfEitherButtonPressed() {
+    public void doorOpensIfEitherButtonPressed() { //either button pressed check
         Button button1 = new Button(0, 0);
         Button button2 = new Button(200, 200);
 
