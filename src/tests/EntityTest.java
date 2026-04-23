@@ -3,8 +3,9 @@
 
 package tests;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import entities.Player;
 
 import static utilz.Constants.Directions.LEFT;
@@ -16,14 +17,14 @@ public class EntityTest {
     @Test
     public void testEntityInitialXPosition() {
         Player p = new Player(1, 100, 200, null, RIGHT, "Test");
-        assertEquals(100, p.getX());
+        assertEquals(100, p.getX(), 0);
     }
 
     // tests if the entity spawns at the correct y value
     @Test
     public void testEntityIntialYPosition() {
         Player p = new Player(1, 100, 200, null, RIGHT, "Test");
-        assertEquals(200, p.getY());
+        assertEquals(200, p.getY(), 0);
     }
 
     // tests that both players have separate positions and that they don't share the same coordinates

@@ -3,13 +3,13 @@
 
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import static utilz.Constants.Directions.LEFT;
 import static utilz.Constants.Directions.RIGHT;
 
 import main.Game;
-import org.junit.jupiter.api.Test;
 
 import entities.Player;
 
@@ -101,7 +101,7 @@ public class PlayerMovementTest {
         p.update();
 
         // check if x position is unchanged
-        assertEquals(xPosition, p.getX());
+        assertEquals(xPosition, p.getX(), 0);
     }
 
     // tests that the player does not move when there's no input
@@ -120,7 +120,7 @@ public class PlayerMovementTest {
         float xPosition = p.getX();
 
         // check if x position is unchanged
-        assertEquals(xPosition, p.getX());
+        assertEquals(xPosition, p.getX(), 0);
     }
 
     // tests that the player accumulates correctly over muliple updates
@@ -177,7 +177,7 @@ public class PlayerMovementTest {
         assertTrue(p.getX() > pSpawn);
 
         // player 2 has remained still
-        assertEquals(p2Spawn, p2.getX());
+        assertEquals(p2Spawn, p2.getX(), 0);
 
         // move and test player 2 without player 1
         p2.setRight(true);
@@ -188,6 +188,6 @@ public class PlayerMovementTest {
         assertTrue(p2.getX() > p2Spawn);
         
         // player 1 has remained still
-        assertEquals(p1Position, p.getX());
+        assertEquals(p1Position, p.getX(), 0);
     }
 }

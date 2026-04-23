@@ -3,11 +3,11 @@
 
 package tests;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import entities.Player;
 import main.Game;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import static utilz.Constants.Directions.RIGHT;
 

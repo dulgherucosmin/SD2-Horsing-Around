@@ -1,8 +1,9 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Field;
-import org.junit.jupiter.api.Test;
 
 import entities.Player;
 import entities.Win;
