@@ -190,6 +190,14 @@ public class Player extends Entity {
     private void updatePos() {
         moving = false;
 
+        if (y > 240) {
+            System.out.println("Void reached, teleporting to spawn.");
+            float[] sp = getSpawnPoint(playerType, currentLevel);
+            // teleport player
+            this.x = sp[0];
+            this.y = sp[1];
+        }
+
         // store horizontal speed
         float xSpeed = 0;
 
