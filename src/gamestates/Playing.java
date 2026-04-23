@@ -20,6 +20,8 @@ import ui.PauseOverlay;
 import utilz.LoadSave;
 import levels.Level;
 
+import static entities.Player.getSpawnPoint;
+
 public class Playing extends State implements StateMethods {
 
     // player objects
@@ -40,7 +42,7 @@ public class Playing extends State implements StateMethods {
     private long levelCompleteTime = 0;
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
-    private int currentLevelNum = 1;
+    private int currentLevelNum = 3;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -94,46 +96,34 @@ public class Playing extends State implements StateMethods {
         setupBoxForCurrentLevel();//setup box (box only exists in level 2)
     }
 
-    private float[] getSpawnPoint(int player, int level) {
-        switch (level) {
-            case 1: // level 1 spawns
-                if (player == 1) {
-                    return new float[]{5, 1};
-                } else {
-                    return new float[]{40, 1};
-                }
-            case 2: // level 2 spawns
-                if (player == 1) {
-                    return new float[]{2 * 16, 3 * 16};
-                } else {
-                    return new float[]{4 * 16, 3 * 16};
-                }
-            default:
-                return new float[]{0, 0};
-        }
-    }
-
     private void setupLevelObjects(){
         if (currentLevelNum == 1) {
-        button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
-        button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
-        button3 = new Button(-1000, -1000);
+            button1 = new Button(20 * TILES_SIZE, 8 * TILES_SIZE);
+            button2 = new Button(26 * TILES_SIZE, 14 * TILES_SIZE);
+            button3 = new Button(-1000, -1000);
 
-        door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, 4, button1, button2);
-        door2 = new Door(-1000, -1000, 3,  button3);
+            door1 = new Door(24 * TILES_SIZE, 11 * TILES_SIZE, 4, button1, button2);
+            door2 = new Door(-1000, -1000, 3,  button3);
 
-        win = new Win(455, 190);
+            win = new Win(455, 190);
 
-      } else if (currentLevelNum == 2) {
-        button1 = new Button(16 * TILES_SIZE, 4 * TILES_SIZE);
-        button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
-        button3 = new Button(14 * TILES_SIZE, 15 * TILES_SIZE);
+        } else if (currentLevelNum == 2) {
+            button1 = new Button(16 * TILES_SIZE, 4 * TILES_SIZE);
+            button2 = new Button(28 * TILES_SIZE, 12 * TILES_SIZE);
+            button3 = new Button(14 * TILES_SIZE, 15 * TILES_SIZE);
 
-        door1 = new Door(11 * TILES_SIZE, 13 * TILES_SIZE, 3, button3);
-        door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, 3, button1, button2);
+            door1 = new Door(11 * TILES_SIZE, 13 * TILES_SIZE, 3, button3);
+            door2 = new Door(25 * TILES_SIZE, 4 * TILES_SIZE, 3, button1, button2);
 
-        win = new Win(455, 160);
-     }
+            win = new Win(455, 160);
+        } else if (currentLevelNum == 3) {
+            button1 = new Button(-1000, -1000);
+            button2 = new Button(-1000, -1000);
+            button3 = new Button(-1000, -1000);
+
+            door1 = new Door(-1000, -1000, 3, button1);
+            door2 = new Door(-1000, -1000, 3, button2);
+        }
     }
 
     private void syncPlayersToCurrentLevel(){

@@ -190,6 +190,14 @@ public class Player extends Entity {
     private void updatePos() {
         moving = false;
 
+        if (y > 240) {
+            System.out.println("Void reached, teleporting to spawn.");
+            float[] sp = getSpawnPoint(playerType, currentLevel);
+            // teleport player
+            this.x = sp[0];
+            this.y = sp[1];
+        }
+
         // store horizontal speed
         float xSpeed = 0;
 
@@ -294,6 +302,31 @@ public class Player extends Entity {
     // helper method to set other players hitbox
     public void setOtherPlayerHitBox(Rectangle otherPlayerHitBox) {
         this.otherPlayerHitBox = otherPlayerHitBox;
+    }
+
+    public static float[] getSpawnPoint(int playerType, int levelNum) {
+        switch (levelNum) {
+            case 1: // level 1 spawns
+                if (playerType == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            case 2: // level 2 spawns
+                if (playerType == 1) {
+                    return new float[]{2 * 16, 3 * 16};
+                } else {
+                    return new float[]{4 * 16, 3 * 16};
+                }
+            case 3: // level 3 spawns
+                if (playerType == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            default:
+                return new float[]{0, 0};
+        }
     }
 
     public void lockMovement() {

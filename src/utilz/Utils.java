@@ -23,7 +23,11 @@ public class Utils {
         
         solidTilesByLevel.put(2, new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38
-        )));    
+        )));
+
+        solidTilesByLevel.put(3, new HashSet<>(Arrays.asList(
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38
+        )));
     }
 
     // checks whether the player can move to a given position
