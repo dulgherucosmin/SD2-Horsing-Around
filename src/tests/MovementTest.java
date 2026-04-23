@@ -3,9 +3,10 @@
 
 package tests;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import main.Game;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import static utilz.Constants.Directions.RIGHT;
 
 import entities.Player;
