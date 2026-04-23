@@ -20,6 +20,8 @@ import ui.PauseOverlay;
 import utilz.LoadSave;
 import levels.Level;
 
+import static entities.Player.getSpawnPoint;
+
 public class Playing extends State implements StateMethods {
 
     // player objects
@@ -92,25 +94,6 @@ public class Playing extends State implements StateMethods {
         setupLevelObjects(); //setup buttons, doors and win condition.
         syncPlayersToCurrentLevel(); //load level data for players
         setupBoxForCurrentLevel();//setup box (box only exists in level 2)
-    }
-
-    private float[] getSpawnPoint(int player, int level) {
-        switch (level) {
-            case 1: // level 1 spawns
-                if (player == 1) {
-                    return new float[]{5, 1};
-                } else {
-                    return new float[]{40, 1};
-                }
-            case 2: // level 2 spawns
-                if (player == 1) {
-                    return new float[]{2 * 16, 3 * 16};
-                } else {
-                    return new float[]{4 * 16, 3 * 16};
-                }
-            default:
-                return new float[]{0, 0};
-        }
     }
 
     private void setupLevelObjects(){

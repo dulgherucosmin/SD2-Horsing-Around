@@ -296,6 +296,31 @@ public class Player extends Entity {
         this.otherPlayerHitBox = otherPlayerHitBox;
     }
 
+    public static float[] getSpawnPoint(int playerType, int levelNum) {
+        switch (levelNum) {
+            case 1: // level 1 spawns
+                if (playerType == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            case 2: // level 2 spawns
+                if (playerType == 1) {
+                    return new float[]{2 * 16, 3 * 16};
+                } else {
+                    return new float[]{4 * 16, 3 * 16};
+                }
+            case 3: // level 3 spawns
+                if (playerType == 1) {
+                    return new float[]{5, 1};
+                } else {
+                    return new float[]{40, 1};
+                }
+            default:
+                return new float[]{0, 0};
+        }
+    }
+
     public void lockMovement() {
         movementLocked = true;
         left = false;
