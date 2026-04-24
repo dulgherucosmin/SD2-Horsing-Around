@@ -42,7 +42,7 @@ public class Playing extends State implements StateMethods {
     private long levelCompleteTime = 0;
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
-    private int currentLevelNum = 3;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -422,5 +422,37 @@ public class Playing extends State implements StateMethods {
 
     public Player getPlayer2() {
         return player2;
+    }
+    public void resetGame(){
+        //go back to level one
+        currentLevelNum =1;
+        levelManager.initLevel(currentLevelNum);
+
+        //reset players to level 1 spawn  point
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
+
+        //reload level data for both players
+        syncPlayersToCurrentLevel();
+
+        //resets players to spawn.
+        player1.setX(p1Spawn[0]);
+        player1.setY(p1Spawn[1]);
+        player2.setX(p2Spawn[0]);
+        player2.setY(p2Spawn[1]);
+        
+        //reset Level Objects
+        setupLevelObjects();
+
+        //remove box since level one has no box
+        setupBoxForCurrentLevel();
+
+        //reconnect player collision
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+    
+        levelComplete = false;
+        levelCompleteTime = 0;
+        paused =false;
     }
 }
