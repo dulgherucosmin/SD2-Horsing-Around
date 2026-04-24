@@ -17,18 +17,22 @@ import main.Game;
 public class OptionsOverlay {
     private Game game;
 
+    // option overlay positions
     private int panelW = 380;
     private int panelH = 220;
     private int panelX = GAME_WIDTH / 2 - panelW / 2;
     private int panelY = GAME_HEIGHT / 2 - panelH / 2;
 
+    //fps selection variables
     private int selectedFPS = 120;
     private int[] fpsOptions = {30, 60, 120};
-    private java.awt.Rectangle[] fpsButtons = new Rectangle[3];
+    private Rectangle[] fpsButtons = new Rectangle[3];
 
+    // hourse colour buttons for each player
     private Rectangle[] p1ColourButtons = new Rectangle[8];
     private Rectangle[] p2ColourButtons = new Rectangle[8];
 
+    // default horse selections
     private int p1SelectedHorse = 0;
     private int p2SelectedHorse = 1;
 
@@ -44,6 +48,7 @@ public class OptionsOverlay {
         createButtons();
     }
 
+    //this loads the sprite of all the horses 
     public void loadHorsePreviews() {
         for (int i = 0; i < 8; i++) {
             BufferedImage sheet = LoadSave.GetSpriteAtlas(LoadSave.ALL_HORSES[i]);
@@ -52,47 +57,67 @@ public class OptionsOverlay {
         }
     }
 
+     //this method creates and positons buttons in the menu
     private void createButtons() {
+        //positions of fps buttons
         int fpsY = panelY + 30;
         int fpsStartX = panelX + panelW / 2 - 90;
-
         for (int i = 0; i < 3; i++)
-            fpsButtons[i] = new java.awt.Rectangle(fpsStartX + i * 65, fpsY, 55, 20);
+            fpsButtons[i] = new Rectangle(fpsStartX + i * 65, fpsY, 55, 20);
 
+        // size and gap between each horse sprite
         int horseSize = 36;
         int horseGap = 8;
 
+        //position of the player 1's horses
         int p1StartX = panelX + 15;
         int p1Row1Y = panelY + 80;
         int p1Row2Y = panelY + 125;
 
+        //this ensures theres not more than 4 hourses in a row for player  1
         for (int i = 0; i < 8; i++) {
             int row = i / 4;
             int col = i % 4;
             int x = p1StartX + col * (horseSize + horseGap);
-            int y = (row == 0) ? p1Row1Y : p1Row2Y;
+            int y ;
+            if (row == 0) 
+                y = p1Row1Y ;
+            else
+                y= p1Row2Y;
+
             p1ColourButtons[i] = new Rectangle(x, y, horseSize, horseSize);
         }
 
+
+        // positions of player 2 horses
         int p2StartX = panelX + panelW / 2 + 10;
         int p2Row1Y = panelY + 80;
         int p2Row2Y = panelY + 125;
-
+        //this ensures theres not more than 4 hourses in a row for player 2
         for (int i = 0; i < 8; i++) {
             int row = i / 4;
             int col = i % 4;
             int x = p2StartX + col * (horseSize + horseGap);
-            int y = (row == 0) ? p2Row1Y : p2Row2Y;
+            int y ;
+             if (row == 0) 
+                y = p2Row1Y ;
+            else
+                y= p2Row2Y;
+            
             p2ColourButtons[i] = new Rectangle(x, y, horseSize, horseSize);
         }
     }
 
-    public void update() {}
 
+    public void update() {}
+    
+    //this method draws all the buttons and labels for the menu
     public void draw(Graphics g) {
+        //dark backround around the menu
         g.setColor(new Color(0, 0, 0, 180));
         g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+       // a round backround for the features of the menu
         g.setColor(new Color(30, 30, 30, 230));
         g.fillRoundRect(panelX, panelY, panelW, panelH, 12, 12);
 
@@ -102,21 +127,24 @@ public class OptionsOverlay {
         drawHorseColourButtons(g);
     }
 
+    //this draws the options title and positions it at the top
     private void drawTitle(Graphics g) {
         g.setFont(new Font("Comic Sans", Font.BOLD, 12));
         g.setColor(Color.WHITE);
         String title = "OPTIONS";
         g.drawString(title, GAME_WIDTH / 2 - 20, panelY + 18);
-    }
+    }   
 
+    //this method draws and positions the buttons in the option menu
     private void drawFPSButtons(Graphics g) {
         g.setFont(new Font("Comic Sans", Font.BOLD, 8));
         g.setColor(Color.WHITE);
         g.drawString("FPS", panelX + panelW / 2 - 105, fpsButtons[0].y + 14);
 
         for (int i = 0; i < 3; i++) {
-            Rectangle btn = fpsButtons[0];
+            Rectangle btn = fpsButtons[i];
 
+            //this created a small features to show what fps buttons has been selected
             if (fpsOptions[i] == selectedFPS)
                 g.setColor(new Color(255, 215, 0));
             else if (hoveredFPS == i)
@@ -130,6 +158,7 @@ public class OptionsOverlay {
         }
     }
 
+    //this draws the player titles / labels
     private void drawPlayerLabels(Graphics g) {
         g.setFont(new Font("Comic Sans", Font.BOLD, 8));
         g.setColor(Color.WHITE);
@@ -137,6 +166,7 @@ public class OptionsOverlay {
         g.drawString("PLAYER 2", panelX + panelW / 2 + 10, panelY + 72);
     }
 
+    //this loops through all the horse buttons and draws them and passes p2 selections so there are no duplicates
     private void drawHorseColourButtons(Graphics g) {
         for (int i = 0; i < 8; i++) {
             drawHorseButton(g, p1ColourButtons[i], i, p1SelectedHorse, hoveredP1, p2SelectedHorse);
@@ -144,7 +174,9 @@ public class OptionsOverlay {
         }
     }
 
+    //this method draws each horse
     private void drawHorseButton(Graphics g, Rectangle btn, int i, int selectedHorse, int hoveredHorse, int selectedHorse2) {
+        //draw the preview of the sprites if not already there
         if (horsePreviews[i] != null)
             g.drawImage(horsePreviews[i], btn.x, btn.y, btn.width, btn.height, null);
         else {
@@ -152,29 +184,35 @@ public class OptionsOverlay {
             g.fillRect(btn.x, btn.y, btn.width, btn.height);
         }
 
+        //puts a border on the horse that has been selected 
         if (i == selectedHorse) {
             g.setColor(new Color(255, 215, 0));
             g.drawRoundRect(btn.x - 1, btn.y - 1, btn.width + 2, btn.height + 2, 3, 3);
+
+        //white border on the  horse button if its being hovered over
         } else if (i == hoveredHorse) {
             g.setColor(Color.WHITE);
             g.drawRoundRect(btn.x - 1, btn.y - 1, btn.width + 2, btn.height + 2, 3, 3);
         }
 
+        // dark overlay and x button if horse has been selected by another player
         if (i == selectedHorse2) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(btn.x, btn.y, btn.width, btn.height);
             g.setFont(new Font("Comic Sans", Font.BOLD, 10));
             g.setColor(Color.RED);
-            g.drawString("X", btn.x + btn.width / 2 - 4, btn.height / 2 + 4);
+            g.drawString("X", btn.x + btn.width / 2 - 4, btn.y+ btn.height / 2 + 4);
         }
     }
 
     public void mousePressed(MouseEvent e) {}
 
+
     public void mouseReleased(MouseEvent e) {
         int mx = getScaledX(e);
         int my = getScaledY(e);
 
+        //when the mouse is released then change the fps to selected fps
         for (int i = 0; i < 3; i++) {
             if (fpsButtons[i].contains(mx, my)) {
                 selectedFPS = fpsOptions[i];
@@ -183,6 +221,7 @@ public class OptionsOverlay {
             }
         }
 
+        //checks  player 1 button to ensure its not the same as player2 before changing the colour
         for (int i = 0; i < 8; i++) {
             if (p1ColourButtons[i].contains(mx, my) && i != p2SelectedHorse) {
                 p1SelectedHorse = i;
@@ -191,6 +230,7 @@ public class OptionsOverlay {
             }
         }
 
+            //checks  player 2 button to ensure its not the same as player1 before changing the colour
         for (int i = 0; i < 8; i++) {
             if (p2ColourButtons[i].contains(mx, my) && i != p1SelectedHorse) {
                 p2SelectedHorse = i;
@@ -200,6 +240,7 @@ public class OptionsOverlay {
         }
     }
 
+    //changes the to whichever button the mouse has been moved to
     public void mouseMoved(MouseEvent e) {
         int mx = getScaledX(e);
         int my = getScaledY(e);
@@ -225,6 +266,7 @@ public class OptionsOverlay {
         }
     }
 
+    //fixing sacling issues
     private int getScaledX(MouseEvent e) {
         float scaleX = (float) game.getGamePanel().getWidth() / GAME_WIDTH;
         return (int) (e.getX() / scaleX);
