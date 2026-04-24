@@ -13,6 +13,17 @@ public class LoadSave {
     // file names for the sprites
     public static final String PLAYER1_ATLAS = "horse1_sprites.png";
     public static final String PLAYER2_ATLAS = "horse2_sprites.png";
+    public static final String HORSE_3= "horse3_sprites.png";
+    public static final String HORSE_4 = "horse4_sprites.png";
+    public static final String HORSE_5 = "horse5_sprites.png";
+    public static final String HORSE_6= "horse6_sprites.png";
+    public static final String HORSE_7= "horse7_sprites.png";
+    public static final String HORSE_8= "horse8_sprites.png";
+
+    public static final String [] ALL_HORSES ={
+        "horse1_sprites.png","horse2_sprites.png","horse3_sprites.png","horse4_sprites.png","horse5_sprites.png","horse6_sprites.png","horse7_sprites.png","horse8_sprites.png" 
+    };
+
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String PAUSE_MENU = "pause_menu.png";
     public static final String SOUND_BUTTONS = "sound_button.png";
@@ -120,4 +131,5 @@ public class LoadSave {
         }
         return new int[0][0];
     }
+  
 }

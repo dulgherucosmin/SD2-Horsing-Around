@@ -4,9 +4,10 @@
 package main;
 
 import java.awt.Graphics;
+import java.lang.classfile.ClassFile.Option;
+
 import gamestates.Gamestate;
-import gamestates.Menu;
-import gamestates.Playing;
+import gamestates.*;
 
 // handles the game loop, updating, rendering and the game setup
 public class Game implements Runnable {
@@ -17,9 +18,10 @@ public class Game implements Runnable {
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
+    private Options options;
 
     // target frames per second and updates per second
-    private final int FPS_SET = 120; // controls how often the screen is redrawn
+    private  int FPS_SET = 120; // controls how often the screen is redrawn
     private final int UPS_SET = 100; // controls how often the game logic runs
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
@@ -51,6 +53,7 @@ public class Game implements Runnable {
     private void initClasses() {
         playing = new Playing(this);
         menu = new Menu(this);
+        options = new Options(this);
     }
 
     private void startGameLoop() {
@@ -69,6 +72,8 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case OPTIONS:
+                options.update();
+                break;
             case QUIT:
             default:
                 System.exit(0);
@@ -82,10 +87,14 @@ public class Game implements Runnable {
             case MENU:
                 menu.draw(g);
                 break;
+
             case PLAYING:
                 playing.draw(g);
                 break;
-
+            
+            case OPTIONS:
+                    options.draw(g);
+                    break;
             default:
                 break;
         }
@@ -93,13 +102,6 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-
-        // calculates how long each frame should take
-        double timePerFrame = 1000000000.0 / FPS_SET;
-
-        // calculates how long each update should take
-        double timePerUpdate = 1000000000.0 / UPS_SET;
-
         // this stores the time of the previous loop iteration
         long previousTime = System.nanoTime();
 
@@ -117,6 +119,12 @@ public class Game implements Runnable {
         // the main game loop
         while (true) {
 
+
+            // calculates how long each frame should take
+            double timePerFrame = 1000000000.0 / FPS_SET;
+
+            // calculates how long each update should take
+            double timePerUpdate = 1000000000.0 / UPS_SET;
             // gets the current time at the start of this loop iteration
             long currentTime = System.nanoTime();
 
@@ -168,7 +176,15 @@ public class Game implements Runnable {
         return playing;
     }
 
+    public Options getOptions(){
+        return options;
+    }
+    public void setFPS(int fps) {
+        FPS_SET = fps;
+    }
+    
     public GamePanel getGamePanel() {
         return gamePanel;
     }
+    
 }
