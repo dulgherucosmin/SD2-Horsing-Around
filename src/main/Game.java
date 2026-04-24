@@ -187,4 +187,7 @@ public class Game implements Runnable {
         return gamePanel;
     }
     
+    public int getFPS(){
+        return FPS_SET;
+    }
 }

@@ -7,7 +7,7 @@ import ui.OptionsOverlay;
 
 public class Options extends State implements StateMethods {
      private OptionsOverlay optionsOverlay;
-
+    //constructor
      public Options(Game game){
         super(game);
         optionsOverlay = new OptionsOverlay(game);
@@ -27,7 +27,7 @@ public class Options extends State implements StateMethods {
     public void mouseClicked(MouseEvent e) {
         
     }
-
+    //escape takes you back to main menu
     @Override
     public void keyPressed(KeyEvent e) {
       if(e.getKeyCode() == KeyEvent.VK_ESCAPE)

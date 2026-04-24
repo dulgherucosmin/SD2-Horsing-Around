@@ -276,4 +276,25 @@ public class OptionsOverlay {
         float scaleY = (float) game.getGamePanel().getHeight() / GAME_HEIGHT;
         return (int) (e.getY() / scaleY);
     }
+
+    public int getP1SelectedHorse() {
+        return p1SelectedHorse;
+    }
+
+    public void setP1SelectedHorse(int i) {
+        if(i != p2SelectedHorse)
+        p1SelectedHorse = i;
+    }
+
+    public int getP2SelectedHorse() {
+        return p2SelectedHorse;
+    }
+
+    public void setP2SelectedHorse(int i) {
+        if(i != p1SelectedHorse)
+            p2SelectedHorse = i;
+    }
+    
 }
+
+

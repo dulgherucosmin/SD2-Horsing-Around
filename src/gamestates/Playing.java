@@ -455,4 +455,7 @@ public class Playing extends State implements StateMethods {
         levelCompleteTime = 0;
         paused =false;
     }
+    public int getCurrentLevelNum(){
+        return currentLevelNum;
+    }
 }

@@ -413,7 +413,7 @@ public class Player extends Entity {
         loadAnimations(); //reload animations with new sprie path
     }
 
-    public String getSpritePathc(){
+    public String getSpritePath(){
         return spritePath;
     }
 }
