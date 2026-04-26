@@ -100,6 +100,17 @@ public class Playing extends State implements StateMethods {
         setupLevelObjects(); //setup buttons, doors and win condition.
         syncPlayersToCurrentLevel(); //load level data for players
         setupBoxForCurrentLevel();//setup box (box only exists in level 2)
+
+        levelStartTime = System.currentTimeMillis();
+    }
+
+    private String formatTime(long milliseconds){
+        long totalSeconds = milliseconds / 1000;
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        long millis = (milliseconds % 1000) / 60;
+
+        return String.format("%02d:%02d.%02d", minutes, seconds, millis);
     }
 
     private void setupLevelObjects(){
@@ -185,6 +196,8 @@ public class Playing extends State implements StateMethods {
         setupBoxForCurrentLevel();
     
         levelComplete = false;
+
+        levelStartTime = System.currentTimeMillis();
     }
 
     private void setupBoxForCurrentLevel() { //creates or removes box depending on level
