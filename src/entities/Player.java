@@ -103,7 +103,6 @@ public class Player extends Entity {
                 || isDeadly(hbX + width - 1, hbY, currentLevelData, currentLevel)
                 || isDeadly(hbX, hbY + height - 1, currentLevelData, currentLevel)
                 || isDeadly(hbX + width - 1, hbY + height - 1, currentLevelData, currentLevel)) {
-            System.out.println("deadly tile hit, resetting position");
             resetPosition();
             inAir = true;
             airSpeed = 0;
