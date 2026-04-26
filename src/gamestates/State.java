@@ -5,6 +5,7 @@ package gamestates;
 
 import java.awt.event.MouseEvent;
 
+import audio.AudioPlayer;
 import main.Game;
 import ui.MenuButton;
 
@@ -29,5 +30,19 @@ public class State {
         int my = (int)(e.getY()/scaleY);
 
         return mb.getBounds().contains(mx,my);
+    }
+
+    public void setGamestate(Gamestate state) {
+
+        switch(state) {
+            case MENU -> {
+                if (!game.getAudioPlayer().isSongPlaying(AudioPlayer.MENU))
+                    game.getAudioPlayer().playSong(AudioPlayer.MENU);
+            }
+            case PLAYING -> game.getAudioPlayer().playSong(AudioPlayer.LEVEL);
+        }
+
+        Gamestate.state = state;
+
     }
 }

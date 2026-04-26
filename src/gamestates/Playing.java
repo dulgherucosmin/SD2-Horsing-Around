@@ -5,10 +5,15 @@ package gamestates;
 
 import static utilz.Constants.Directions.*;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import audio.AudioPlayer;
 import entities.Box;
 import entities.Button;
 import entities.Door;
@@ -67,7 +72,8 @@ public class Playing extends State implements StateMethods {
     private static final int SECOND_LEVEL = 2;
     private static final int THIRD_LEVEL = 3;
     
-    private boolean paused =false;
+    private boolean paused = false;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -77,13 +83,14 @@ public class Playing extends State implements StateMethods {
 
         // initialize level manager
         levelManager = new LevelManager(game, currentLevelNum);
-       //initializing pauseOverlay class
+
+        //initializing pauseOverlay class
         pauseOverlay = new PauseOverlay(game,this);
 
         float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
         float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
       
-        player1 = new Player(1, p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT, "Patrick");
+        player1 = new Player(1, p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT, "Patrick", game);
 
         // load level data (in this case level 1)
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -91,7 +98,7 @@ public class Playing extends State implements StateMethods {
         // set players internal storage of level to the current loaded level (in this case level 1)
         player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(2, p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT, "Nathan");
+        player2 = new Player(2, p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT, "Nathan", game);
 
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
@@ -275,7 +282,19 @@ public class Playing extends State implements StateMethods {
                 player2.lockMovement();
         }
 
-            
+            //delayed level transition
+            if (levelComplete) {
+                long currentTime = System.currentTimeMillis();
+
+            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
+                if(currentLevelNum ==1){
+                    loadNextLevel();
+                }
+                    else if(currentLevelNum == 2){  //bring players back to main menu
+                        setGamestate(Gamestate.MENU);
+                    }
+                }
+            }
 
         //if paused display pause overlay
         } else {
@@ -286,10 +305,12 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void draw(Graphics g) {
+
         // render level 1
         levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
+        
         if (button1 != null) button1.render(g);
         if (button2 != null) button2.render(g);
         if (button3 != null) button3.render(g);
@@ -320,26 +341,20 @@ public class Playing extends State implements StateMethods {
         }
 
         if (levelComplete) {
-            g.setColor(new java.awt.Color(0, 0, 0, 150));
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
+            g.setColor(new java.awt.Color(0, 0, 0, 220));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+
+            Font pixelFont = LoadSave.loadFont("PressStart2P-Regular.ttf").deriveFont(10f);
+            g.setFont(pixelFont);
             g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2);
-            g.drawString("Press ENTER to continue", GAME_WIDTH / 2 - 35, GAME_HEIGHT / 2 + 30);
-            if(currentLevelNum == 1){
-                g.drawString("Level 1: " + formatTime(level1Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
-            }
 
-            if(currentLevelNum == 2){
-                g.drawString("Level 2: " + formatTime(level2Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
-            }
-            
-
-            if (currentLevelNum == 3) {
-                g.drawString("Level 3: " + formatTime(level3Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
-                g.drawString("Final Time: " + formatTime(finalTime), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 70);
-}
-            
+            String text = "LEVEL COMPLETE!";
+            FontMetrics fm = g.getFontMetrics();
+            g.drawString(text, GAME_WIDTH / 2 - fm.stringWidth(text) / 2, GAME_HEIGHT / 2);
         }
        
     }

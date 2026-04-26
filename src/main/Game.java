@@ -6,6 +6,7 @@ package main;
 import java.awt.Graphics;
 import java.lang.classfile.ClassFile.Option;
 
+import audio.AudioPlayer;
 import gamestates.Gamestate;
 import gamestates.*;
 
@@ -19,6 +20,9 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
     private Options options;
+    private Splash splash;
+
+    public AudioPlayer audioPlayer;
 
     // target frames per second and updates per second
     private  int FPS_SET = 120; // controls how often the screen is redrawn
@@ -51,6 +55,9 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
+        audioPlayer = new AudioPlayer();
+
+        splash = new Splash(this);
         playing = new Playing(this);
         menu = new Menu(this);
         options = new Options(this);
@@ -64,6 +71,9 @@ public class Game implements Runnable {
     public void update() {
         // a check to see if the game is in a particular state
         switch (Gamestate.state) {
+            case SPLASH:
+                splash.update();
+                break;
             case MENU:
                 menu.update();
                 break;
@@ -84,6 +94,11 @@ public class Game implements Runnable {
 
     public void render(Graphics g) {
         switch (Gamestate.state) {
+
+            case SPLASH:
+                splash.draw(g);
+                break;
+
             case MENU:
                 menu.draw(g);
                 break;
@@ -189,5 +204,13 @@ public class Game implements Runnable {
     
     public int getFPS(){
         return FPS_SET;
+    }
+
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
+    }
+
+    public Splash getSplash() {
+        return splash;
     }
 }

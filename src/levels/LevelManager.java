@@ -13,6 +13,7 @@ public class LevelManager {
 
     private Game game;
     private BufferedImage[] levelSprite;
+    private BufferedImage bgImage;
     
     // default to loading on level 1
     private Level currentLevel = new Level(LoadSave.getLevelData(1), 1);
@@ -25,6 +26,7 @@ public class LevelManager {
     private void importLevelSpriteSheet(int level) {
 
         BufferedImage img = LoadSave.GetSpriteAtlas("level_one_tilesheet2.png");
+        bgImage = LoadSave.GetSpriteAtlas("bg.png");
 
         if (img == null) {
             throw new RuntimeException("Failed to load level_one_tileset.png — check it exists in /res/");
@@ -49,6 +51,8 @@ public class LevelManager {
     }
 
     public void drawLevel(Graphics g, int level) {
+        if (bgImage != null)
+            g.drawImage(bgImage, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
         // load sprites
         for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
