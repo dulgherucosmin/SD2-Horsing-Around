@@ -266,10 +266,12 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void draw(Graphics g) {
+
         // render level 1
         levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
+        
         if (button1 != null) button1.render(g);
         if (button2 != null) button2.render(g);
         if (button3 != null) button3.render(g);

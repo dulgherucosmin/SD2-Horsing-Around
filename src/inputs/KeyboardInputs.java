@@ -25,6 +25,9 @@ public class KeyboardInputs implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (Gamestate.state) {
+            case SPLASH:
+                gamePanel.getGame().getSplash().keyPressed(e);
+                break;
             case MENU:
                 gamePanel.getGame().getMenu().keyPressed(e);  
                 break;
@@ -43,6 +46,9 @@ public class KeyboardInputs implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (Gamestate.state) {
+            case SPLASH:
+                gamePanel.getGame().getSplash().keyPressed(e);
+                break;
             case MENU:
                 gamePanel.getGame().getMenu().keyReleased(e);  
                 break;

@@ -35,7 +35,10 @@ public class State {
     public void setGamestate(Gamestate state) {
 
         switch(state) {
-            case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU);
+            case MENU -> {
+                if (!game.getAudioPlayer().isSongPlaying(AudioPlayer.MENU))
+                    game.getAudioPlayer().playSong(AudioPlayer.MENU);
+            }
             case PLAYING -> game.getAudioPlayer().playSong(AudioPlayer.LEVEL);
         }
 
