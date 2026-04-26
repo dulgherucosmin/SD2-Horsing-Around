@@ -44,6 +44,9 @@ public class Playing extends State implements StateMethods {
     private long level1Time = 0;
     private long level2Time = 0;
     private long level3Time = 0;
+
+    private long finalTime = 0;
+
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
     private int currentLevelNum = 1;
@@ -140,6 +143,8 @@ public class Playing extends State implements StateMethods {
 
             door1 = new Door(-1000, -1000, 3, button1);
             door2 = new Door(-1000, -1000, 3, button2);
+            win = new Win(455,160);
+
         }
     }
 
@@ -167,8 +172,9 @@ public class Playing extends State implements StateMethods {
         }
     }
 
-    private void loadNextLevel(){ //loads next level (level 2)
-        currentLevelNum = 2;
+    private void loadNextLevel(){ //loads next level 
+        currentLevelNum++;
+
         levelManager.initLevel(currentLevelNum);
         setupLevelObjects();
 
@@ -179,13 +185,14 @@ public class Playing extends State implements StateMethods {
         player1.setX(p1Spawn[0]);
         player1.setY(p1Spawn[1]);
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player1.setCurentLevel(Level.level);
+        player1.setCurentLevel(levelManager.getCurrentLevel().getLevelNumber());
+
         player1.unlockMovement();
 
         player2.setX(p2Spawn[0]);
         player2.setY(p2Spawn[1]);
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player2.setCurentLevel(Level.level);
+        player2.setCurentLevel(levelManager.getCurrentLevel().getLevelNumber());
         player2.unlockMovement();
 
         //reconnect player collision
@@ -197,6 +204,7 @@ public class Playing extends State implements StateMethods {
     
         levelComplete = false;
 
+        //restart timer for next level.
         levelStartTime = System.currentTimeMillis();
     }
 
@@ -251,23 +259,22 @@ public class Playing extends State implements StateMethods {
                 levelComplete = true;
                 levelCompleteTime = System.currentTimeMillis();
 
+                long levelTime = levelCompleteTime - levelStartTime;
+
+                if(currentLevelNum == 1){
+                    level1Time = levelTime;
+                } else if(currentLevelNum == 2){
+                    level2Time = levelTime;
+                } else if(currentLevelNum == 3){
+                    level3Time = levelTime;
+                    finalTime = level1Time + level2Time + level3Time;
+                }
+                
                 player1.lockMovement();
                 player2.lockMovement();
         }
 
-            //delayed level transition
-            if (levelComplete) {
-                long currentTime = System.currentTimeMillis();
-
-            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
-                if(currentLevelNum ==1){
-                    loadNextLevel();
-                }
-                    else if(currentLevelNum == 2){  //bring players back to main menu
-                        Gamestate.state = Gamestate.MENU;
-                    }
-                }
-            }
+            
 
         //if paused display pause overlay
         } else {
@@ -307,7 +314,8 @@ public class Playing extends State implements StateMethods {
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
+            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2);
+            g.drawString("Press ENTER to continue", GAME_WIDTH / 2 - 35, GAME_HEIGHT / 2 + 30);
         }
        
     }
@@ -378,6 +386,13 @@ public class Playing extends State implements StateMethods {
     public void keyReleased(KeyEvent e) {
 
         if (levelComplete) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                if(currentLevelNum < 3){
+                    loadNextLevel();
+                } else{
+                    Gamestate.state = Gamestate.MENU;
+                }
+            }
             return;
         }
 
