@@ -4,6 +4,8 @@
 package main;
 
 import java.awt.Graphics;
+
+import audio.AudioPlayer;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
@@ -17,6 +19,8 @@ public class Game implements Runnable {
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
+
+    private AudioPlayer audioPlayer;
 
     // target frames per second and updates per second
     private final int FPS_SET = 120; // controls how often the screen is redrawn
@@ -49,6 +53,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
+        audioPlayer = new AudioPlayer();
+
         playing = new Playing(this);
         menu = new Menu(this);
     }
@@ -170,5 +176,9 @@ public class Game implements Runnable {
 
     public GamePanel getGamePanel() {
         return gamePanel;
+    }
+
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }

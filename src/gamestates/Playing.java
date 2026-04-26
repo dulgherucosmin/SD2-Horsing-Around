@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import audio.AudioPlayer;
 import entities.Box;
 import entities.Button;
 import entities.Door;
@@ -58,7 +59,8 @@ public class Playing extends State implements StateMethods {
 
     private static final int SECOND_LEVEL = 2;
     
-    private boolean paused =false;
+    private boolean paused = false;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -68,7 +70,8 @@ public class Playing extends State implements StateMethods {
 
         // initialize level manager
         levelManager = new LevelManager(game, currentLevelNum);
-       //initializing pauseOverlay class
+
+        //initializing pauseOverlay class
         pauseOverlay = new PauseOverlay(game,this);
 
         float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
