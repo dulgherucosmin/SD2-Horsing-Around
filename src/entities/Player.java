@@ -237,8 +237,8 @@ public class Player extends Entity {
                     // also run a check to see if player is blocked by a tile or collides with another player
                     while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) 
                             && !collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox)
-                            && !collidesWithHitBox(x, y + 1, width, height, boxHitBox))
-                        {
+                            && !collidesWithHitBox(x, y + 1, width, height, boxHitBox)
+                        ) {
                         y += 1;
                     }
                 }
@@ -250,7 +250,6 @@ public class Player extends Entity {
         } else {
             // check if theres a solid tile beneath
             if (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
-
                 // this checks if the player is standing on another player or box
                 boolean standingOnOtherPlayer = otherPlayerHitBox != null && collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox);
                 boolean standingOnBox = boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox);
@@ -302,6 +301,14 @@ public class Player extends Entity {
     // helper method to set other players hitbox
     public void setOtherPlayerHitBox(Rectangle otherPlayerHitBox) {
         this.otherPlayerHitBox = otherPlayerHitBox;
+    }
+
+    // helper method to quickly reset player position
+    public void resetPosition() {
+
+        float[] sp = getSpawnPoint(playerType, this.currentLevel);
+        this.x = sp[0];
+        this.y = sp[1];
     }
 
     public static float[] getSpawnPoint(int playerType, int levelNum) {
