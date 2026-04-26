@@ -42,7 +42,7 @@ public class AudioPlayer {
     }
 
     private void loadEffects() {
-        String[] effectNames = {"jump", "die", "lvlcomplete", "gameover"};
+        String[] effectNames = {"jump", "die", "lvlcomplete", "gameover", "door"};
         effects = new Clip[effectNames.length];
         
         for (int i = 0; i < effects.length; i++)
@@ -156,5 +156,13 @@ public class AudioPlayer {
             float gain = (range * volume) + gainControl.getMinimum();
             gainControl.setValue(gain);
         }
+    }
+
+    public boolean isSongPlaying(int song) {
+        if (songs[song] == null) {
+            return false;
+        }
+        
+        return songs[song].isActive();
     }
 }
