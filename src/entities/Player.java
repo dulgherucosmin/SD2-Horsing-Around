@@ -68,6 +68,7 @@ public class Player extends Entity {
 
     private Rectangle otherPlayerHitBox;
     private Rectangle boxHitBox;
+    private Rectangle box2HitBox;
     private boolean movementLocked;
     private Game game;
 
@@ -242,7 +243,8 @@ public class Player extends Entity {
             // run a check to see if player is blocked by a tile or collides with another player
             boolean tileCollision = !canMove(x, y + airSpeed, width, height, currentLevelData, currentLevel);
             boolean playerCollision = otherPlayerHitBox != null && collidesWithHitBox(x, y + airSpeed, width, height, otherPlayerHitBox);
-            boolean boxCollisionVertical = boxHitBox != null && collidesWithHitBox(x, y + airSpeed, width, height, boxHitBox);
+            boolean boxCollisionVertical = (boxHitBox != null && collidesWithHitBox(x, y + airSpeed, width, height, boxHitBox))
+            || (box2HitBox != null && collidesWithHitBox(x,y + airSpeed, width, height, box2HitBox));
 
             if (!jumpHeld && airSpeed < jumpCutSpeed) {
                 airSpeed = jumpCutSpeed;
@@ -260,7 +262,8 @@ public class Player extends Entity {
                     // also run a check to see if player is blocked by a tile or collides with another player
                     while (canMove(x, y + 1, width, height, currentLevelData, currentLevel) 
                             && !collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox)
-                            && !collidesWithHitBox(x, y + 1, width, height, boxHitBox)
+                            && !(boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox))
+                            && !(box2HitBox != null && collidesWithHitBox(x, y + 1, width, height, box2HitBox))
                         ) {
                         y += 1;
                     }
@@ -275,7 +278,9 @@ public class Player extends Entity {
             if (canMove(x, y + 1, width, height, currentLevelData, currentLevel)) {
                 // this checks if the player is standing on another player or box
                 boolean standingOnOtherPlayer = otherPlayerHitBox != null && collidesWithHitBox(x, y + 1, width, height, otherPlayerHitBox);
-                boolean standingOnBox = boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox);
+                boolean standingOnBox =
+                    (boxHitBox != null && collidesWithHitBox(x, y + 1, width, height, boxHitBox))
+                    || (box2HitBox != null && collidesWithHitBox(x, y + 1, width, height, box2HitBox));
 
                 if (!standingOnOtherPlayer && !standingOnBox) {
                     inAir = true;
@@ -289,9 +294,9 @@ public class Player extends Entity {
             boolean tileCollision = !canMove(x + xSpeed, y, width, height, currentLevelData, currentLevel);
             boolean playerCollision = otherPlayerHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, otherPlayerHitBox);
 
-            boolean boxCollisionHorizontal = boxHitBox != null 
-                                                && collidesWithHitBox(x + xSpeed, y, width, height, boxHitBox)
-                                                && boxHitBox.y + boxHitBox.height > hitBox.y + 2;
+            boolean boxCollisionHorizontal =
+                (boxHitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, boxHitBox))
+                || (box2HitBox != null && collidesWithHitBox(x + xSpeed, y, width, height, box2HitBox));
 
             if (!tileCollision && !playerCollision && !boxCollisionHorizontal) {
                 x += xSpeed;
@@ -350,9 +355,9 @@ public class Player extends Entity {
                 }
             case 3: // level 3 spawns
                 if (playerType == 1) {
-                    return new float[]{5, 1};
+                    return new float[]{2 * 16, 7 * 16};
                 } else {
-                    return new float[]{40, 1};
+                    return new float[]{4 * 16, 7 * 16};
                 }
             default:
                 return new float[]{0, 0};
@@ -376,6 +381,9 @@ public class Player extends Entity {
         this.boxHitBox = boxHitBox;
     }
 
+    public void setBox2HitBox(Rectangle box2HitBox) {
+        this.box2HitBox = box2HitBox;
+    }
     // this resets all the movement inputs when game is out of focus
     public void resetDirBooleans() {
         left = false;

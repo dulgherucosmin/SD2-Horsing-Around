@@ -6,7 +6,10 @@ import main.Game;
 import java.awt.*;
 import java.util.*;
 
+
 public class Utils {
+
+    private static boolean spikesDisabled = false;
 
     // stores which tile IDs are solid for each level
     // key = level number, value = set of solid tile IDs
@@ -44,6 +47,14 @@ public class Utils {
                 && !isSolid(hbX + width - 1, hbY, levelData, currentLevel)                   // top right
                 && !isSolid(hbX, hbY + height - 1, levelData, currentLevel)                  // bottom left
                 && !isSolid(hbX + width - 1, hbY + height - 1, levelData, currentLevel); // bottom right
+    }   
+
+    public static void setSpikesDisabled(boolean disabled) {
+        spikesDisabled = disabled;
+    }
+
+    public static boolean areSpikesDisabled() {
+        return spikesDisabled;
     }
 
     // check for a deadly tile
@@ -62,7 +73,7 @@ public class Utils {
         int tile = levelData[yIndex][xIndex];
 
         // tile 0 is always air, no need to check further
-        if (tile == 40) {
+        if (tile == 40 && !spikesDisabled) {
             return true;
         } else {
             return false;
