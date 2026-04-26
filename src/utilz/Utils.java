@@ -46,6 +46,29 @@ public class Utils {
                 && !isSolid(hbX + width - 1, hbY + height - 1, levelData, currentLevel); // bottom right
     }
 
+    // check for a deadly tile
+    public static boolean isDeadly(float x, float y, int[][] levelData, int currentLevel) {
+
+        // convert pixel position to tile array index
+        int xIndex = (int) (x / Game.TILES_SIZE);
+        int yIndex = (int) (y / Game.TILES_SIZE);
+
+        // extra bounds check in case position is at the very edge of the map
+        if (yIndex >= levelData.length || xIndex >= levelData[0].length) {
+            return true;
+        }
+
+        // get the tile at this position from the level data array
+        int tile = levelData[yIndex][xIndex];
+
+        // tile 0 is always air, no need to check further
+        if (tile == 40) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // checks whether a single point in the world is inside a solid tile
     private static boolean isSolid(float x, float y, int[][] levelData, int currentLevel) {
 
