@@ -39,7 +39,7 @@ public class PlayerMovementTest {
     // tests that moving right increases the x position
     @Test
     public void testMoveRight() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
         // set current level to ensure hitboxes work
@@ -60,7 +60,7 @@ public class PlayerMovementTest {
     // tests that moving left decreases the x position
     @Test
     public void testMoveLeft() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -83,7 +83,7 @@ public class PlayerMovementTest {
     // tests that pressing both left and right results in no horizontal movement
     @Test
     public void testLeftAndRightCancelsOut() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -107,7 +107,7 @@ public class PlayerMovementTest {
     // tests that the player does not move when there's no input
     @Test
     public void testNoMovementWhenNoInput() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -126,7 +126,7 @@ public class PlayerMovementTest {
     // tests that the player accumulates correctly over muliple updates
     @Test
     public void testMovementAccumulatesOverUpdates() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test");
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -155,8 +155,8 @@ public class PlayerMovementTest {
         int pSpawn = 100;
         int p2Spawn = 200;
 
-        Player p = new Player(1, pSpawn, 10, null, RIGHT, "Test");
-        Player p2 = new Player(2, p2Spawn, 10, null, LEFT, "Test");
+        Player p = new Player(1, pSpawn, 10, null, RIGHT, "Test", null);
+        Player p2 = new Player(2, p2Spawn, 10, null, LEFT, "Test", null);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());

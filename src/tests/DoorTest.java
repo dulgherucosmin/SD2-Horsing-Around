@@ -29,7 +29,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 0, 0, null, 0, "Test");
+        Player player = new Player(1, 0, 0, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
         button1.update(player, player, null);
@@ -44,7 +44,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 200, 200, null, 0, "Testing");
+        Player player = new Player(1, 200, 200, null, 0, "Testing", null);
         player.updateHitBoxRaw();
 
         button2.update(player, player, null);
@@ -58,7 +58,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1);
 
-        Player player = new Player(1, 0, 0, null, 0, "Testing");
+        Player player = new Player(1, 0, 0, null, 0, "Testing", null);
         player.updateHitBoxRaw();
 
         button1.update(player, player, null);
@@ -73,14 +73,14 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 0, 0, null, 0, "Test");
+        Player player = new Player(1, 0, 0, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
         button1.update(player, player, null);
         assertTrue(door.isOpen());
 
         // release (move player away)
-        Player moved = new Player(1, 300, 300, null, 0, "Test");
+        Player moved = new Player(1, 300, 300, null, 0, "Test", null);
         moved.updateHitBoxRaw();
 
         button1.update(moved, moved, null);
@@ -95,7 +95,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 100, 100, null, 0, "Test");
+        Player player = new Player(1, 100, 100, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
         assertTrue(door.isBlocking(player));
@@ -108,7 +108,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 100, 100, null, 0, "Test");
+        Player player = new Player(1, 100, 100, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
         button1.update(player, player, null);
@@ -122,7 +122,7 @@ public class DoorTest {
 
         Door door = new Door(100, 100, 4, button1, button2);
 
-        Player player = new Player(1, 200, 200, null, 0, "Test");
+        Player player = new Player(1, 200, 200, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
         button2.update(player, player, null);

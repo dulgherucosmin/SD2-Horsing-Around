@@ -48,7 +48,7 @@ public class VoidTest {
     @Test
     public void testVoidTeleport() {
 
-        Player p = new Player(1, 40, 1, null, RIGHT, "Test");
+        Player p = new Player(1, 40, 1, null, RIGHT, "Test", null);
         // load our test level into player code
         p.loadLevelData(createVoidLevel());
         // set current level to ensure hitboxes work
