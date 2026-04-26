@@ -148,7 +148,7 @@ public class Playing extends State implements StateMethods {
             button2 = new Button(4 * TILES_SIZE, 5 * TILES_SIZE);
             button3 = new Button(25 * TILES_SIZE, 12 * TILES_SIZE);
 
-            door1 = new Door(28 * TILES_SIZE, 9 * TILES_SIZE, 4, button1);
+            door1 = new Door(28 * TILES_SIZE, 9 * TILES_SIZE, 4, button2);
             door2 = new Door(-1000, -1000, 3, button2);
             win = new Win(455,160);
 
@@ -245,7 +245,7 @@ public class Playing extends State implements StateMethods {
 
             player1.setBoxHitBox(null);
             player2.setBoxHitBox(null);
-            
+
             player1.setBox2HitBox(null);
             player2.setBox2HitBox(null);
         }
@@ -265,6 +265,10 @@ public class Playing extends State implements StateMethods {
             if (button1 != null) button1.update(player1, player2, box);
             if (button2 != null) button2.update(player1, player2, box);
             if (button3 != null) button3.update(player1, player2, box);
+
+            boolean disableSpikes = (button1 != null && button1.isPressed()) ||
+            (button3 != null && button3.isPressed());
+            utilz.Utils.setSpikesDisabled(disableSpikes);
 
             //update doors
             if (door1 != null) door1.update();

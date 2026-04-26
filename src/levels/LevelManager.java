@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import main.Game;
 import utilz.LoadSave;
+import utilz.Utils;
 
 public class LevelManager {
 
@@ -60,6 +61,9 @@ public class LevelManager {
                 // get the sprite index according to position
                 int index = currentLevel.getSpriteIndex(i, j); // levelData[j][i]
 
+                if (index == 40 && Utils.areSpikesDisabled()) {
+                    continue;
+                }
                 // draw sprite
                 g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
             }
