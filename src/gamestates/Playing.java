@@ -39,7 +39,14 @@ public class Playing extends State implements StateMethods {
     private Box box;
 
     private boolean levelComplete = false;
+    private long levelStartTime = 0;
     private long levelCompleteTime = 0;
+    private long level1Time = 0;
+    private long level2Time = 0;
+    private long level3Time = 0;
+
+    private long finalTime = 0;
+
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
     private int currentLevelNum = 1;
@@ -56,7 +63,9 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    private static final int FIRST_LEVEL = 1;
     private static final int SECOND_LEVEL = 2;
+    private static final int THIRD_LEVEL = 3;
     
     private boolean paused =false;
     public Playing(Game game) {
@@ -94,6 +103,17 @@ public class Playing extends State implements StateMethods {
         setupLevelObjects(); //setup buttons, doors and win condition.
         syncPlayersToCurrentLevel(); //load level data for players
         setupBoxForCurrentLevel();//setup box (box only exists in level 2)
+
+        levelStartTime = System.currentTimeMillis();
+    }
+
+    private String formatTime(long milliseconds){
+        long totalSeconds = milliseconds / 1000;
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        long millis = (milliseconds % 1000) / 10;
+
+        return String.format("%02d:%02d.%02d", minutes, seconds, millis);
     }
 
     private void setupLevelObjects(){
@@ -123,6 +143,8 @@ public class Playing extends State implements StateMethods {
 
             door1 = new Door(-1000, -1000, 3, button1);
             door2 = new Door(-1000, -1000, 3, button2);
+            win = new Win(455,160);
+
         }
     }
 
@@ -150,8 +172,9 @@ public class Playing extends State implements StateMethods {
         }
     }
 
-    private void loadNextLevel(){ //loads next level (level 2)
-        currentLevelNum = 2;
+    private void loadNextLevel(){ //loads next level 
+        currentLevelNum++;
+
         levelManager.initLevel(currentLevelNum);
         setupLevelObjects();
 
@@ -162,13 +185,14 @@ public class Playing extends State implements StateMethods {
         player1.setX(p1Spawn[0]);
         player1.setY(p1Spawn[1]);
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player1.setCurentLevel(Level.level);
+        player1.setCurentLevel(levelManager.getCurrentLevel().getLevelNumber());
+
         player1.unlockMovement();
 
         player2.setX(p2Spawn[0]);
         player2.setY(p2Spawn[1]);
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player2.setCurentLevel(Level.level);
+        player2.setCurentLevel(levelManager.getCurrentLevel().getLevelNumber());
         player2.unlockMovement();
 
         //reconnect player collision
@@ -179,6 +203,9 @@ public class Playing extends State implements StateMethods {
         setupBoxForCurrentLevel();
     
         levelComplete = false;
+
+        //restart timer for next level.
+        levelStartTime = System.currentTimeMillis();
     }
 
     private void setupBoxForCurrentLevel() { //creates or removes box depending on level
@@ -203,6 +230,7 @@ public class Playing extends State implements StateMethods {
             if(!levelComplete){ //only update movement if level not complete
                 player1.update();
                 player2.update();
+                
             }
 
             //update buttons, pressed by players or box.
@@ -232,23 +260,22 @@ public class Playing extends State implements StateMethods {
                 levelComplete = true;
                 levelCompleteTime = System.currentTimeMillis();
 
+                long levelTime = levelCompleteTime - levelStartTime;
+
+                if(currentLevelNum == 1){
+                    level1Time = levelTime;
+                } else if(currentLevelNum == 2){
+                    level2Time = levelTime;
+                } else if(currentLevelNum == 3){
+                    level3Time = levelTime;
+                    finalTime = level1Time + level2Time + level3Time;
+                }
+                
                 player1.lockMovement();
                 player2.lockMovement();
         }
 
-            //delayed level transition
-            if (levelComplete) {
-                long currentTime = System.currentTimeMillis();
-
-            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
-                if(currentLevelNum ==1){
-                    loadNextLevel();
-                }
-                    else if(currentLevelNum == 2){  //bring players back to main menu
-                        Gamestate.state = Gamestate.MENU;
-                    }
-                }
-            }
+            
 
         //if paused display pause overlay
         } else {
@@ -278,6 +305,15 @@ public class Playing extends State implements StateMethods {
             win.render(g, levelComplete);
         }
 
+        long displayTime;
+        if(levelComplete){
+            displayTime = levelCompleteTime - levelStartTime;
+        } else{
+            displayTime = System.currentTimeMillis() - levelStartTime;
+        }
+        g.setColor(java.awt.Color.WHITE);
+        g.drawString("Level Time: " + formatTime(displayTime), 20, 20);
+
         //if paused then draw pause overlay
         if(paused){
         pauseOverlay.draw(g);
@@ -288,7 +324,22 @@ public class Playing extends State implements StateMethods {
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
+            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2);
+            g.drawString("Press ENTER to continue", GAME_WIDTH / 2 - 35, GAME_HEIGHT / 2 + 30);
+            if(currentLevelNum == 1){
+                g.drawString("Level 1: " + formatTime(level1Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
+            }
+
+            if(currentLevelNum == 2){
+                g.drawString("Level 2: " + formatTime(level2Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
+            }
+            
+
+            if (currentLevelNum == 3) {
+                g.drawString("Level 3: " + formatTime(level3Time), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 50);
+                g.drawString("Final Time: " + formatTime(finalTime), GAME_WIDTH / 2 - 30, GAME_HEIGHT / 2 + 70);
+}
+            
         }
        
     }
@@ -321,6 +372,13 @@ public class Playing extends State implements StateMethods {
     public void keyPressed(KeyEvent e) {
         
         if (levelComplete) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) { //key to change level
+                if (currentLevelNum < 3) {
+                    loadNextLevel();
+                } else {
+                    Gamestate.state = Gamestate.MENU;
+                }
+            }
             return;
         }
 
@@ -357,11 +415,6 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
-        if (levelComplete) {
-            return;
-        }
-
         // stops the movement when the key is released
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
@@ -454,6 +507,12 @@ public class Playing extends State implements StateMethods {
         levelComplete = false;
         levelCompleteTime = 0;
         paused =false;
+        levelStartTime = System.currentTimeMillis();
+
+        level1Time = 0;
+        level2Time = 0;
+        level3Time = 0;
+        finalTime = 0;
     }
     public int getCurrentLevelNum(){
         return currentLevelNum;
