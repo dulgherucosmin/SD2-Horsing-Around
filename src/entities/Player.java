@@ -13,6 +13,7 @@ import static utilz.Constants.PlayerConstants.WALK_LEFT;
 import static utilz.Constants.PlayerConstants.WALK_RIGHT;
 import static utilz.Utils.canMove;
 import static utilz.Utils.collidesWithHitBox;
+import static utilz.Utils.isDeadly;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -90,6 +91,23 @@ public class Player extends Entity {
         updateHitBox();
         updateAnimationTick();
         setAnimation();
+
+        checkDeadlyTiles();
+    }
+
+    private void checkDeadlyTiles() {
+        float hbX = hitBox.x;
+        float hbY = hitBox.y;
+
+        if (isDeadly(hbX, hbY, currentLevelData, currentLevel)
+                || isDeadly(hbX + width - 1, hbY, currentLevelData, currentLevel)
+                || isDeadly(hbX, hbY + height - 1, currentLevelData, currentLevel)
+                || isDeadly(hbX + width - 1, hbY + height - 1, currentLevelData, currentLevel)) {
+            System.out.println("deadly tile hit, resetting position");
+            resetPosition();
+            inAir = true;
+            airSpeed = 0;
+        }
     }
 
     public void undoMove(){
