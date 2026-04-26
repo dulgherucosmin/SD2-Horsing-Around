@@ -170,6 +170,6 @@ public class Box extends Entity {
             g.setColor(Color.GREEN);
             g.fillRect((int) x, (int) y, 32, 32);
         }
-        // drawHitBox(g);
+         drawHitBox(g);
     }
 }

@@ -42,6 +42,7 @@ public class Playing extends State implements StateMethods {
     private Door door2;
     private Win win;
     private Box box;
+    private Box box2;
 
     private boolean levelComplete = false;
     private long levelStartTime = 0;
@@ -53,7 +54,7 @@ public class Playing extends State implements StateMethods {
     private long finalTime = 0;
 
 
-    private int currentLevelNum = 1;
+    private int currentLevelNum = 3;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -143,11 +144,11 @@ public class Playing extends State implements StateMethods {
 
             win = new Win(455, 160);
         } else if (currentLevelNum == 3) {
-            button1 = new Button(-1000, -1000);
-            button2 = new Button(-1000, -1000);
-            button3 = new Button(-1000, -1000);
+            button1 = new Button(8 * TILES_SIZE, 12 * TILES_SIZE);
+            button2 = new Button(4 * TILES_SIZE, 5 * TILES_SIZE);
+            button3 = new Button(25 * TILES_SIZE, 12 * TILES_SIZE);
 
-            door1 = new Door(-1000, -1000, 3, button1);
+            door1 = new Door(28 * TILES_SIZE, 9 * TILES_SIZE, 4, button1);
             door2 = new Door(-1000, -1000, 3, button2);
             win = new Win(455,160);
 
@@ -219,13 +220,34 @@ public class Playing extends State implements StateMethods {
             box = new Box(18 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
             box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
 
+            box2 = null;
+
             player1.setBoxHitBox(box.getHitbox());
             player2.setBoxHitBox(box.getHitbox());
-        } else {
+
+            player1.setBox2HitBox(null);
+            player2.setBox2HitBox(null);
+        } else if(currentLevelNum == 3) {
+            box = new Box(8 * TILES_SIZE,  10 * TILES_SIZE, "box.png");
+            box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+
+            box2 = new Box(8 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
+            box2.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
+            
+            player1.setBoxHitBox(box.getHitbox());
+            player2.setBoxHitBox(box.getHitbox());
+
+            player1.setBox2HitBox(box2.getHitbox());
+            player2.setBox2HitBox(box2.getHitbox());
+        }else {
             box = null;
+            box2 = null;
 
             player1.setBoxHitBox(null);
             player2.setBoxHitBox(null);
+            
+            player1.setBox2HitBox(null);
+            player2.setBox2HitBox(null);
         }
     }
 
@@ -252,6 +274,11 @@ public class Playing extends State implements StateMethods {
             if (box != null) {
                 box.update(player1, player2);
             }
+
+            if (box2 != null) {
+            box2.update(player1, player2);
+            }
+
             // door collision checks
             if (door1.isBlocking(player1) || door2.isBlocking(player1)) {
                 player1.undoMove();
@@ -305,6 +332,9 @@ public class Playing extends State implements StateMethods {
 
         if (box != null) {
             box.render(g);
+        }
+        if (box2 != null) {
+        box2.render(g);
         }
 
         if (win != null) {
