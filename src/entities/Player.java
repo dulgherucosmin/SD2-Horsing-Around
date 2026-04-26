@@ -62,10 +62,12 @@ public class Player extends Entity {
     private int[][] currentLevelData;
     private int currentLevel;
 
-    //
+
     private Rectangle otherPlayerHitBox;
     private Rectangle boxHitBox;
     private boolean movementLocked;
+
+    private String currentColour ="default";
 
     public Player(int playerType, float x, float y, String spritePath, int startDir, String displayName) {
         // width and height here are hitbox sizes
@@ -404,5 +406,14 @@ public class Player extends Entity {
     public void setY(float y) {
         this.y = y;
         updateHitBox(); 
+    }
+    //changes the colour by reloading the spritesheet
+    public void setColour(String newSpritePath){
+        this.spritePath =newSpritePath;
+        loadAnimations(); //reload animations with new sprie path
+    }
+
+    public String getSpritePath(){
+        return spritePath;
     }
 }

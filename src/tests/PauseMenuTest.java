@@ -59,4 +59,10 @@ public class PauseMenuTest {
       PauseOverlay pauseOverlay = new PauseOverlay(game, playing);
       assertNotNull(pauseOverlay);
   }
+  @Test
+  public void testReplayButton(){
+   Playing playing = new Playing(game);
+   playing.resetGame();
+   assertEquals(1,playing.getCurrentLevelNum());
+  }
 }
