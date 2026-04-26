@@ -39,7 +39,11 @@ public class Playing extends State implements StateMethods {
     private Box box;
 
     private boolean levelComplete = false;
+    private long levelStartTime = 0;
     private long levelCompleteTime = 0;
+    private long level1Time = 0;
+    private long level2Time = 0;
+    private long level3Time = 0;
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
     private int currentLevelNum = 1;
@@ -56,7 +60,9 @@ public class Playing extends State implements StateMethods {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    private static final int FIRST_LEVEL = 1;
     private static final int SECOND_LEVEL = 2;
+    private static final int THIRD_LEVEL = 3;
     
     private boolean paused =false;
     public Playing(Game game) {
