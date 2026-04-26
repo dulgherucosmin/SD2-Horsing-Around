@@ -2,6 +2,7 @@
 // Group 9
 package utilz;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,6 +131,18 @@ public class LoadSave {
             };
         }
         return new int[0][0];
+    }
+
+    public static Font loadFont(String fileName) {
+
+        try {
+            InputStream is = LoadSave.class.getResourceAsStream("/res/fonts/" + fileName);
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+            return font;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Font("Comic Sans", Font.PLAIN, 12); // fallback
+        }
     }
   
 }

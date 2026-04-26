@@ -5,7 +5,11 @@ package gamestates;
 
 import static utilz.Constants.Directions.*;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -287,11 +291,20 @@ public class Playing extends State implements StateMethods {
         }
 
         if (levelComplete) {
-            g.setColor(new java.awt.Color(0, 0, 0, 150));
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
+            g.setColor(new java.awt.Color(0, 0, 0, 220));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+
+            Font pixelFont = LoadSave.loadFont("PressStart2P-Regular.ttf").deriveFont(10f);
+            g.setFont(pixelFont);
             g.setColor(java.awt.Color.WHITE);
-            g.drawString("LEVEL COMPLETE!", GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2);
+
+            String text = "LEVEL COMPLETE!";
+            FontMetrics fm = g.getFontMetrics();
+            g.drawString(text, GAME_WIDTH / 2 - fm.stringWidth(text) / 2, GAME_HEIGHT / 2);
         }
        
     }
