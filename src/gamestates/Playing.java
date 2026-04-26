@@ -52,7 +52,6 @@ public class Playing extends State implements StateMethods {
 
     private long finalTime = 0;
 
-    private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
     private int currentLevelNum = 1;
 
@@ -282,20 +281,6 @@ public class Playing extends State implements StateMethods {
                 player2.lockMovement();
         }
 
-            //delayed level transition
-            if (levelComplete) {
-                long currentTime = System.currentTimeMillis();
-
-            if (currentTime - levelCompleteTime >= LEVEL_DELAY) {
-                if(currentLevelNum ==1){
-                    loadNextLevel();
-                }
-                    else if(currentLevelNum == 2){  //bring players back to main menu
-                        setGamestate(Gamestate.MENU);
-                    }
-                }
-            }
-
         //if paused display pause overlay
         } else {
             pauseOverlay.update();
@@ -355,6 +340,34 @@ public class Playing extends State implements StateMethods {
             String text = "LEVEL COMPLETE!";
             FontMetrics fm = g.getFontMetrics();
             g.drawString(text, GAME_WIDTH / 2 - fm.stringWidth(text) / 2, GAME_HEIGHT / 2);
+
+            Font smallFont = LoadSave.loadFont("PressStart2P-Regular.ttf").deriveFont(6f);
+            g.setFont(smallFont);
+
+            FontMetrics fmSmall = g.getFontMetrics();
+
+            String levelTimeText = "";
+
+            if(currentLevelNum == 1){
+                levelTimeText = "Level 1: " + formatTime(level1Time);
+            } else if(currentLevelNum == 2){
+                levelTimeText = "Level 2: " + formatTime(level2Time);
+            } else if (currentLevelNum == 3){
+                levelTimeText = "Level 3: " + formatTime(level3Time);
+            }
+
+            g.drawString(levelTimeText, GAME_WIDTH / 2 - fmSmall.stringWidth(levelTimeText) /2,
+            GAME_HEIGHT /2 + 40);
+
+            if (currentLevelNum == 3){
+                String finalTimeText = "Final time: " + formatTime(finalTime);
+
+                g.drawString(finalTimeText, GAME_WIDTH / 2 - fmSmall.stringWidth(finalTimeText) / 2,
+                 GAME_HEIGHT / 2 + 60);
+            }
+
+            String text1 = "Press ENTER to continue";
+            g.drawString(text1, GAME_WIDTH / 2 - fmSmall.stringWidth(text1) / 2, GAME_HEIGHT / 2 + 20);
         }
        
     }
