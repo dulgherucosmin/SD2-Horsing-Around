@@ -71,7 +71,7 @@ public class Player extends Entity {
     private boolean movementLocked;
     private Game game;
 
-    private String currentColour ="default";
+    private String currentColour = "default";
 
     public Player(int playerType, float x, float y, String spritePath, int startDir, String displayName, Game game) {
         // width and height here are hitbox sizes
