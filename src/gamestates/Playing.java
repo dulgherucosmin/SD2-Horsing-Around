@@ -42,7 +42,7 @@ public class Playing extends State implements StateMethods {
     private long levelCompleteTime = 0;
     private static final long LEVEL_DELAY = 1500; // 1.5 seconds (in ms)
 
-    private int currentLevelNum = 3;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
