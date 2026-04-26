@@ -77,7 +77,7 @@ public class Playing extends State implements StateMethods {
         float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
         float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
       
-        player1 = new Player(1, p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT, "Patrick");
+        player1 = new Player(1, p1Spawn[0], p1Spawn[1], LoadSave.PLAYER1_ATLAS, RIGHT, "Patrick", game);
 
         // load level data (in this case level 1)
         player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -85,7 +85,7 @@ public class Playing extends State implements StateMethods {
         // set players internal storage of level to the current loaded level (in this case level 1)
         player1.setCurentLevel(levelManager.getCurrentLevel().level);
 
-        player2 = new Player(2, p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT, "Nathan");
+        player2 = new Player(2, p2Spawn[0], p2Spawn[1], LoadSave.PLAYER2_ATLAS, RIGHT, "Nathan", game);
 
         player2.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         player2.setCurentLevel(levelManager.getCurrentLevel().level);
@@ -248,7 +248,7 @@ public class Playing extends State implements StateMethods {
                     loadNextLevel();
                 }
                     else if(currentLevelNum == 2){  //bring players back to main menu
-                        Gamestate.state = Gamestate.MENU;
+                        setGamestate(Gamestate.MENU);
                     }
                 }
             }

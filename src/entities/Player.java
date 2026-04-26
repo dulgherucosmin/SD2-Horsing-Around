@@ -17,6 +17,8 @@ import static utilz.Utils.collidesWithHitBox;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import audio.AudioPlayer;
+import main.Game;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -66,12 +68,14 @@ public class Player extends Entity {
     private Rectangle otherPlayerHitBox;
     private Rectangle boxHitBox;
     private boolean movementLocked;
+    private Game game;
 
     private String currentColour ="default";
 
-    public Player(int playerType, float x, float y, String spritePath, int startDir, String displayName) {
+    public Player(int playerType, float x, float y, String spritePath, int startDir, String displayName, Game game) {
         // width and height here are hitbox sizes
         super(x, y, 16, 16);
+        this.game = game;
         this.spritePath = spritePath;
         this.playerDir = startDir;
         this.displayName = displayName;
@@ -362,6 +366,7 @@ public class Player extends Entity {
             airSpeed = jumpSpeed;
             inAir=true;
             jumpHeld = true;
+            game.getAudioPlayer().playEffect(AudioPlayer.JUMP);
         }
     }
 

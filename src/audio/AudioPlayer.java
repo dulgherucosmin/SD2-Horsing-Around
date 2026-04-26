@@ -52,8 +52,13 @@ public class AudioPlayer {
     }
 
     private Clip getClip(String name) {
-        URL url = getClass().getResource("/audio/" + name + ".wav");
+        URL url = getClass().getResource("/res/audio/" + name + ".wav");
         AudioInputStream audio;
+
+        if (url == null) {
+            System.err.println("Audio file not found: /audio/" + name + ".wav");
+            return null;
+        }
 
         try {
             audio = AudioSystem.getAudioInputStream(url);
@@ -75,6 +80,8 @@ public class AudioPlayer {
     }
 
     public void stopSong() {
+        if (songs == null || songs[currentSongID] == null) return;
+
         if (songs[currentSongID].isActive())
             songs[currentSongID].stop();
     }
@@ -85,6 +92,10 @@ public class AudioPlayer {
     }
 
     public void playEffect(int effect) {
+        if (effect < 0 || effect >= effects.length) return;
+        Clip c = effects[effect];
+        if (c == null) return;
+
         effects[effect].setMicrosecondPosition(0);
         effects[effect].start();
     }
@@ -93,13 +104,17 @@ public class AudioPlayer {
         stopSong();
 
         currentSongID = song;
+
+        Clip current = songs[currentSongID];
+        if (current == null) return;
+
         updateSongVolume();
 
         songs[currentSongID].setMicrosecondPosition(0);
         songs[currentSongID].loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void totalSongMute() {
+    public void toggleSongMute() {
         this.songMute = !songMute;
 
         for (Clip c : songs) {
@@ -108,12 +123,12 @@ public class AudioPlayer {
         }
     }
 
-    public void totalEffectMute() {
+    public void toggleEffectMute() {
         this.effectMute = !effectMute;
 
         for (Clip c : effects) {
             BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
-            booleanControl.setValue(songMute);
+            booleanControl.setValue(effectMute);
         }
 
         if (!effectMute)
@@ -121,6 +136,10 @@ public class AudioPlayer {
     }
 
     private void updateSongVolume() {
+        Clip current = songs[currentSongID];
+
+        if (current == null) return;
+
         FloatControl gainControl = (FloatControl) songs[currentSongID].getControl(FloatControl.Type.MASTER_GAIN);
         float range = gainControl.getMaximum() - gainControl.getMinimum();
         float gain = (range * volume) + gainControl.getMinimum();
@@ -129,7 +148,10 @@ public class AudioPlayer {
 
     private void updateEffectsVolume() {
         for(Clip c: effects) {
-            FloatControl gainControl = (FloatControl) songs[currentSongID].getControl(FloatControl.Type.MASTER_GAIN);
+
+            if (c == null) continue;
+
+            FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
             float range = gainControl.getMaximum() - gainControl.getMinimum();
             float gain = (range * volume) + gainControl.getMinimum();
             gainControl.setValue(gain);
