@@ -19,6 +19,8 @@ public class Box extends Entity {
 
     // how fast the box moves when it's pushed
     private final float pushSpeed = 0.7f;
+    private float spawnX;
+    private float spawnY;
 
     private int[][] currentLevelData;
     private int currentLevel;
@@ -28,6 +30,10 @@ public class Box extends Entity {
     public Box(float x, float y, String spritePath) {
         super(x, y, 32, 32, true);
 
+        // set box spawn position
+        this.spawnX = x;
+        this.spawnY = y;
+
         if (spritePath != null) {
             loadSprite(spritePath);
         }
@@ -35,6 +41,10 @@ public class Box extends Entity {
 
     public Box(float x, float y) {
         super(x, y, 32, 32, true);
+
+        // set box spawn positions
+        this.spawnX = x;
+        this.spawnY = y;
     }
 
     private void loadSprite(String path) {
@@ -58,6 +68,11 @@ public class Box extends Entity {
 
         if (currentLevelData == null) {
             return;
+        }
+
+        if (this.y > 240) {
+            this.x = spawnX;
+            this.y = spawnY;
         }
 
         if (inAir) {
