@@ -54,7 +54,7 @@ public class Playing extends State implements StateMethods {
     private long finalTime = 0;
 
 
-    private int currentLevelNum = 3;
+    private int currentLevelNum = 2;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor

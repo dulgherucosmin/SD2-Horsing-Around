@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import main.Game;
 import utilz.LoadSave;
 
 public class Box extends Entity {
@@ -61,6 +63,24 @@ public class Box extends Entity {
         tryPush(p1);
         tryPush(p2);
         updateHitBoxRaw();
+
+        // reset position of box in level 2 if it gets pushed too far
+        if (this.getY() > 127
+            && this.getX() < 320
+            && this.currentLevel == 2
+        ) {
+            this.x = spawnX;
+            this.y = spawnY;
+        }
+
+        // reset position of box 2 in level 3 if it gets pushed too far
+        if (this.getY() == 64.5
+            && this.getX() > 220
+            && this.currentLevel == 3
+        ) {
+            this.x = spawnX;
+            this.y = spawnY;
+        }
     }
 
     // this makes the box fall down if there's nothing under it
@@ -70,6 +90,7 @@ public class Box extends Entity {
             return;
         }
 
+        // respawn box if it hits void (240 is world limit)
         if (this.y > 240) {
             this.x = spawnX;
             this.y = spawnY;
