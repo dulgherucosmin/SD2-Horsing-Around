@@ -402,6 +402,7 @@ public class Player extends Entity {
         }
     }
 
+    //resets the position of the players and all movement
     public void resetAll(){
         resetPosition();
 

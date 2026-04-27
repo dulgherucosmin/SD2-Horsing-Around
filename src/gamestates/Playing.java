@@ -160,6 +160,7 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    // this creates the reset button in the playing class
     private void createResetButton(){
         int rX =(Game.GAME_WIDTH/2)-(RESET_SIZE/2);
         int rY =(int)(5*Game.SCALE);
@@ -356,9 +357,9 @@ public class Playing extends State implements StateMethods {
         if (win != null) {
             win.render(g, levelComplete);
         }
-
+        //draw reset button
         resetButton.draw(g);
-        
+
         long displayTime;
         if(levelComplete){
             displayTime = levelCompleteTime - levelStartTime;
@@ -427,7 +428,7 @@ public class Playing extends State implements StateMethods {
     //when the game is paused all mouse inputs direct to pause overlay
     @Override
     public void mousePressed(MouseEvent e) {
-        if(isIn(e,resetButton))
+        if(!paused && isIn(e,resetButton))
             resetButton.setMousePressed(true);
         if(paused)
             pauseOverlay.mousePressed(e);
@@ -435,7 +436,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(isIn(e,resetButton) && resetButton.isMousePressed()){
+        if(!paused && isIn(e,resetButton) && resetButton.isMousePressed()){
             resetLevel();
             resetButton.resetBooleans();
         }
@@ -446,6 +447,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(!paused)
         resetButton.setMouseOver(isIn(e, resetButton));
         if(paused)
             pauseOverlay.mouseMoved(e);
@@ -560,7 +562,7 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer2() {
         return player2;
     }
-
+        //scalling issure for reset button
      public boolean isIn(MouseEvent e, ResetButton rb){
         
         float scaleX =(float) game.getGamePanel().getWidth()/Game.GAME_WIDTH;
@@ -610,6 +612,8 @@ public class Playing extends State implements StateMethods {
         level3Time = 0;
         finalTime = 0;
     }
+
+    //reset the currnt level in playing
     public void resetLevel(){
         levelManager.initLevel(currentLevelNum);
         setupLevelObjects();
@@ -639,7 +643,18 @@ public class Playing extends State implements StateMethods {
         paused =false;
         levelStartTime = System.currentTimeMillis();
     }
+
     public int getCurrentLevelNum(){
         return currentLevelNum;
     }
+
+    public boolean isLevelComplete() {
+        return levelComplete;
+    }
+
+    public void setLevelComplete(boolean levelComplete) {
+        this.levelComplete = levelComplete;
+    }
+    
+    
 }
