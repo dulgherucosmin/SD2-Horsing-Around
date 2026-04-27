@@ -38,10 +38,10 @@ public class Button extends Entity {
 
         boolean player1 = hitBox.intersects(p1.getHitbox());
         boolean player2 = hitBox.intersects(p2.getHitbox());
-        boolean boxPressed = box != null && hitBox.intersects(box.getHitbox())
-        ||box2 != null && hitBox.intersects(box2.getHitbox()); // lets box push buttons
+        boolean boxPressed = box != null && hitBox.intersects(box.getHitbox());
+        boolean box2Pressed = box2 != null && hitBox.intersects(box2.getHitbox()); // lets box push buttons
 
-        pressed = player1 || player2 || boxPressed;
+        pressed = player1 || player2 || boxPressed || box2Pressed;
     }
 
     public boolean isPressed() {
