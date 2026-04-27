@@ -9,8 +9,11 @@ import static entities.Player.getSpawnPoint;
 import static org.junit.Assert.*;
 
 import entities.Player;
+import entities.Button;
 import main.Game;
 import static utilz.Constants.Directions.RIGHT;
+import static utilz.Utils.areSpikesDisabled;
+import static utilz.Utils.setSpikesDisabled;
 
 public class SpikeTest {
 
@@ -74,5 +77,24 @@ public class SpikeTest {
         // check to see if player has been reset
         assertEquals(expectedPosition, p.getX(), 0);
 
+    }
+
+    @Test
+    public void testDisableSpikes() {
+
+        Player p = new Player(1, 0, 0, null, RIGHT, "Test", null);
+        Player p2 = new Player(2, 100, 100, null, RIGHT, "Test", null);
+        Button button = new Button(0, 0);
+
+        p.updateHitBoxRaw();
+
+        button.update(p, p2, null, null); 
+
+        // disable spikes if button is pressed
+        if (button != null && button.isPressed()) { 
+            setSpikesDisabled(true); 
+        }
+
+        assertEquals(true, areSpikesDisabled());
     }
 }
