@@ -7,9 +7,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import gamestates.Gamestate;
+import gamestates.Playing;
+import main.Game;
 import ui.MenuButton;
-public class GUITest {
+import ui.ResetButton;
 
+public class GUITest {
+    private Game game;
     // checks if the mouse Over is correctly set to true
     @Test
     public void testMouseOver(){
@@ -69,4 +73,26 @@ public class GUITest {
         mb.setGameState(); // this initializes the change
         assertEquals(mb.getGamestate(), Gamestate.state); // checks if its the same
     }
+     @Test
+    public void testGameReset(){
+
+        ResetButton resetButton = new ResetButton(100, 100, 16, 16);
+        //simulate playing game and level is complete
+        Playing playing = new Playing(game);
+        playing.setLevelComplete(true);
+        // simulate the button being pressed
+        resetButton.setMousePressed(true);
+
+        //only reset button if mouse is pressed and is inside bounds
+        if(resetButton.isMousePressed() && resetButton.getBounds().contains(108,108)){
+            playing.resetLevel();
+        }
+
+        //clear button states after release
+        resetButton.resetBooleans();
+        //game should not be complete after reset
+        assertFalse(playing.isLevelComplete());
+        //game should not be paused after reset
+
+  }
 }
