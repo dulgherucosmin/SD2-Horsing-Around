@@ -93,7 +93,11 @@ public class LevelManager {
                 }
 
                 // draw sprite
-                g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
+                if (index == 40) {
+                    g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j + 4, Game.TILES_SIZE, Game.TILES_SIZE, null);
+                } else {
+                    g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
+                }
             }
         }
     }
