@@ -42,7 +42,7 @@ public class AudioPlayer {
     }
 
     private void loadEffects() {
-        String[] effectNames = {"jump", "die", "lvlcomplete", "gameover", "door"};
+        String[] effectNames = {"jump", "door"};
         effects = new Clip[effectNames.length];
         
         for (int i = 0; i < effects.length; i++)
@@ -164,5 +164,9 @@ public class AudioPlayer {
         }
         
         return songs[song].isActive();
+    }
+
+    public int getCurrentSongID() {
+        return currentSongID;
     }
 }
