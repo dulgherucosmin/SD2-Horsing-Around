@@ -402,6 +402,25 @@ public class Player extends Entity {
         }
     }
 
+    public void resetAll(){
+        resetPosition();
+
+        left =false;
+        right =false;
+        moving = false;
+        inAir = false;
+        airSpeed = 0f;
+        jumpHeld = false;
+
+        playerAction = IDLE_RIGHT;
+        playerDir = RIGHT;
+        resetAniTick();
+
+        movementLocked = false;
+
+        updateHitBox();
+    }
+
     public void setJumpHeld(boolean held) {
         this.jumpHeld = held;
     }

@@ -4,7 +4,7 @@
 package gamestates;
 
 import static utilz.Constants.Directions.*;
-
+import static utilz.Constants.UI.ResetButton.*;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -21,9 +21,12 @@ import entities.Player;
 import entities.Win;
 import levels.LevelManager;
 import main.Game;
+import ui.MenuButton;
 import ui.PauseOverlay;
+import ui.ResetButton;
 import utilz.LoadSave;
 import levels.Level;
+
 
 import static entities.Player.getSpawnPoint;
 
@@ -34,6 +37,7 @@ public class Playing extends State implements StateMethods {
     private Player player2;
     private LevelManager levelManager;
     private PauseOverlay pauseOverlay;
+    private ResetButton resetButton;
 
     private Button button1;
     private Button button2;
@@ -110,6 +114,7 @@ public class Playing extends State implements StateMethods {
         setupLevelObjects(); //setup buttons, doors and win condition.
         syncPlayersToCurrentLevel(); //load level data for players
         setupBoxForCurrentLevel();//setup box (box only exists in level 2)
+        createResetButton();
 
         levelStartTime = System.currentTimeMillis();
     }
@@ -154,6 +159,12 @@ public class Playing extends State implements StateMethods {
 
         }
     }
+
+    private void createResetButton(){
+        int rX =(Game.GAME_WIDTH/2)-(RESET_SIZE/2);
+        int rY =(int)(5*Game.SCALE);
+        resetButton = new ResetButton(rX, rY, RESET_DEFAULT_SIZE, RESET_DEFAULT_SIZE);
+    }  
 
     private void syncPlayersToCurrentLevel(){
         int [][] levelData = levelManager.getCurrentLevel().getLevelData();
@@ -323,6 +334,7 @@ public class Playing extends State implements StateMethods {
     public void draw(Graphics g) {
 
         // render level 1
+      
         levelManager.drawLevel(g, currentLevelNum);
         player1.render(g);
         player2.render(g);
@@ -345,6 +357,8 @@ public class Playing extends State implements StateMethods {
             win.render(g, levelComplete);
         }
 
+        resetButton.draw(g);
+        
         long displayTime;
         if(levelComplete){
             displayTime = levelCompleteTime - levelStartTime;
@@ -413,18 +427,26 @@ public class Playing extends State implements StateMethods {
     //when the game is paused all mouse inputs direct to pause overlay
     @Override
     public void mousePressed(MouseEvent e) {
+        if(isIn(e,resetButton))
+            resetButton.setMousePressed(true);
         if(paused)
             pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(isIn(e,resetButton) && resetButton.isMousePressed()){
+            resetLevel();
+            resetButton.resetBooleans();
+        }
+
         if(paused)
             pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        resetButton.setMouseOver(isIn(e, resetButton));
         if(paused)
             pauseOverlay.mouseMoved(e);
     }
@@ -538,6 +560,18 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer2() {
         return player2;
     }
+
+     public boolean isIn(MouseEvent e, ResetButton rb){
+        
+        float scaleX =(float) game.getGamePanel().getWidth()/Game.GAME_WIDTH;
+        float scaleY =(float) game.getGamePanel().getHeight()/Game.GAME_HEIGHT;
+        
+        int mx = (int)(e.getX()/scaleX);
+        int my = (int)(e.getY()/scaleY);
+
+        return rb.getBounds().contains(mx,my);
+    }
+
     public void resetGame(){
         //go back to level one
         currentLevelNum =1;
@@ -575,6 +609,35 @@ public class Playing extends State implements StateMethods {
         level2Time = 0;
         level3Time = 0;
         finalTime = 0;
+    }
+    public void resetLevel(){
+        levelManager.initLevel(currentLevelNum);
+        setupLevelObjects();
+        setupBoxForCurrentLevel();
+
+        //reset players to level 1 spawn  point
+        float[] p1Spawn = getSpawnPoint(1, currentLevelNum);
+        float[] p2Spawn = getSpawnPoint(2, currentLevelNum);
+
+         //resets players to spawn.
+        player1.setX(p1Spawn[0]);
+        player1.setY(p1Spawn[1]);
+        player1.resetAll();
+        
+        player2.setX(p2Spawn[0]);
+        player2.setY(p2Spawn[1]);
+        player1.resetAll();
+
+        //reconnect player collision
+        player1.setOtherPlayerHitBox(player2.getHitbox());
+        player2.setOtherPlayerHitBox(player1.getHitbox());
+
+        //reload level data for both players
+        syncPlayersToCurrentLevel();
+
+        levelComplete = false;
+        paused =false;
+        levelStartTime = System.currentTimeMillis();
     }
     public int getCurrentLevelNum(){
         return currentLevelNum;
