@@ -1,3 +1,5 @@
+
+
 package ui;
 
 import static main.Game.GAME_HEIGHT;
@@ -67,7 +69,7 @@ public class PauseOverlay {
     }
 
     //this loads the pause menu background
-     private void loadBackground() {
+    private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_MENU);
         //this reduces the size of the mennu to make it fit in screen
         bgW=(int)(backgroundImg.getWidth()*Game.SCALE*0.8f);
@@ -91,6 +93,10 @@ public class PauseOverlay {
     public void draw(Graphics g){
         bgW=Math.min(bgW,GAME_WIDTH);
         bgH=Math.min(bgH,GAME_HEIGHT);
+
+        g.setColor(new java.awt.Color(0, 0, 0, 180));
+        g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
         //pause background 
         g.drawImage(backgroundImg, bgX, bgY, bgW,bgH,null);
 
@@ -142,6 +148,7 @@ public class PauseOverlay {
             if(musicButton.isMousePressed()){
                 //toggle music mute button
                 musicButton.setMuted(!musicButton.isMuted());
+                game.getAudioPlayer().toggleSongMute();
             }
 
         }
@@ -149,14 +156,17 @@ public class PauseOverlay {
             if(sfxButton.isMousePressed()){
                 //toggle sfxmute button
                 sfxButton.setMuted(!sfxButton.isMuted());//
+                game.getAudioPlayer().toggleEffectMute();
             }
         }
         else if(isIn(e, menuB)){
             if(menuB.isMousePressed()){
+                playing.unpauseGame(); 
+                game.getAudioPlayer().playSong(audio.AudioPlayer.MENU);
                 //switches button to main menu
-               Gamestate.state=Gamestate.MENU;
+                Gamestate.state=Gamestate.MENU;
                 //unpause the game before leaving
-               playing.unpauseGame(); 
+
             }
         } 
 
@@ -221,6 +231,13 @@ public class PauseOverlay {
         if(volumeButton.isMousePressed()){
             //move the slider knob to follow the mouse
             volumeButton.changeX(mouseX);
+            int range = volumeButton.getMaxX() - volumeButton.getMinX();
+
+            if (range > 0) {
+                float volume = (float)(volumeButton.getButtonX() - volumeButton.getMinX()) / range;
+                volume = Math.max(0f, Math.min(1f, volume));
+                game.getAudioPlayer().setVolume(volume);
+            }
         }
     }
 
