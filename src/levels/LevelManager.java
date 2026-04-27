@@ -27,7 +27,6 @@ public class LevelManager {
     private void importLevelSpriteSheet(int level) {
 
         BufferedImage img = LoadSave.GetSpriteAtlas("level_one_tilesheet2.png");
-        bgImage = LoadSave.GetSpriteAtlas("bg.png");
 
         if (img == null) {
             throw new RuntimeException("Failed to load level_one_tileset.png — check it exists in /res/");
@@ -47,13 +46,41 @@ public class LevelManager {
     }
 
     public void initLevel(int level) {
+
+        if (bgImage == null) {
+            bgImage = LoadSave.GetSpriteAtlas("bg.png");
+        }
+
         importLevelSpriteSheet(level);
         currentLevel = new Level(LoadSave.getLevelData(level), level);
     }
 
+    private void drawBackground(Graphics g) {
+        if (bgImage == null) return;
+
+        int imgW = bgImage.getWidth();
+        int imgH = bgImage.getHeight();
+        int gameW = Game.GAME_WIDTH;
+        int gameH = Game.GAME_HEIGHT;
+
+        float scale = (float) gameH / imgH;
+        int scaledW = (int)(imgW * scale);
+        int scaledH = gameH;
+
+        if (scaledW < gameW) {
+            scale = (float) gameW / imgW;
+            scaledW = gameW;
+            scaledH = (int)(imgH * scale);
+        }
+
+        int xOffset = (gameW - scaledW) / 2;
+        int yOffset = (gameH - scaledH) / 2;
+
+        g.drawImage(bgImage, xOffset, yOffset, scaledW, scaledH, null);
+    }
+
     public void drawLevel(Graphics g, int level) {
-        if (bgImage != null)
-            g.drawImage(bgImage, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+        drawBackground(g);
 
         // load sprites
         for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
@@ -64,6 +91,7 @@ public class LevelManager {
                 if (index == 40 && Utils.areSpikesDisabled()) {
                     continue;
                 }
+
                 // draw sprite
                 g.drawImage(levelSprite[index], Game.TILES_SIZE * i , Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
             }
