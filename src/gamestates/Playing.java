@@ -366,7 +366,11 @@ public class Playing extends State implements StateMethods {
         } else{
             displayTime = System.currentTimeMillis() - levelStartTime;
         }
+
+        Font timerFont = LoadSave.loadFont("PressStart2P-Regular.ttf").deriveFont(4f);
+        g.setFont(timerFont);
         g.setColor(java.awt.Color.WHITE);
+
         g.drawString("Level Time: " + formatTime(displayTime), 20, 20);
 
         //if paused then draw pause overlay
