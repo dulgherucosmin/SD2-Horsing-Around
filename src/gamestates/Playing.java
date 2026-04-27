@@ -54,7 +54,7 @@ public class Playing extends State implements StateMethods {
     private long finalTime = 0;
 
 
-    private int currentLevelNum = 2;
+    private int currentLevelNum = 1;
 
     public final static int TILE_DEFAULT_SIZE = 16; // base tile size before resizing
     public final static float SCALE = 1.0f; // scaling factor
@@ -215,7 +215,7 @@ public class Playing extends State implements StateMethods {
         levelStartTime = System.currentTimeMillis();
     }
 
-    private void setupBoxForCurrentLevel() { //creates or removes box depending on level
+    private void setupBoxForCurrentLevel() { // creates or removes box depending on level
     if (currentLevelNum == 2) {
             box = new Box(18 * TILES_SIZE, 2 * TILES_SIZE, "box.png");
             box.loadLevelData(levelManager.getCurrentLevel().getLevelData(), levelManager.getCurrentLevel().level);
@@ -255,7 +255,7 @@ public class Playing extends State implements StateMethods {
     public void update() {
         //if game is not paused then update all features
         if(!paused) {
-            if(!levelComplete){ //only update movement if level not complete
+            if(!levelComplete){ // only update movement if level not complete
                 player1.update();
                 player2.update();
                 
