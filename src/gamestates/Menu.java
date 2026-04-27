@@ -135,6 +135,10 @@ public class Menu extends State implements StateMethods {
     public void mouseReleased(MouseEvent e) {
         for (int i = 0; i < labels.length; i++) {
             if (getItemBounds(i).contains(e.getX(), e.getY())) {
+
+                if(i == 0){
+                    game.getPlaying().resetGame();
+                }
                 setGamestate(states[i]);
                 return;
             }
@@ -161,6 +165,9 @@ public class Menu extends State implements StateMethods {
                     selectedIndex = labels.length-1;
                 break;
             case KeyEvent.VK_ENTER:
+                if(selectedIndex == 0){
+                    game.getPlaying().resetGame();
+                }
                     setGamestate(states[selectedIndex]);
                     break;
 
