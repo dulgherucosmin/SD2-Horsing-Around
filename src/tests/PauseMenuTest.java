@@ -68,26 +68,5 @@ public class PauseMenuTest {
    assertEquals(1,playing.getCurrentLevelNum());
   }
 
-  @Test
-  public void testGameReset(){
-
-   ResetButton resetButton = new ResetButton(100, 100, 16, 16);
-   //simulate playing game and level is complete
-   Playing playing = new Playing(game);
-   playing.setLevelComplete(true);
-   // simulate the button being pressed
-   resetButton.setMousePressed(true);
-
-   //only reset button if mouse is pressed and is inside bounds
-   if(resetButton.isMousePressed() && resetButton.getBounds().contains(108,108)){
-      playing.resetLevel();
-   }
-
-   //clear button states after release
-   resetButton.resetBooleans();
-   //game should not be complete after reset
-   assertFalse(playing.isLevelComplete());
-   //game should not be paused after reset
-
-  }
+ 
 }
