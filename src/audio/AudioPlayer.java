@@ -24,15 +24,17 @@ public class AudioPlayer {
     private Clip[] songs, effects;
 
     private int currentSongID;
-    private float volume = 0.75f;
+    private float volume = 0.5f;
     private boolean songMute, effectMute;
 
     public AudioPlayer() {
         loadSongs();
         loadEffects();
         playSong(MENU);
+        setVolume(volume);
     }
 
+    // this loads bg music clips onto the memory
     private void loadSongs() {
         String[] names = {"menu", "level"};
         songs = new Clip[names.length];
@@ -41,8 +43,9 @@ public class AudioPlayer {
             songs[i] = getClip(names[i]);
     }
 
+    // this loads the sound effect clips onto the memory
     private void loadEffects() {
-        String[] effectNames = {"jump", "door"};
+        String[] effectNames = {"jump"};
         effects = new Clip[effectNames.length];
         
         for (int i = 0; i < effects.length; i++)
@@ -51,6 +54,7 @@ public class AudioPlayer {
         updateEffectsVolume();
     }
 
+    // this loads an audio file and converts it to a clip
     private Clip getClip(String name) {
         URL url = getClass().getResource("/res/audio/" + name + ".wav");
         AudioInputStream audio;
@@ -73,12 +77,14 @@ public class AudioPlayer {
         return null;
     }
 
+    // this sets the global audio for both the sounds and effects
     public void setVolume(float volume) {
         this.volume = volume;
         updateSongVolume();
         updateEffectsVolume();
     }
 
+    // this stops the current playing song
     public void stopSong() {
         if (songs == null || songs[currentSongID] == null) return;
 
@@ -86,11 +92,7 @@ public class AudioPlayer {
             songs[currentSongID].stop();
     }
 
-    public void lvlCompleted() {
-        stopSong();
-        playEffect(LEVEL_COMPLETE);
-    }
-
+    // this plays a sound effect once
     public void playEffect(int effect) {
         if (effect < 0 || effect >= effects.length) return;
         Clip c = effects[effect];
@@ -100,6 +102,7 @@ public class AudioPlayer {
         effects[effect].start();
     }
 
+    // this plays a looping background song
     public void playSong(int song) {
         stopSong();
 
@@ -114,6 +117,7 @@ public class AudioPlayer {
         songs[currentSongID].loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    // this toggles the song mute
     public void toggleSongMute() {
         this.songMute = !songMute;
 
@@ -123,6 +127,7 @@ public class AudioPlayer {
         }
     }
 
+    // this toggles the effect mute
     public void toggleEffectMute() {
         this.effectMute = !effectMute;
 
@@ -135,6 +140,7 @@ public class AudioPlayer {
             playEffect(JUMP);
     }
 
+    // this updates the volume for the currently playing song
     private void updateSongVolume() {
         Clip current = songs[currentSongID];
 
@@ -143,9 +149,11 @@ public class AudioPlayer {
         FloatControl gainControl = (FloatControl) songs[currentSongID].getControl(FloatControl.Type.MASTER_GAIN);
         float range = gainControl.getMaximum() - gainControl.getMinimum();
         float gain = (range * volume) + gainControl.getMinimum();
+        gain = Math.max(gainControl.getMinimum(), Math.min(gainControl.getMaximum(), gain));
         gainControl.setValue(gain);
     }
 
+    // this updates the volume for all the sound effects
     private void updateEffectsVolume() {
         for(Clip c: effects) {
 
@@ -154,10 +162,12 @@ public class AudioPlayer {
             FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
             float range = gainControl.getMaximum() - gainControl.getMinimum();
             float gain = (range * volume) + gainControl.getMinimum();
+            gain = Math.max(gainControl.getMinimum(), Math.min(gainControl.getMaximum(), gain));
             gainControl.setValue(gain);
         }
     }
 
+    // this checks if a given song is currently playing
     public boolean isSongPlaying(int song) {
         if (songs[song] == null) {
             return false;
@@ -166,6 +176,7 @@ public class AudioPlayer {
         return songs[song].isActive();
     }
 
+    // this returns the id of the currently played song
     public int getCurrentSongID() {
         return currentSongID;
     }

@@ -31,6 +31,7 @@ public class PauseMenuTest {
         assertFalse(playing.isPaused());
      }
 
+
      //checks if the slider button goes past the slider from the min (far left)
      @Test
      public void testVolumeSliderMin(){
@@ -46,6 +47,8 @@ public class PauseMenuTest {
          volumeButton.changeX(9999);
          assertTrue(volumeButton.getButtonX()<=volumeButton.getMaxX());
       }
+
+
       //checks that pause overlay is not null when game is paused
       @Test
       public void testPauseOverLayIsNotNull(){

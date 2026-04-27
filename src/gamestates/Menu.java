@@ -36,12 +36,14 @@ public class Menu extends State implements StateMethods {
     public Menu(Game game) {
         super(game);
         titleFont = LoadSave.loadFont("PressStart2P-Regular.ttf");
-        menuFont  = LoadSave.loadFont("PressStart2P-Regular.ttf");
-        bgImage   = LoadSave.GetSpriteAtlas("bg.png"); 
+        menuFont = LoadSave.loadFont("PressStart2P-Regular.ttf");
+        bgImage = LoadSave.GetSpriteAtlas("bg.png"); 
     }
 
     @Override
-    public void update() {}
+    public void update() {
+
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -113,7 +115,7 @@ public class Menu extends State implements StateMethods {
             int textW = fm.stringWidth(text);
             int x = (Game.GAME_WIDTH - textW) / 2;
 
-            if (hovered[i] || i == selectedIndex) {
+            if (hovered[i] || (!isAnyHovered() && i == selectedIndex)) {
                 g.setColor(COL_HOVERED);
                 String arrow = "> " + text + " <";
                 int arrowW = fm.stringWidth(arrow);
@@ -123,6 +125,12 @@ public class Menu extends State implements StateMethods {
                 g.drawString(text, x, y);
             }
         }
+    }
+
+    private boolean isAnyHovered() {
+        for (boolean h : hovered)
+            if (h) return true;
+        return false;
     }
 
     @Override
