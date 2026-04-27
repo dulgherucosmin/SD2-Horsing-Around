@@ -31,14 +31,15 @@ public class Button extends Entity {
 
     // gets player hitboxes and intersects them with button
     // if button not pressed down and hitboxes intersect, button gets pressed
-    public void update(Player p1, Player p2, Box box) {
+    public void update(Player p1, Player p2, Box box, Box box2) {
         hitBox.x = (int) x;
         hitBox.y = (int) y + yOffset; //aligns button hitbox with button sprite.
         
 
         boolean player1 = hitBox.intersects(p1.getHitbox());
         boolean player2 = hitBox.intersects(p2.getHitbox());
-        boolean boxPressed = box != null && hitBox.intersects(box.getHitbox()); // lets box push buttons
+        boolean boxPressed = box != null && hitBox.intersects(box.getHitbox())
+        ||box2 != null && hitBox.intersects(box2.getHitbox()); // lets box push buttons
 
         pressed = player1 || player2 || boxPressed;
     }

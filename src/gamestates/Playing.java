@@ -262,9 +262,9 @@ public class Playing extends State implements StateMethods {
             }
 
             //update buttons, pressed by players or box.
-            if (button1 != null) button1.update(player1, player2, box);
-            if (button2 != null) button2.update(player1, player2, box);
-            if (button3 != null) button3.update(player1, player2, box);
+            if (button1 != null) button1.update(player1, player2, box, box2);
+            if (button2 != null) button2.update(player1, player2, box, box2);
+            if (button3 != null) button3.update(player1, player2, box, box2);
 
             boolean disableSpikes = (button1 != null && button1.isPressed()) ||
             (button3 != null && button3.isPressed());
