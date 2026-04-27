@@ -466,6 +466,7 @@ public class Playing extends State implements StateMethods {
                 if (currentLevelNum < 3) {
                     loadNextLevel();
                 } else {
+                    game.getAudioPlayer().playSong(audio.AudioPlayer.MENU);
                     Gamestate.state = Gamestate.MENU;
                 }
             }
