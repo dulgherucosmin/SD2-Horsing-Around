@@ -32,7 +32,7 @@ public class DoorTest {
         Player player = new Player(1, 0, 0, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
-        button1.update(player, player, null);
+        button1.update(player, player, null, null);
 
         assertTrue(door.isOpen());
     }
@@ -47,7 +47,7 @@ public class DoorTest {
         Player player = new Player(1, 200, 200, null, 0, "Testing", null);
         player.updateHitBoxRaw();
 
-        button2.update(player, player, null);
+        button2.update(player, player, null, null);
 
         assertTrue(door.isOpen());
     }
@@ -61,7 +61,7 @@ public class DoorTest {
         Player player = new Player(1, 0, 0, null, 0, "Testing", null);
         player.updateHitBoxRaw();
 
-        button1.update(player, player, null);
+        button1.update(player, player, null, null);
 
         assertTrue(door.isOpen());
     }
@@ -76,14 +76,14 @@ public class DoorTest {
         Player player = new Player(1, 0, 0, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
-        button1.update(player, player, null);
+        button1.update(player, player, null, null);
         assertTrue(door.isOpen());
 
         // release (move player away)
         Player moved = new Player(1, 300, 300, null, 0, "Test", null);
         moved.updateHitBoxRaw();
 
-        button1.update(moved, moved, null);
+        button1.update(moved, moved, null, null);
 
         assertFalse(door.isOpen());
     }
@@ -111,7 +111,7 @@ public class DoorTest {
         Player player = new Player(1, 100, 100, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
-        button1.update(player, player, null);
+        button1.update(player, player, null, null);
 
         assertFalse(door.isBlocking(player));
     }
@@ -125,7 +125,7 @@ public class DoorTest {
         Player player = new Player(1, 200, 200, null, 0, "Test", null);
         player.updateHitBoxRaw();
 
-        button2.update(player, player, null);
+        button2.update(player, player, null, null);
 
         assertTrue(door.isOpen());
     }

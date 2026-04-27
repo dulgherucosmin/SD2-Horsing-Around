@@ -28,7 +28,7 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2, null);
+      button.update(p1, p2, null, null);
 
       assertTrue(button.isPressed());
    }
@@ -43,7 +43,7 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2, null);
+      button.update(p1, p2, null,null);
 
       assertFalse(button.isPressed());
    }
@@ -58,7 +58,7 @@ public class ButtonTest {
       p1.updateHitBoxRaw();
       p2.updateHitBoxRaw();
 
-      button.update(p1, p2, null);
+      button.update(p1, p2, null,null);
 
       assertTrue(button.isPressed());
    }
@@ -77,7 +77,7 @@ public class ButtonTest {
         Box box = new Box(0, 0, "box.png");
         box.updateHitBoxRaw();
 
-        button.update(p1, p2, box);
+        button.update(p1, p2, box, null);
 
         assertTrue(button.isPressed());
     }
