@@ -124,7 +124,7 @@ public class Player extends Entity {
 
     // this draws the current animation frame at the player's position
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y + 3, 64, 48, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 64, 48, null);
         
         Color displayNameColour = new Color(0, 0, 0, 0);
 
