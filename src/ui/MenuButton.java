@@ -37,8 +37,13 @@ public class MenuButton {
 
     // it cuts our individual buttons from the sprite sheet
     private void loadImgs() {
+        if (LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS) == null) {
+            imgs = new BufferedImage[3];
+        }
+        
         imgs = new BufferedImage[3];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
+
         for (int i = 0; i < imgs.length; i++) {
             imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
         }
