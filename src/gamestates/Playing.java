@@ -77,6 +77,7 @@ public class Playing extends State implements StateMethods {
     private static final int THIRD_LEVEL = 3;
     
     private boolean paused = false;
+    private long pauseTime = 0;
 
     public Playing(Game game) {
         super(game);
@@ -363,7 +364,9 @@ public class Playing extends State implements StateMethods {
         long displayTime;
         if(levelComplete){
             displayTime = levelCompleteTime - levelStartTime;
-        } else{
+        } else if(paused) {
+            displayTime = pauseTime - levelStartTime;
+        } else {
             displayTime = System.currentTimeMillis() - levelStartTime;
         }
 
@@ -466,7 +469,9 @@ public class Playing extends State implements StateMethods {
                 if (currentLevelNum < 3) {
                     loadNextLevel();
                 } else {
-                    game.getAudioPlayer().playSong(audio.AudioPlayer.MENU);
+                    if (game != null) {
+                        game.getAudioPlayer().playSong(audio.AudioPlayer.MENU);
+                    }
                     Gamestate.state = Gamestate.MENU;
                 }
             }
@@ -477,7 +482,8 @@ public class Playing extends State implements StateMethods {
 
             // horse 1 controls (wad)
             case KeyEvent.VK_W:
-                player1.jump();
+                if (!paused)
+                    player1.jump();
                 break;
             case KeyEvent.VK_A:
                 player1.setLeft(true);
@@ -488,7 +494,8 @@ public class Playing extends State implements StateMethods {
 
             // horse 2 controls (up, down, left, right)
             case KeyEvent.VK_UP:
-                player2.jump();
+                if (!paused)
+                    player2.jump();
                 break;
             case KeyEvent.VK_LEFT:
                 player2.setLeft(true);
@@ -498,7 +505,13 @@ public class Playing extends State implements StateMethods {
                 break;
                 //when escape is pressed changes the vaue of paused 
             case KeyEvent.VK_ESCAPE:
-                paused = !paused;
+                if (paused) {
+                    unpauseGame();
+                } else {
+                    paused = true;
+                    pauseTime = System.currentTimeMillis();
+                }
+
                 break;
 
         }
@@ -539,6 +552,11 @@ public class Playing extends State implements StateMethods {
 
     //sets paused to unpause when the play buttons is pressed
     public void unpauseGame(){
+        if (pauseTime != 0) {
+            long pausedDuration = System.currentTimeMillis() - pauseTime;
+            levelStartTime += pausedDuration;
+            pauseTime = 0;
+        }
         paused = false;
     }
   
