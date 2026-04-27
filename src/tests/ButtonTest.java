@@ -81,4 +81,20 @@ public class ButtonTest {
 
         assertTrue(button.isPressed());
     }
+
+    @Test
+      public void testSecondBoxPressesButton() {
+      Button button = new Button(100, 100);
+
+      Player p1 = new Player(1, 300, 300, null, 0, "Test", null);
+      Player p2 = new Player(2, 400, 400, null, 0, "Test", null);
+      p1.updateHitBoxRaw();
+      p2.updateHitBoxRaw();
+
+      Box box2 = new Box(100, 110, "box.png");
+      box2.updateHitBoxRaw();
+
+      button.update(p1, p2, null, box2);
+      assertTrue(button.isPressed());
+}
 }
