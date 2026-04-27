@@ -31,6 +31,7 @@ public class Menu extends State implements StateMethods {
 
     private static final Color COL_NORMAL  = new Color(180, 200, 160);
     private static final Color COL_HOVERED = new Color(220, 235, 180);
+    private int selectedIndex = 0;
 
     public Menu(Game game) {
         super(game);
@@ -112,7 +113,7 @@ public class Menu extends State implements StateMethods {
             int textW = fm.stringWidth(text);
             int x = (Game.GAME_WIDTH - textW) / 2;
 
-            if (hovered[i]) {
+            if (hovered[i] || i == selectedIndex) {
                 g.setColor(COL_HOVERED);
                 String arrow = "> " + text + " <";
                 int arrowW = fm.stringWidth(arrow);
@@ -147,7 +148,24 @@ public class Menu extends State implements StateMethods {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        switch(e.getKeyCode()){
+            case KeyEvent.VK_UP:
+                selectedIndex--;
+                if(selectedIndex<0)
+                    selectedIndex = labels.length-1;
+                break;
+            case KeyEvent.VK_DOWN:
+                selectedIndex++;
+                if(selectedIndex >= labels.length)
+                    selectedIndex = labels.length-1;
+                break;
+            case KeyEvent.VK_ENTER:
+                    setGamestate(states[selectedIndex]);
+                    break;
+
+        }
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {}
