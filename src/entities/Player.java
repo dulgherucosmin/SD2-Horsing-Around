@@ -130,10 +130,10 @@ public class Player extends Entity {
 
         if (playerType == 1) {
             // colour matches player 1
-            displayNameColour = new Color(213, 168, 83, 85);
+            displayNameColour = new Color(35, 200, 145, 85);
         } else {
             // colour matches player 2
-            displayNameColour = new Color(26, 26, 26, 85);
+            displayNameColour = new Color(35, 200, 145, 85);
         }
 
         // draw a semi-transparent dark background pill behind the name
