@@ -12,6 +12,9 @@ import static utilz.Constants.Directions.RIGHT;
 import entities.Player;
 public class MovementTest {
 
+    // game instance for unit tests
+    private Game game = new Game();
+
     // create a simple level with solid floor
     private int[][] createFlatLevel() {
         int[][] levelData = new int[Game.TILES_IN_WIDTH][Game.TILES_IN_HEIGHT];
@@ -38,7 +41,7 @@ public class MovementTest {
     @Test
     public void testJumpInAir() {
 
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", game);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -58,7 +61,7 @@ public class MovementTest {
     //testing gravity
     @Test
     public void testGravity() {
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", game);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
@@ -96,7 +99,7 @@ public class MovementTest {
     // this checks if the player actually still in the air after jumping
     @Test
     public void testLanding(){
-        Player p = new Player(1, 100, 10, null, RIGHT, "Test", null);
+        Player p = new Player(1, 100, 10, null, RIGHT, "Test", game);
 
         // load our test level into player code
         p.loadLevelData(createFlatLevel());
