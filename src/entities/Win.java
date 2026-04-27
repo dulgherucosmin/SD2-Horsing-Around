@@ -17,8 +17,8 @@ public class Win extends Entity {
     
     public void render (Graphics g, boolean done){
         
-        g.setColor(Color.YELLOW);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+        /*g.setColor(Color.YELLOW);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);*/
         
     }
 
