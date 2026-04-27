@@ -33,6 +33,10 @@ public class Constants {
             public static final int VOL_HEIGHT = (int)(VOL_DEFAULT_HEIGHT*Game.SCALE*0.65f);
             public static final int SLIDER_WIDTH = (int)(SLIDER_DEFAULT_WIDTH*Game.SCALE*0.8f);
         }
+        public static class ResetButton{
+            public static final int RESET_DEFAULT_SIZE= 16;
+            public static final int RESET_SIZE =(int)(RESET_DEFAULT_SIZE*Game.SCALE);
+        }
 
         
     }
